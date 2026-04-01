@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Zêluz — Pesquisa de Satisfação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --z-gold:#DEB428;--z-gold-hover:#C9A220;
+  --z-gold-10:rgba(222,180,40,0.10);--z-gold-15:rgba(222,180,40,0.15);
+  --z-gold-20:rgba(222,180,40,0.20);--z-gold-40:rgba(222,180,40,0.40);
+  --z-blue:#234D67;--z-blue-85:rgba(35,77,103,0.85);
+  --z-blue-70:rgba(35,77,103,0.70);--z-blue-50:rgba(35,77,103,0.50);
+  --z-blue-10:rgba(35,77,103,0.10);
+  --z-blue-06:rgba(35,77,103,0.06);
+  --z-cream:#FFFDF6;--z-white:#FFFFFF;--z-black:#1D1E1C;
+  --z-font:'Poppins',system-ui,sans-serif;
+  --z-accent:'Cormorant Garamond',Georgia,serif;
+  --z-radius:16px;--z-radius-sm:10px;
+  --z-shadow-sm:0 2px 8px rgba(35,77,103,0.06);
+  --z-shadow-md:0 4px 20px rgba(35,77,103,0.08);
+  --z-shadow-lg:0 8px 32px rgba(35,77,103,0.10);
+  --z-ease:cubic-bezier(0.4,0,0.2,1);
+  --z-red:#D94F4F;--z-yellow:#E8A825;--z-green:#3BAF6E;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--z-font);
+  background:var(--z-cream);
+  color:var(--z-blue-85);
+  line-height:1.6;
+  min-height:100vh;
+  min-height:100dvh;
+  overflow-x:hidden;
+}
+
+/* ========== SPLASH ========== */
+.splash{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--z-blue);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity 0.8s var(--z-ease), visibility 0.8s;
+}
+.splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-logo{width:180px;height:auto;opacity:0;animation:splashFade 0.8s 0.2s forwards}
+.splash-line{
+  width:50px;height:2px;background:var(--z-gold-40);
+  margin:20px 0;border-radius:2px;
+  opacity:0;animation:splashFade 0.6s 0.5s forwards;
+}
+.splash-sub{
+  font-family:var(--z-accent);font-size:17px;font-style:italic;
+  color:rgba(255,253,246,0.55);
+  opacity:0;animation:splashFade 0.6s 0.8s forwards;
+}
+@keyframes splashFade{to{opacity:1}}
+
+/* ========== LAYOUT ========== */
+.container{max-width:500px;margin:0 auto;padding:0 20px 32px}
+
+/* ========== HEADER ========== */
+.header{
+  text-align:center;padding:20px 20px 16px;
+}
+.header-logo{width:140px;height:auto;margin:0 auto 8px;display:block}
+.header-servico{
+  display:inline-block;margin-top:8px;
+  padding:5px 14px;border-radius:var(--z-radius-sm);
+  background:var(--z-gold-10);
+  font-size:12px;font-weight:600;color:var(--z-gold-hover);
+  letter-spacing:0.04em;text-transform:uppercase;
+}
+.header::after{
+  content:'';display:block;width:36px;height:2px;
+  background:var(--z-gold-20);margin:14px auto 0;border-radius:2px;
+}
+
+/* ========== CARD BASE ========== */
+.card{
+  background:var(--z-white);border-radius:var(--z-radius);
+  padding:24px 20px;margin-bottom:14px;
+  box-shadow:var(--z-shadow-sm);border:1px solid var(--z-blue-06);
+}
+
+/* ========== IDENTIFICAÇÃO ========== */
+.id-card label{
+  display:block;font-size:14px;font-weight:600;
+  color:var(--z-blue);margin-bottom:5px;
+}
+.id-card .optional{font-weight:400;color:var(--z-blue-50);font-size:12px;margin-left:4px}
+.id-card input{
+  width:100%;padding:14px 16px;
+  border:1.5px solid var(--z-blue-10);border-radius:var(--z-radius-sm);
+  font-family:var(--z-font);font-size:16px;color:var(--z-blue);
+  background:var(--z-cream);transition:all 0.3s var(--z-ease);
+}
+.id-card input:focus{outline:none;border-color:var(--z-gold);box-shadow:0 0 0 3px var(--z-gold-10)}
+.id-card input.error{border-color:var(--z-red);box-shadow:0 0 0 3px rgba(217,79,79,0.10)}
+.field-error{font-size:12px;color:var(--z-red);margin-top:4px;display:none}
+.field-error.show{display:block}
+.id-card input::placeholder{color:var(--z-blue-50);opacity:0.5}
+.id-gap{height:14px}
+
+/* ========== NPS PERGUNTA ========== */
+.nps-section{margin-top:8px}
+.nps-question{text-align:center;margin-bottom:20px}
+.nps-question h2{
+  font-family:var(--z-accent);font-size:22px;font-weight:700;
+  color:var(--z-blue);line-height:1.35;
+}
+
+/* ========== ESCALA NPS — GRANDE E TOUCH ========== */
+.nps-scale{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:5px;
+  margin:0 auto;
+}
+.nps-btn{
+  width:calc((100% - 50px) / 11);min-width:28px;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--z-blue-10);border-radius:10px;
+  font-family:var(--z-font);font-size:17px;font-weight:800;
+  color:var(--z-blue-70);background:var(--z-white);
+  cursor:pointer;transition:all 0.25s var(--z-ease);
+  user-select:none;-webkit-tap-highlight-color:transparent;
+  height:44px;flex-shrink:0;
+}
+.nps-btn:active{transform:scale(0.92)}
+
+/* Cores por faixa */
+.nps-btn[data-score="0"],.nps-btn[data-score="1"],.nps-btn[data-score="2"],
+.nps-btn[data-score="3"],.nps-btn[data-score="4"],.nps-btn[data-score="5"],
+.nps-btn[data-score="6"]{--nps-color:var(--z-red)}
+.nps-btn[data-score="7"],.nps-btn[data-score="8"]{--nps-color:var(--z-yellow)}
+.nps-btn[data-score="9"],.nps-btn[data-score="10"]{--nps-color:var(--z-green)}
+
+.nps-btn.selected{
+  background:var(--nps-color);color:var(--z-white);
+  border-color:var(--nps-color);
+  transform:scale(1.08);
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+}
+
+.nps-labels{
+  display:flex;justify-content:space-between;
+  margin:8px 4px 0;font-size:11px;color:var(--z-blue-50);
+}
+
+/* ========== FOLLOW-UP (aparece na mesma tela) ========== */
+.followup{
+  margin-top:20px;padding-top:20px;
+  border-top:1px solid var(--z-gold-10);
+  display:none;animation:slideDown 0.4s var(--z-ease);
+}
+.followup.show{display:block}
+@keyframes slideDown{0%{opacity:0;transform:translateY(-10px)}100%{opacity:1;transform:translateY(0)}}
+
+.followup-header{text-align:center;margin-bottom:14px}
+.followup-header h3{
+  font-family:var(--z-accent);font-size:22px;font-weight:700;
+  color:var(--z-blue);line-height:1.3;
+}
+.followup-header p{
+  font-size:14px;color:var(--z-blue-70);margin-top:4px;
+}
+
+.followup textarea{
+  width:100%;min-height:90px;
+  border:1.5px solid var(--z-blue-10);border-radius:var(--z-radius-sm);
+  padding:14px;font-family:var(--z-font);font-size:15px;
+  color:var(--z-blue);background:var(--z-cream);resize:vertical;
+  transition:border-color 0.3s var(--z-ease);
+}
+.followup textarea:focus{outline:none;border-color:var(--z-gold);box-shadow:0 0 0 3px var(--z-gold-10)}
+.followup textarea::placeholder{color:var(--z-blue-50);opacity:0.5}
+
+/* ========== ZELOSO (OPCIONAL — PÓS-ENVIO) ========== */
+.zeloso-section{
+  display:none;animation:slideDown 0.5s var(--z-ease);
+  text-align:center;margin-top:20px;padding-top:20px;
+  border-top:1px solid var(--z-gold-10);
+}
+.zeloso-section.show{display:block}
+.zeloso-section h3{
+  font-family:var(--z-accent);font-size:20px;font-weight:700;
+  color:var(--z-blue);margin-bottom:4px;
+}
+.zeloso-section p{font-size:13px;color:var(--z-blue-70);margin-bottom:14px}
+.zeloso-section input{
+  width:100%;padding:14px 16px;
+  border:1.5px solid var(--z-blue-10);border-radius:var(--z-radius-sm);
+  font-family:var(--z-font);font-size:16px;color:var(--z-blue);
+  background:var(--z-cream);transition:all 0.3s var(--z-ease);
+  text-align:center;
+}
+.zeloso-section input:focus{outline:none;border-color:var(--z-gold);box-shadow:0 0 0 3px var(--z-gold-10)}
+
+.stars{display:flex;justify-content:center;gap:10px;margin:16px 0 6px}
+.star{
+  width:40px;height:40px;cursor:pointer;
+  transition:all 0.2s var(--z-ease);color:var(--z-blue-10);
+}
+.star:hover,.star.lit{color:var(--z-gold);transform:scale(1.18)}
+.star svg{width:100%;height:100%;fill:currentColor}
+
+/* ========== BOTÕES ========== */
+.btn-primary{
+  display:block;width:100%;max-width:340px;margin:20px auto 0;
+  background:var(--z-gold);color:var(--z-white);
+  border:none;border-radius:var(--z-radius-sm);
+  padding:16px 32px;font-family:var(--z-font);
+  font-size:17px;font-weight:700;cursor:pointer;
+  transition:all 0.3s var(--z-ease);letter-spacing:0.02em;
+}
+.btn-primary:hover{background:var(--z-gold-hover);transform:translateY(-2px);box-shadow:var(--z-shadow-md)}
+.btn-primary:active{transform:scale(0.97)}
+.btn-primary:disabled{opacity:0.35;cursor:not-allowed;transform:none}
+
+.btn-secondary{
+  display:block;width:100%;max-width:340px;margin:10px auto 0;
+  background:transparent;color:var(--z-blue-50);
+  border:1.5px solid var(--z-blue-10);border-radius:var(--z-radius-sm);
+  padding:13px 32px;font-family:var(--z-font);
+  font-size:14px;font-weight:500;cursor:pointer;
+  transition:all 0.3s var(--z-ease);
+}
+.btn-secondary:hover{border-color:var(--z-gold-40);color:var(--z-blue-70)}
+
+.google-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:20px;padding:14px 24px;
+  background:var(--z-blue);color:var(--z-cream);
+  border:none;border-radius:var(--z-radius-sm);
+  font-family:var(--z-font);font-size:14px;font-weight:600;
+  cursor:pointer;transition:all 0.3s var(--z-ease);
+  text-decoration:none;
+}
+.google-btn:hover{background:var(--z-gold);transform:translateY(-2px)}
+.google-btn svg{width:18px;height:18px}
+
+/* ========== AGRADECIMENTO ========== */
+.thankyou{
+  display:none;text-align:center;padding:40px 20px 24px;
+  animation:slideDown 0.5s var(--z-ease);
+}
+.thankyou.show{display:block}
+.thankyou-icon{
+  width:60px;height:60px;margin:0 auto 16px;
+  background:var(--z-gold-15);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  animation:pulseGold 2s ease-in-out infinite;
+}
+@keyframes pulseGold{0%,100%{box-shadow:0 0 0 0 var(--z-gold-20)}50%{box-shadow:0 0 0 12px rgba(222,180,40,0)}}
+.thankyou-icon svg{width:26px;height:26px;fill:var(--z-gold)}
+.thankyou h2{
+  font-family:var(--z-accent);font-size:28px;font-weight:700;
+  color:var(--z-gold);margin-bottom:8px;
+}
+.thankyou p{font-size:15px;color:var(--z-blue);line-height:1.8}
+.thankyou .sign{margin-top:14px;font-size:14px;font-weight:600;color:var(--z-gold)}
+
+/* ========== SENDING ========== */
+.sending{
+  display:none;position:fixed;inset:0;
+  background:rgba(255,253,246,0.92);z-index:1000;
+  align-items:center;justify-content:center;flex-direction:column;
+}
+.sending.show{display:flex}
+.sending p{font-size:15px;color:var(--z-blue);font-weight:600;margin-top:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{
+  width:40px;height:40px;
+  border:3px solid var(--z-blue-10);border-top-color:var(--z-gold);
+  border-radius:50%;animation:spin 0.8s linear infinite;
+}
+
+/* ========== PROGRESS ========== */
+.progress{position:sticky;top:0;z-index:100;height:3px;background:var(--z-blue-06)}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--z-gold),var(--z-gold-hover));width:0%;transition:width 0.5s var(--z-ease)}
+
+/* ========== FOOTER / ASSINATURA ========== */
+.footer{
+  text-align:center;padding:28px 20px 20px;
+  border-top:1px solid var(--z-gold-10);
+  margin-top:32px;
+}
+.footer-line{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--z-blue-50);
+  flex-wrap:wrap;justify-content:center;
+}
+.footer-line span{font-weight:400}
+.footer-monogram{height:22px;width:auto}
+.footer-kairos-logo{height:18px;width:auto}
+.footer-sep{color:var(--z-blue-10);font-weight:300}
+.footer-by{font-family:var(--z-accent);font-size:12px;font-style:italic;color:var(--z-blue-50)}
+.footer-by .tripontos{
+  color:var(--z-gold);font-style:normal;font-weight:700;margin-left:1px;
+}
+.footer-slogan{
+  display:block;margin-top:6px;
+  font-size:10px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--z-blue-50);opacity:0.6;
+  font-family:var(--z-font);font-weight:300;
+}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:400px){
+  .nps-scale{gap:3px}
+  .nps-btn{font-size:15px;border-radius:8px;height:40px;width:calc((100% - 30px) / 11)}
+  .nps-question h2{font-size:19px}
+  .header-logo{width:120px}
+}
+@media(min-width:401px){
+  .nps-btn{height:48px;font-size:19px}
+}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+  <!-- Logo Zêluz (wordmark dourado sobre fundo azul) -->
+  <svg class="splash-logo" viewBox="200 385 680 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#DEB428" d="M349.98,579.79c1.55.6,2.66,1.61,3.34,3.08.69,1.46.73,2.98.14,4.53-2.33,6.45-7.84,11.99-16.59,16.69-7.2,3.9-16.21,7.01-27.1,9.39-5.97,1.16-12.2,2.1-18.59,2.75-6.42.69-12.74,1.03-18.94,1.03-4.47,0-8.72-.19-12.81-.61-4.08-.37-8.04-.86-11.93-1.42-8.73-1.38-15.93-3.83-21.54-7.34-4.47-2.71-7.4-5.56-8.76-8.49-1.32-2.91-2.01-5.54-2.01-7.88,0-5.89,1.6-12.73,4.8-20.64,3.19-7.91,7.36-16.35,12.52-25.32,5.14-8.98,10.92-18.29,17.3-27.94,6.44-9.66,12.72-19.18,18.91-28.53,3.89-5.84,7.7-11.47,11.39-16.84,3.7-5.36,6.9-10.29,9.63-14.78,3.07-5.08,5.13-8.79,6.1-11.1.98-2.36,1.54-3.9,1.75-4.69-.39-.41-2.01-1-4.8-1.76-2.81-.79-8.02-.79-15.59,0-2.89.39-5.67.75-8.28,1.16-2.62.4-5.01.78-7.16,1.18-2.32.56-4.65,1.06-6.97,1.46-1.54.38-3.03.19-4.37-.61-1.37-.76-2.23-1.93-2.62-3.48-.38-1.57-.18-3.02.59-4.42.77-1.35,1.94-2.24,3.48-2.62.39-.19,2.95-.79,7.71-1.76,4.77-.97,10.25-1.76,16.45-2.35,7.19-.77,13.3-.77,18.35,0,7.57,1.19,12.41,4.3,14.57,9.39.75,1.94.75,4.28,0,7.01-.77,2.74-2.39,6.29-4.84,10.68-2.41,4.38-5.7,9.81-9.88,16.24-4.16,6.45-9.47,14.32-15.88,23.71-5.43,8-11.15,16.57-17.16,25.75-6.03,9.18-11.61,18.15-16.73,26.91-5.16,8.8-9.39,17-12.68,24.6-3.32,7.61-4.96,13.85-4.96,18.75,0,2.72,2.06,5.1,6.15,7.15,4.06,2.06,9.61,3.75,16.57,5.14,9.33,1.54,19.12,2.09,29.43,1.6,10.27-.5,19.87-1.72,28.79-3.68,8.94-1.93,16.61-4.52,23.01-7.75,6.37-3.2,10.28-6.78,11.65-10.68.57-1.57,1.62-2.69,3.06-3.35,1.43-.68,2.96-.74,4.51-.17"/>
+    <path fill="#DEB428" d="M459.45,600.87c1.37-.99,2.79-1.32,4.36-1.02,1.54.29,2.81,1.11,3.79,2.48.97,1.36,1.32,2.77,1.05,4.23-.32,1.49-1.14,2.7-2.5,3.68-5.07,3.49-12.21,5.75-21.57,6.73-1.15.19-2.3.36-3.49.45-1.16.08-2.31.13-3.48.13-3.49,0-6.88-.22-10.18-.72-3.32-.51-6.6-1.25-9.91-2.19-7.36-2.17-13.68-5.33-18.93-9.51-5.23-4.19-9.13-9.41-11.63-15.64-3.17-7.2-5.86-16.4-8.04-27.6-2.19-11.2-3.79-23.53-4.76-36.99-.21-.17-.3-.66-.3-1.44v-3.52c-.97-14.4-1.13-28.23-.46-41.48.7-13.26,2.14-24.85,4.34-34.77.8-3.89,3.46-7.23,8.05-9.94,7.18-4.5,20.08-6.9,38.74-7.31h9.32c3.09,0,5.92.1,8.44.29,2.48.19,4.71.33,6.53.41,1.83.13,3.05.25,3.66.44,1.54.4,2.69,1.28,3.49,2.73.76,1.4.95,2.89.59,4.42-.39,1.52-1.27,2.66-2.61,3.42-1.37.79-2.85.98-4.39.6-.57,0-1.9-.11-3.94-.3-2.04-.19-4.53-.39-7.57-.57-2.98-.2-6.34-.22-10.04-.14-3.68.1-7.38.23-11.04.42-10.48.6-17.66,1.77-21.57,3.53-3.85,1.74-5.93,3.21-6.1,4.38-1.92,9.36-3.25,20.29-3.95,32.77-.69,12.48-.67,25.57.14,39.24h24.76c7.18-.21,13.01-.5,17.47-.9,4.48-.37,7.97-.8,10.5-1.32,2.53-.48,4.66-1.1,6.37-1.88,1.38-.99,2.85-1.38,4.39-1.2,1.55.21,2.81,1.02,3.78,2.36.98,1.38,1.36,2.85,1.19,4.4-.21,1.57-.97,2.82-2.37,3.81-.96.58-2.21,1.23-3.78,1.9-1.55.7-3.87,1.31-6.98,1.89-3.1.58-7.08,1.12-11.94,1.61-4.84.48-10.97.85-18.35,1.03h-24.15c.98,11.72,2.42,22.26,4.38,31.63,1.92,9.35,4.17,17.14,6.69,23.38,2.51,5.66,6.07,9.9,10.61,12.72,4.56,2.86,8.79,4.85,12.68,6.02,3.67,1,7.45,1.6,11.34,1.92,3.89.28,7.56.28,11.07,0,3.49-.31,6.66-.84,9.46-1.64,2.81-.74,5.1-1.74,6.85-2.9"/>
+    <polygon fill="#DEB428" points="418.47 393.67 414.21 393.67 406.06 404.54 409.9 404.54 416.31 399.04 422.76 404.54 426.59 404.54 418.47 393.67"/>
+    <path fill="#DEB428" d="M591.05,592.38c1.36,1,2.24,2.25,2.63,3.79.38,1.57.08,3.05-.89,4.4-1.74,2.73-4.31,5.08-7.71,7.03-3.37,1.93-7.25,3.66-11.51,5.11-4.24,1.47-8.81,2.57-13.67,3.23-4.86.68-9.58,1.03-14.27,1.03h-2.62c-.77,0-1.66-.11-2.61-.32-20-1.16-33.01-7.77-39.04-19.89-3.54-7.01-6.52-17.59-8.87-31.75-2.41-14.12-3.99-30.38-4.79-48.71-.98-18.36-.84-35.14.47-50.36,1.25-15.22,3.29-27.4,6.08-36.58.39-1.56,1.34-2.7,2.87-3.36,1.45-.67,3.01-.83,4.56-.46,1.54.61,2.65,1.59,3.33,2.94.7,1.38.85,2.84.43,4.4-2.7,8.39-4.59,19.94-5.68,34.68-1.08,14.74-1.22,30.77-.4,48.15.38,8.59.97,16.76,1.71,24.57.78,7.8,1.72,14.98,2.77,21.52,1.11,6.55,2.26,12.34,3.65,17.4,1.36,5.08,2.8,9.15,4.38,12.31,4.06,7.99,13.75,12.49,29.08,13.44,9.55.58,18.57-.26,27.11-2.62,4.45-1.37,7.86-2.78,10.2-4.25,2.3-1.46,3.84-2.76,4.64-3.95.99-1.37,2.22-2.24,3.79-2.62,1.52-.4,2.99-.11,4.35.86"/>
+    <path fill="#DEB428" d="M692.97,436.69c-.42,12.87,0,27.44,1.14,43.75,1.18,16.29,2.54,32.92,4.09,49.88.78,9.57,1.55,18.69,2.35,27.39.73,8.68,1.38,16.75,1.87,24.29.49,7.52.67,14.28.59,20.33-.1,6.06-.47,11.15-1.04,15.22-.6,3.34-2.5,4.97-5.81,4.97h-.88c-1.55-.38-2.81-1.24-3.8-2.47-.95-1.26-1.34-2.68-1.13-4.26.55-3.7.85-8.54.85-14.49s-.21-12.63-.59-20.05c-.37-7.41-.92-15.34-1.58-23.85-.69-8.48-1.43-17.21-2.18-26.19l-.88-10.24c-.17,0-.28.11-.28.28-3.49,26.74-8.07,47.84-13.69,63.22-3.12,9.39-6.8,16.81-11.07,22.27-5.22,6.4-11.17,9.64-17.75,9.64-2.55,0-5.27-.53-8.13-1.62-2.92-1.05-5.89-2.92-8.89-5.55-3.04-2.65-5.97-6.35-8.9-11.13-2.92-4.79-5.52-10.88-7.85-18.3-3.12-9.35-5.43-19.93-6.96-31.76-1.57-11.79-2.25-23.94-2.07-36.42,0-9.36.54-18.25,1.6-26.63,1.08-8.38,2.48-15.72,4.21-21.96,1.18-3.69,2.38-6.92,3.66-9.65,1.25-2.72,2.67-5.07,4.21-7.01,2.34-3.33,4.76-5.46,7.28-6.44,2.54-.98,4.67-1.47,6.41-1.47,1.54,0,2.93.57,4.09,1.74,1.16,1.17,1.72,2.55,1.72,4.11s-.55,2.93-1.72,4.07c-1.16,1.19-2.55,1.76-4.09,1.76-1.37,0-2.95,1.18-4.82,3.5-1.82,2.36-3.62,6.55-5.37,12.61-1.75,5.67-3.1,12.44-4.09,20.34-.95,7.89-1.44,16.25-1.44,25.02-.2,11.91.49,23.46,2.04,34.67,1.56,11.24,3.7,21.24,6.42,30.02.77,2.71,1.82,5.71,3.21,8.93,1.33,3.21,2.97,6.24,4.79,9.07,1.86,2.83,4.03,5.27,6.58,7.31,2.49,2.04,5.2,3.09,8.13,3.09h.31c6.18,0,12.12-8.02,17.73-24.03,2.53-7.4,4.91-16.19,7.17-26.31,2.21-10.15,4.19-21.66,5.95-34.54,1.14-8.8,2.13-17.42,2.89-25.9.78-8.5,1.45-16.44,2.06-23.86.56-7.43,1.03-14.05,1.3-19.91.32-5.84.53-10.52.73-14.04,0-.98.02-2.01.15-3.08.12-1.05.14-2.1.14-3.07.37-3.7,2.31-5.55,5.83-5.55h.26c1.58,0,2.89.58,3.95,1.75,1.07,1.16,1.6,2.54,1.6,4.1v1.75c0,.6-.06,1.26-.14,2.04-.07.8-.14,1.66-.14,2.64"/>
+    <path fill="#DEB428" d="M857.19,579.79c1.53.6,2.65,1.61,3.34,3.08.7,1.46.7,2.98.14,4.53-2.33,6.45-7.86,11.99-16.59,16.69-7.18,3.9-16.19,7.01-27.06,9.39-6.03,1.16-12.25,2.1-18.64,2.75-6.41.69-12.72,1.03-18.93,1.03-4.46,0-8.7-.19-12.83-.61-4.06-.36-8.03-.86-11.94-1.42-8.7-1.38-15.91-3.83-21.53-7.34-4.49-2.71-7.38-5.56-8.74-8.49-1.35-2.91-2.04-5.54-2.04-7.88,0-5.89,1.6-12.73,4.81-20.64,3.24-7.91,7.39-16.35,12.52-25.32,5.14-8.98,10.93-18.29,17.34-27.94,6.38-9.66,12.69-19.18,18.94-28.53,3.87-5.84,7.67-11.47,11.33-16.84,3.66-5.36,6.88-10.29,9.63-14.78,3.07-5.08,5.12-8.79,6.1-11.1.97-2.36,1.54-3.9,1.73-4.69-.38-.41-1.99-1-4.8-1.76-2.81-.79-7.99-.79-15.56,0-2.91.39-5.7.75-8.3,1.16-2.61.4-5.02.78-7.15,1.18-2.33.56-4.67,1.06-6.99,1.46-1.51.38-3,.19-4.37-.61-1.33-.76-2.21-1.93-2.59-3.48-.43-1.57-.21-3.02.57-4.42.78-1.35,1.93-2.25,3.51-2.62.38-.19,2.94-.79,7.71-1.76,4.77-.97,10.24-1.76,16.44-2.35,7.18-.77,13.3-.77,18.35,0,7.6,1.19,12.46,4.3,14.55,9.39.8,1.94.8,4.27,0,7.01-.75,2.74-2.36,6.29-4.79,10.68-2.44,4.38-5.72,9.81-9.91,16.24-4.15,6.45-9.44,14.32-15.87,23.71-5.45,8-11.15,16.57-17.16,25.75-6.04,9.18-11.62,18.15-16.74,26.91-5.14,8.8-9.38,17-12.66,24.6-3.32,7.61-4.96,13.85-4.96,18.75,0,2.72,2.04,5.1,6.1,7.15,4.08,2.06,9.65,3.75,16.62,5.14,9.32,1.54,19.14,2.09,29.41,1.6,10.28-.5,19.9-1.72,28.85-3.68,8.89-1.94,16.57-4.52,23-7.75,6.39-3.2,10.29-6.78,11.64-10.68.58-1.57,1.58-2.69,3.08-3.35,1.43-.68,2.93-.74,4.5-.17"/>
+  </svg>
+  <div class="splash-line"></div>
+  <div class="splash-sub">Aqui, cada cuidado é ÚNICO</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress"><div class="progress-bar" id="progBar"></div></div>
+
+<!-- SENDING -->
+<div class="sending" id="sending">
+  <div class="spinner"></div>
+  <p>Enviando...</p>
+</div>
+
+<!-- HEADER com Logo SVG Zêluz -->
+<div class="header">
+  <svg class="header-logo" viewBox="200 385 680 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#DEB428" d="M349.98,579.79c1.55.6,2.66,1.61,3.34,3.08.69,1.46.73,2.98.14,4.53-2.33,6.45-7.84,11.99-16.59,16.69-7.2,3.9-16.21,7.01-27.1,9.39-5.97,1.16-12.2,2.1-18.59,2.75-6.42.69-12.74,1.03-18.94,1.03-4.47,0-8.72-.19-12.81-.61-4.08-.37-8.04-.86-11.93-1.42-8.73-1.38-15.93-3.83-21.54-7.34-4.47-2.71-7.4-5.56-8.76-8.49-1.32-2.91-2.01-5.54-2.01-7.88,0-5.89,1.6-12.73,4.8-20.64,3.19-7.91,7.36-16.35,12.52-25.32,5.14-8.98,10.92-18.29,17.3-27.94,6.44-9.66,12.72-19.18,18.91-28.53,3.89-5.84,7.7-11.47,11.39-16.84,3.7-5.36,6.9-10.29,9.63-14.78,3.07-5.08,5.13-8.79,6.1-11.1.98-2.36,1.54-3.9,1.75-4.69-.39-.41-2.01-1-4.8-1.76-2.81-.79-8.02-.79-15.59,0-2.89.39-5.67.75-8.28,1.16-2.62.4-5.01.78-7.16,1.18-2.32.56-4.65,1.06-6.97,1.46-1.54.38-3.03.19-4.37-.61-1.37-.76-2.23-1.93-2.62-3.48-.38-1.57-.18-3.02.59-4.42.77-1.35,1.94-2.24,3.48-2.62.39-.19,2.95-.79,7.71-1.76,4.77-.97,10.25-1.76,16.45-2.35,7.19-.77,13.3-.77,18.35,0,7.57,1.19,12.41,4.3,14.57,9.39.75,1.94.75,4.28,0,7.01-.77,2.74-2.39,6.29-4.84,10.68-2.41,4.38-5.7,9.81-9.88,16.24-4.16,6.45-9.47,14.32-15.88,23.71-5.43,8-11.15,16.57-17.16,25.75-6.03,9.18-11.61,18.15-16.73,26.91-5.16,8.8-9.39,17-12.68,24.6-3.32,7.61-4.96,13.85-4.96,18.75,0,2.72,2.06,5.1,6.15,7.15,4.06,2.06,9.61,3.75,16.57,5.14,9.33,1.54,19.12,2.09,29.43,1.6,10.27-.5,19.87-1.72,28.79-3.68,8.94-1.93,16.61-4.52,23.01-7.75,6.37-3.2,10.28-6.78,11.65-10.68.57-1.57,1.62-2.69,3.06-3.35,1.43-.68,2.96-.74,4.51-.17"/>
+    <path fill="#DEB428" d="M459.45,600.87c1.37-.99,2.79-1.32,4.36-1.02,1.54.29,2.81,1.11,3.79,2.48.97,1.36,1.32,2.77,1.05,4.23-.32,1.49-1.14,2.7-2.5,3.68-5.07,3.49-12.21,5.75-21.57,6.73-1.15.19-2.3.36-3.49.45-1.16.08-2.31.13-3.48.13-3.49,0-6.88-.22-10.18-.72-3.32-.51-6.6-1.25-9.91-2.19-7.36-2.17-13.68-5.33-18.93-9.51-5.23-4.19-9.13-9.41-11.63-15.64-3.17-7.2-5.86-16.4-8.04-27.6-2.19-11.2-3.79-23.53-4.76-36.99-.21-.17-.3-.66-.3-1.44v-3.52c-.97-14.4-1.13-28.23-.46-41.48.7-13.26,2.14-24.85,4.34-34.77.8-3.89,3.46-7.23,8.05-9.94,7.18-4.5,20.08-6.9,38.74-7.31h9.32c3.09,0,5.92.1,8.44.29,2.48.19,4.71.33,6.53.41,1.83.13,3.05.25,3.66.44,1.54.4,2.69,1.28,3.49,2.73.76,1.4.95,2.89.59,4.42-.39,1.52-1.27,2.66-2.61,3.42-1.37.79-2.85.98-4.39.6-.57,0-1.9-.11-3.94-.3-2.04-.19-4.53-.39-7.57-.57-2.98-.2-6.34-.22-10.04-.14-3.68.1-7.38.23-11.04.42-10.48.6-17.66,1.77-21.57,3.53-3.85,1.74-5.93,3.21-6.1,4.38-1.92,9.36-3.25,20.29-3.95,32.77-.69,12.48-.67,25.57.14,39.24h24.76c7.18-.21,13.01-.5,17.47-.9,4.48-.37,7.97-.8,10.5-1.32,2.53-.48,4.66-1.1,6.37-1.88,1.38-.99,2.85-1.38,4.39-1.2,1.55.21,2.81,1.02,3.78,2.36.98,1.38,1.36,2.85,1.19,4.4-.21,1.57-.97,2.82-2.37,3.81-.96.58-2.21,1.23-3.78,1.9-1.55.7-3.87,1.31-6.98,1.89-3.1.58-7.08,1.12-11.94,1.61-4.84.48-10.97.85-18.35,1.03h-24.15c.98,11.72,2.42,22.26,4.38,31.63,1.92,9.35,4.17,17.14,6.69,23.38,2.51,5.66,6.07,9.9,10.61,12.72,4.56,2.86,8.79,4.85,12.68,6.02,3.67,1,7.45,1.6,11.34,1.92,3.89.28,7.56.28,11.07,0,3.49-.31,6.66-.84,9.46-1.64,2.81-.74,5.1-1.74,6.85-2.9"/>
+    <polygon fill="#DEB428" points="418.47 393.67 414.21 393.67 406.06 404.54 409.9 404.54 416.31 399.04 422.76 404.54 426.59 404.54 418.47 393.67"/>
+    <path fill="#DEB428" d="M591.05,592.38c1.36,1,2.24,2.25,2.63,3.79.38,1.57.08,3.05-.89,4.4-1.74,2.73-4.31,5.08-7.71,7.03-3.37,1.93-7.25,3.66-11.51,5.11-4.24,1.47-8.81,2.57-13.67,3.23-4.86.68-9.58,1.03-14.27,1.03h-2.62c-.77,0-1.66-.11-2.61-.32-20-1.16-33.01-7.77-39.04-19.89-3.54-7.01-6.52-17.59-8.87-31.75-2.41-14.12-3.99-30.38-4.79-48.71-.98-18.36-.84-35.14.47-50.36,1.25-15.22,3.29-27.4,6.08-36.58.39-1.56,1.34-2.7,2.87-3.36,1.45-.67,3.01-.83,4.56-.46,1.54.61,2.65,1.59,3.33,2.94.7,1.38.85,2.84.43,4.4-2.7,8.39-4.59,19.94-5.68,34.68-1.08,14.74-1.22,30.77-.4,48.15.38,8.59.97,16.76,1.71,24.57.78,7.8,1.72,14.98,2.77,21.52,1.11,6.55,2.26,12.34,3.65,17.4,1.36,5.08,2.8,9.15,4.38,12.31,4.06,7.99,13.75,12.49,29.08,13.44,9.55.58,18.57-.26,27.11-2.62,4.45-1.37,7.86-2.78,10.2-4.25,2.3-1.46,3.84-2.76,4.64-3.95.99-1.37,2.22-2.24,3.79-2.62,1.52-.4,2.99-.11,4.35.86"/>
+    <path fill="#DEB428" d="M692.97,436.69c-.42,12.87,0,27.44,1.14,43.75,1.18,16.29,2.54,32.92,4.09,49.88.78,9.57,1.55,18.69,2.35,27.39.73,8.68,1.38,16.75,1.87,24.29.49,7.52.67,14.28.59,20.33-.1,6.06-.47,11.15-1.04,15.22-.6,3.34-2.5,4.97-5.81,4.97h-.88c-1.55-.38-2.81-1.24-3.8-2.47-.95-1.26-1.34-2.68-1.13-4.26.55-3.7.85-8.54.85-14.49s-.21-12.63-.59-20.05c-.37-7.41-.92-15.34-1.58-23.85-.69-8.48-1.43-17.21-2.18-26.19l-.88-10.24c-.17,0-.28.11-.28.28-3.49,26.74-8.07,47.84-13.69,63.22-3.12,9.39-6.8,16.81-11.07,22.27-5.22,6.4-11.17,9.64-17.75,9.64-2.55,0-5.27-.53-8.13-1.62-2.92-1.05-5.89-2.92-8.89-5.55-3.04-2.65-5.97-6.35-8.9-11.13-2.92-4.79-5.52-10.88-7.85-18.3-3.12-9.35-5.43-19.93-6.96-31.76-1.57-11.79-2.25-23.94-2.07-36.42,0-9.36.54-18.25,1.6-26.63,1.08-8.38,2.48-15.72,4.21-21.96,1.18-3.69,2.38-6.92,3.66-9.65,1.25-2.72,2.67-5.07,4.21-7.01,2.34-3.33,4.76-5.46,7.28-6.44,2.54-.98,4.67-1.47,6.41-1.47,1.54,0,2.93.57,4.09,1.74,1.16,1.17,1.72,2.55,1.72,4.11s-.55,2.93-1.72,4.07c-1.16,1.19-2.55,1.76-4.09,1.76-1.37,0-2.95,1.18-4.82,3.5-1.82,2.36-3.62,6.55-5.37,12.61-1.75,5.67-3.1,12.44-4.09,20.34-.95,7.89-1.44,16.25-1.44,25.02-.2,11.91.49,23.46,2.04,34.67,1.56,11.24,3.7,21.24,6.42,30.02.77,2.71,1.82,5.71,3.21,8.93,1.33,3.21,2.97,6.24,4.79,9.07,1.86,2.83,4.03,5.27,6.58,7.31,2.49,2.04,5.2,3.09,8.13,3.09h.31c6.18,0,12.12-8.02,17.73-24.03,2.53-7.4,4.91-16.19,7.17-26.31,2.21-10.15,4.19-21.66,5.95-34.54,1.14-8.8,2.13-17.42,2.89-25.9.78-8.5,1.45-16.44,2.06-23.86.56-7.43,1.03-14.05,1.3-19.91.32-5.84.53-10.52.73-14.04,0-.98.02-2.01.15-3.08.12-1.05.14-2.1.14-3.07.37-3.7,2.31-5.55,5.83-5.55h.26c1.58,0,2.89.58,3.95,1.75,1.07,1.16,1.6,2.54,1.6,4.1v1.75c0,.6-.06,1.26-.14,2.04-.07.8-.14,1.66-.14,2.64"/>
+    <path fill="#DEB428" d="M857.19,579.79c1.53.6,2.65,1.61,3.34,3.08.7,1.46.7,2.98.14,4.53-2.33,6.45-7.86,11.99-16.59,16.69-7.18,3.9-16.19,7.01-27.06,9.39-6.03,1.16-12.25,2.1-18.64,2.75-6.41.69-12.72,1.03-18.93,1.03-4.46,0-8.7-.19-12.83-.61-4.06-.36-8.03-.86-11.94-1.42-8.7-1.38-15.91-3.83-21.53-7.34-4.49-2.71-7.38-5.56-8.74-8.49-1.35-2.91-2.04-5.54-2.04-7.88,0-5.89,1.6-12.73,4.81-20.64,3.24-7.91,7.39-16.35,12.52-25.32,5.14-8.98,10.93-18.29,17.34-27.94,6.38-9.66,12.69-19.18,18.94-28.53,3.87-5.84,7.67-11.47,11.33-16.84,3.66-5.36,6.88-10.29,9.63-14.78,3.07-5.08,5.12-8.79,6.1-11.1.97-2.36,1.54-3.9,1.73-4.69-.38-.41-1.99-1-4.8-1.76-2.81-.79-7.99-.79-15.56,0-2.91.39-5.7.75-8.3,1.16-2.61.4-5.02.78-7.15,1.18-2.33.56-4.67,1.06-6.99,1.46-1.51.38-3,.19-4.37-.61-1.33-.76-2.21-1.93-2.59-3.48-.43-1.57-.21-3.02.57-4.42.78-1.35,1.93-2.25,3.51-2.62.38-.19,2.94-.79,7.71-1.76,4.77-.97,10.24-1.76,16.44-2.35,7.18-.77,13.3-.77,18.35,0,7.6,1.19,12.46,4.3,14.55,9.39.8,1.94.8,4.27,0,7.01-.75,2.74-2.36,6.29-4.79,10.68-2.44,4.38-5.72,9.81-9.91,16.24-4.15,6.45-9.44,14.32-15.87,23.71-5.45,8-11.15,16.57-17.16,25.75-6.04,9.18-11.62,18.15-16.74,26.91-5.14,8.8-9.38,17-12.66,24.6-3.32,7.61-4.96,13.85-4.96,18.75,0,2.72,2.04,5.1,6.1,7.15,4.08,2.06,9.65,3.75,16.62,5.14,9.32,1.54,19.14,2.09,29.41,1.6,10.28-.5,19.9-1.72,28.85-3.68,8.89-1.94,16.57-4.52,23-7.75,6.39-3.2,10.29-6.78,11.64-10.68.58-1.57,1.58-2.69,3.08-3.35,1.43-.68,2.93-.74,4.5-.17"/>
+  </svg>
+  <div class="header-servico" id="headerServico"></div>
+</div>
+
+<div class="container">
+
+  <!-- ====== TELA DE BOAS-VINDAS ====== -->
+  <div class="card" id="welcomeCard" style="text-align:center;padding:28px 20px 24px">
+    <svg style="width:100px;height:auto;margin:0 auto 16px;display:block;opacity:0.9" viewBox="240 260 620 560" fill="none" xmlns="http://www.w3.org/2000/svg"><g><g><path fill="#1d1d1b" d="M564.94,769.92c-6.26.86-12.79,1.58-19.61,2.12-164.75,13.29-203.41-82.47-204.92-86.59-.21-.35-5.69-13.36-7.19-33.14-.68-8.61,2.67-12.62,5.61-14.44,8.04-5.02,20.13,1.65,22.51,3.03l.66.47c19.82,16.52,54.42,14.15,54.78,14.13.72-.01,44.28-1.03,74.57-17.32,28.92-15.56,34.02-75.1,34.05-75.67l.46-5.79,5.72.89c16.72,2.66,28.77,1,34.93-4.81,4.97-4.68,4.56-10.78,4.56-10.82l-12.98-78.47c-1.67-9.98-1.9-19.63-.66-28.8,10.61-79.46-44.66-109.53-47.04-110.75l-.55-.34c-.53-.37-56.16-37.28-137.86-13.15-80.8,23.84-87.01,108.43-87.06,109.28l-10.73-.72c.06-.91,6.82-92.88,94.77-118.84,84.96-25.17,142.16,11.35,146.73,14.43,5.01,2.78,63.54,37.64,52.37,121.51-1.07,8.08-.87,16.73.6,25.66l13,78.77c.11.79,1.1,11.7-7.79,20.05-7.94,7.5-20.84,10.28-38.38,8.36-2.1,16.37-10.52,63.31-39.04,78.61-32.57,17.59-77.28,18.61-79.18,18.64-1.28.12-38.57,2.63-61.76-16.28-4.2-2.4-9.59-3.85-11-2.98-.18.12-.87,1.24-.59,4.53,1.37,18.03,6.35,29.81,6.39,29.94,1.55,3.95,37.84,92.47,194.17,79.9,155.72-12.57,153.16-116.86,153.14-117.91l-.03-.35c.38-15.46-1.22-31.08-3.51-36.04-.77.83-2.04,2.37-3.69,5.15-3.66,6.1-3.84,15.07-3.31,21.56,1.34,16.52-6.01,32.87-19.13,42.69-7.26,5.43-16.31,10.17-26.82,14.17-19.49,7.32-36.51,9.85-50.65,7.47-9.91-1.71-17.76-9.17-19.99-19.15-.44-1.88-1.37-3.58-2.69-4.86-32.86-30.91-26.69-55.39-20.1-67.25,3.15-5.66,8.42-9.94,14.83-12.06,25.79-8.52,57.47-24.82,61.87-42.74,3.63-14.83,8.4-28,13.4-37.03,4.87-8.88,12.37-15.84,21.66-20.13,12.69-5.85,37.93-16.66,64.33-23.48,26.59-6.89,52.38,9.64,69.34,24.76,7.92,7.03,14.81,15.32,20.53,24.64,8.47,13.65,24.01,40.99,33.67,70.35,12.46,37.92-8.74,60.08-24.24,76.23-3.22,3.32-6.2,6.46-8.71,9.53-9.96,12.05-23.12,17.76-32.32,20.41-6.92,2.01-14.39,1.48-20.99-1.6-33.99-15.7-42.94-51.53-26.52-106.51.48-1.68.84-2.89,1-3.48l2.74.51,7.92.45c-.07,1.16-.46,2.47-1.38,5.62-14.65,49.03-7.69,80.54,20.72,93.65,4.28,1.99,9.04,2.31,13.51,1.07,7.8-2.25,18.81-7.04,27.06-17,2.75-3.35,5.92-6.61,9.22-10.07,15.11-15.77,32.21-33.68,21.8-65.48-9.34-28.31-24.4-54.81-32.57-68.08-5.2-8.39-11.43-15.87-18.56-22.2-12.27-10.97-36.33-28.39-59.5-22.45-25.63,6.65-50.2,17.21-62.58,22.91-7.17,3.3-12.97,8.69-16.75,15.52-4.55,8.25-8.93,20.45-12.34,34.41-6.88,27.91-54.51,45.65-68.95,50.38-3.79,1.29-6.95,3.8-8.8,7.13-6.21,11.13-8.1,29.55,18.06,54.19,2.92,2.76,4.9,6.33,5.8,10.32,1.29,5.67,5.73,9.94,11.35,10.9,8.38,1.43,23.04,1.39,45.03-6.91,9.61-3.62,17.75-7.94,24.22-12.72,10.22-7.65,15.89-20.37,14.84-33.27-.66-8.04-.31-19.39,4.8-27.92,2.16-3.57,7.87-13.11,15.72-10.82,10.33,3,11.9,27.4,11.43,47.37.07,5.84-.79,106.73-143.38,126.69"/><g><path fill="#1d1d1b" d="M502.09,468.89c2.99.98,5.99,1.85,9.05,2.41,3,.63,5.97,1.07,8.9,1.38,2.94.29,5.89-.69,8.54.28,2.75.95,5.42,1.89,8.95,4.44l.17,1.04c-1.32,1.69-2.89,2.99-4.58,3.72-1.7.86-3.46,1.33-5.23,1.52-3.61.56-6.9-1.4-10.01-2.68-3.16-1.29-6.12-2.89-8.87-4.78-2.73-1.96-5.33-3.97-7.55-6.41l.64-.91Z"/><path fill="#1d1d1b" d="M652.5,546.98c2.22.19,4.37.43,6.45.26,2.07-.06,4.07-.25,5.88-.58,1.88-.32,3.26-1.91,4.85-1.42,1.7.3,3.36.82,6.8,2.16l.66.88c-.1,1.81-.69,3.43-1.62,4.56-.85,1.29-2.04,2.18-3.34,2.82-2.57,1.41-5.47.22-7.89-.42-2.49-.62-4.76-1.6-6.82-2.82-2.01-1.39-3.91-2.67-5.5-4.51l.54-.92Z"/></g></g><g><path fill="#deb428" d="M556.5,766.95c-6.26.86-12.79,1.58-19.61,2.12-164.75,13.29-203.41-82.47-204.92-86.59-.21-.35-5.69-13.36-7.19-33.14-.68-8.61,2.67-12.62,5.61-14.44,8.04-5.02,20.13,1.65,22.51,3.03l.66.47c19.82,16.52,54.42,14.15,54.78,14.13.72-.01,44.28-1.03,74.57-17.32,28.92-15.56,34.02-75.1,34.05-75.67l.46-5.79,5.72.89c16.72,2.66,28.77,1,34.93-4.81,4.97-4.68,4.56-10.78,4.56-10.82l-12.98-78.47c-1.67-9.98-1.9-19.63-.66-28.8,10.61-79.46-44.66-109.53-47.04-110.75l-.55-.34c-.53-.37-56.16-37.28-137.86-13.15-80.8,23.84-87.01,108.43-87.06,109.28l-10.73-.72c.06-.91,6.82-92.88,94.77-118.84,84.96-25.17,142.16,11.35,146.73,14.43,5.01,2.78,63.54,37.64,52.37,121.51-1.07,8.08-.87,16.73.6,25.66l13,78.77c.11.79,1.1,11.7-7.79,20.05-7.94,7.5-20.84,10.28-38.38,8.36-2.1,16.37-10.52,63.31-39.04,78.61-32.57,17.59-77.28,18.61-79.18,18.64-1.28.12-38.57,2.63-61.76-16.28-4.2-2.4-9.59-3.85-11-2.98-.18.12-.87,1.24-.59,4.53,1.37,18.03,6.35,29.81,6.39,29.94,1.55,3.95,37.84,92.47,194.17,79.9,155.72-12.57,153.16-116.86,153.14-117.91l-.03-.35c.38-15.46-1.22-31.08-3.51-36.04-.77.83-2.04,2.37-3.69,5.15-3.66,6.1-3.84,15.07-3.31,21.56,1.34,16.52-6.01,32.87-19.13,42.69-7.26,5.43-16.31,10.17-26.82,14.17-19.49,7.32-36.51,9.85-50.65,7.47-9.91-1.71-17.76-9.17-19.99-19.15-.44-1.88-1.37-3.58-2.69-4.86-32.86-30.91-26.69-55.39-20.1-67.25,3.15-5.66,8.42-9.94,14.83-12.06,25.79-8.52,57.47-24.82,61.87-42.74,3.63-14.83,8.4-28,13.4-37.03,4.87-8.88,12.37-15.84,21.66-20.13,12.69-5.85,37.93-16.66,64.33-23.48,26.59-6.89,52.38,9.64,69.34,24.76,7.92,7.03,14.81,15.32,20.53,24.64,8.47,13.65,24.01,40.99,33.67,70.35,12.46,37.92-8.74,60.08-24.24,76.23-3.22,3.32-6.2,6.46-8.71,9.53-9.96,12.05-23.12,17.76-32.32,20.41-6.92,2.01-14.39,1.48-20.99-1.6-33.99-15.7-42.94-51.53-26.52-106.51.48-1.68.84-2.89,1-3.48l2.74.51,7.92.45c-.07,1.16-.46,2.47-1.38,5.62-14.65,49.03-7.69,80.54,20.72,93.65,4.28,1.99,9.04,2.31,13.51,1.07,7.8-2.25,18.81-7.04,27.06-17,2.75-3.35,5.92-6.61,9.22-10.07,15.11-15.77,32.21-33.68,21.8-65.48-9.34-28.31-24.4-54.81-32.57-68.08-5.2-8.39-11.43-15.87-18.56-22.2-12.27-10.97-36.33-28.39-59.5-22.45-25.63,6.65-50.2,17.21-62.58,22.91-7.17,3.3-12.97,8.69-16.75,15.52-4.55,8.25-8.93,20.45-12.34,34.41-6.88,27.91-54.51,45.65-68.95,50.38-3.79,1.29-6.95,3.8-8.8,7.13-6.21,11.13-8.1,29.55,18.06,54.19,2.92,2.76,4.9,6.33,5.8,10.32,1.29,5.67,5.73,9.94,11.35,10.9,8.38,1.43,23.04,1.39,45.03-6.91,9.61-3.62,17.75-7.94,24.22-12.72,10.22-7.65,15.89-20.37,14.84-33.27-.66-8.04-.31-19.39,4.8-27.92,2.16-3.57,7.87-13.11,15.72-10.82,10.33,3,11.9,27.4,11.43,47.37.07,5.84-.79,106.73-143.38,126.69"/><g><path fill="#deb428" d="M493.65,465.92c2.99.98,5.99,1.85,9.05,2.41,3,.63,5.97,1.07,8.9,1.38,2.94.29,5.89-.69,8.54.28,2.75.95,5.42,1.89,8.95,4.44l.17,1.04c-1.32,1.69-2.89,2.99-4.58,3.72-1.7.86-3.46,1.33-5.23,1.52-3.61.56-6.9-1.4-10.01-2.68-3.16-1.29-6.12-2.89-8.87-4.78-2.73-1.96-5.33-3.97-7.55-6.41l.64-.91Z"/><path fill="#deb428" d="M644.06,544.01c2.22.19,4.37.43,6.45.26,2.07-.06,4.07-.25,5.88-.58,1.88-.32,3.26-1.91,4.85-1.42,1.7.3,3.36.82,6.8,2.16l.66.88c-.1,1.81-.69,3.43-1.62,4.56-.85,1.29-2.04,2.18-3.34,2.82-2.57,1.41-5.47.22-7.89-.42-2.49-.62-4.76-1.6-6.82-2.82-2.01-1.39-3.91-2.67-5.5-4.51l.54-.92Z"/></g></g></g></svg>
+    <h2 style="font-family:var(--z-accent);font-size:22px;font-weight:700;color:var(--z-blue);line-height:1.35;margin-bottom:10px" id="welcomeTitle">Pesquisa de Satisfação</h2>
+    <p style="font-size:14px;color:var(--z-blue-70);line-height:1.7" id="welcomeText">
+      Sua opinião é a nossa bússola. Cada palavra nos guia para cuidar ainda melhor do seu FILHOt e da sua Família Multiespécie.
+    </p>
+    <p style="font-size:13px;color:var(--z-blue-50);margin-top:10px;line-height:1.6">
+      Leva menos de 1 minuto. E faz toda a diferença.
+    </p>
+    <p style="font-size:14px;font-weight:600;color:var(--z-gold);margin-top:14px">— Time Zêluz</p>
+    <button class="btn-primary" id="btnWelcome" style="margin-top:20px">Continuar</button>
+  </div>
+
+  <!-- ====== CARD ÚNICO: IDENTIFICAÇÃO + NPS + FOLLOW-UP ====== -->
+  <div class="card id-card" id="mainCard" style="display:none">
+
+    <!-- IDENTIFICAÇÃO -->
+    <label for="nome">Seu nome</label>
+    <input type="text" id="nome" placeholder="Como podemos te chamar?" autocomplete="name">
+    <div class="field-error" id="errNome">Por favor, preencha seu nome.</div>
+    <div class="id-gap"></div>
+    <label for="whatsapp">WhatsApp</label>
+    <input type="tel" id="whatsapp" placeholder="(31) 99999-9999" autocomplete="tel" inputmode="numeric">
+    <div class="field-error" id="errWhatsapp">Número incompleto. O formato é (DD) 9XXXX-XXXX.</div>
+    <div class="id-gap"></div>
+    <label for="email">E-mail <span class="optional">(opcional)</span></label>
+    <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
+
+    <!-- ====== NPS ESCALA ====== -->
+    <div class="nps-section" style="margin-top:24px">
+      <div class="nps-question">
+        <h2>De 0 a 10, o quanto você recomendaria <span id="npsServico">a Zêluz</span> para um amigo ou familiar?</h2>
+      </div>
+
+      <div class="nps-scale" id="npsScale">
+        <div class="nps-btn" data-score="0">0</div>
+        <div class="nps-btn" data-score="1">1</div>
+        <div class="nps-btn" data-score="2">2</div>
+        <div class="nps-btn" data-score="3">3</div>
+        <div class="nps-btn" data-score="4">4</div>
+        <div class="nps-btn" data-score="5">5</div>
+        <div class="nps-btn" data-score="6">6</div>
+        <div class="nps-btn" data-score="7">7</div>
+        <div class="nps-btn" data-score="8">8</div>
+        <div class="nps-btn" data-score="9">9</div>
+        <div class="nps-btn" data-score="10">10</div>
+      </div>
+      <div class="nps-labels">
+        <span>Nada provável</span>
+        <span>Muito provável</span>
+      </div>
+    </div>
+
+    <!-- ====== FOLLOW-UP (aparece ao clicar na nota) ====== -->
+
+    <!-- Promotor (9-10) -->
+    <div class="followup" id="followPromotor">
+      <div class="followup-header">
+        <h3>Que felicidade saber disso!</h3>
+        <p>O que fez a diferença para você?</p>
+      </div>
+      <textarea id="txtPromotor" placeholder="Conte pra gente..."></textarea>
+    </div>
+
+    <!-- Neutro (7-8) -->
+    <div class="followup" id="followNeutro">
+      <div class="followup-header">
+        <h3>Estamos quase lá!</h3>
+        <p>O que faltou para ser um 10?</p>
+      </div>
+      <textarea id="txtNeutro" placeholder="O que podemos melhorar?"></textarea>
+    </div>
+
+    <!-- Detrator (0-6) -->
+    <div class="followup" id="followDetrator">
+      <div class="followup-header">
+        <h3>Sua voz importa para nós</h3>
+        <p>Nos ajude a ser melhores. O que aconteceu?</p>
+      </div>
+      <textarea id="txtDetrator" placeholder="Fique à vontade para falar a verdade. Cada palavra nos ajuda a melhorar de verdade..."></textarea>
+    </div>
+
+    <!-- NUDGE (aparece se follow-up vazio) -->
+    <div id="nudge" style="display:none;margin-top:16px;padding:14px 16px;background:var(--z-gold-10);border-radius:10px;text-align:center;animation:slideDown 0.3s var(--z-ease)">
+      <p style="font-size:13px;color:var(--z-blue);line-height:1.6;margin-bottom:10px">Sua nota já foi registrada, mas o <strong>motivo</strong> é o que nos ajuda a agir. Mesmo uma frase curta faz diferença.</p>
+      <button class="btn-primary" id="btnEnviarSemTexto" style="margin-top:0;font-size:14px;padding:12px 24px;background:var(--z-blue-70)">Enviar só a nota</button>
+    </div>
+
+    <!-- BOTÃO ENVIAR (aparece junto com follow-up) -->
+    <button class="btn-primary" id="btnEnviar" style="display:none">Enviar</button>
+  </div>
+
+  <!-- ====== ZELOSO (OPCIONAL — aparece PÓS-ENVIO) ====== -->
+  <div class="card" id="zelosoCard" style="display:none">
+    <div class="zeloso-section show">
+      <h3>Tem algum Zeloso que você admira?</h3>
+      <p>Aqui na Zêluz, chamamos nosso time de <strong>Zelosos</strong> — porque cuidar do seu FILHOt é mais do que um trabalho para eles. Se alguém conquistou sua confiança pelo profissionalismo e dedicação, essa pessoa merece a sua estrela.</p>
+      <input type="text" id="zelosoNome" placeholder="Nome do Zeloso(a)" style="margin-top:6px">
+      <div class="stars" id="stars">
+        <div class="star" data-star="1"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="star" data-star="2"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="star" data-star="3"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="star" data-star="4"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="star" data-star="5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      </div>
+      <textarea id="zelosoComentario" placeholder="Conte o que te marcou. Um carinho especial, um cuidado que fez diferença, algo que você gostaria que ele(a) soubesse..." style="width:100%;min-height:70px;border:1.5px solid var(--z-blue-10);border-radius:10px;padding:12px;font-family:var(--z-font);font-size:14px;color:var(--z-blue);background:var(--z-cream);resize:vertical;margin-top:12px;transition:border-color 0.3s"></textarea>
+      <button class="btn-primary" id="btnZeloso" disabled>Enviar</button>
+      <button class="btn-secondary" id="skipZeloso">Pular esta etapa</button>
+    </div>
+  </div>
+
+  <!-- ====== FEEDBACK CONSTRUTIVO (OPCIONAL) ====== -->
+  <div class="card" id="feedbackCard" style="display:none;text-align:center;padding:28px 20px 24px">
+    <h3 style="font-family:var(--z-accent);font-size:20px;font-weight:700;color:var(--z-blue);margin-bottom:6px">Tem algo que a gente possa melhorar?</h3>
+    <p style="font-size:13px;color:var(--z-blue-70);line-height:1.7;margin-bottom:16px">Se em algum momento o atendimento não foi como você esperava, nos conte. Não é uma reclamação — é um presente. É assim que nosso time cresce.</p>
+    <textarea id="feedbackTexto" placeholder="O que aconteceu? Se quiser, diga quem estava te atendendo..." style="width:100%;min-height:80px;border:1.5px solid var(--z-blue-10);border-radius:10px;padding:12px;font-family:var(--z-font);font-size:14px;color:var(--z-blue);background:var(--z-cream);resize:vertical;transition:border-color 0.3s"></textarea>
+    <button class="btn-primary" id="btnFeedback" style="margin-top:16px">Enviar</button>
+    <button class="btn-secondary" id="skipFeedback">Pular esta etapa</button>
+  </div>
+
+  <!-- ====== AGRADECIMENTO ====== -->
+  <div class="thankyou" id="thankyou">
+    <div class="thankyou-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </div>
+    <h2>Muito obrigada!</h2>
+    <p>Sua opinião nos ajuda a cuidar cada vez melhor<br>dos FILHOts que amamos.</p>
+    <div class="sign">— Time Zêluz</div>
+
+    <!-- GOOGLE REVIEWS (só para promotores 9-10) -->
+    <div id="googleSection" style="display:none;margin-top:28px;padding:24px 20px;background:var(--z-white);border-radius:16px;box-shadow:0 4px 20px rgba(35,77,103,0.08);border:1px solid rgba(35,77,103,0.06);animation:slideDown 0.5s cubic-bezier(0.4,0,0.2,1)">
+      <p style="font-size:14px;color:var(--z-blue);line-height:1.7;margin-bottom:6px"><strong>Você pode nos ajudar a continuar cuidando de mais FILHOts como o seu?</strong></p>
+      <p style="font-size:13px;color:var(--z-blue-70);line-height:1.6;margin-bottom:18px">São 10 segundos que fazem uma diferença real. Sua avaliação no Google ajuda outras famílias a nos encontrar — e nos dá forças para continuar fazendo o que amamos.</p>
+      <!-- 5 estrelas visuais -->
+      <div style="display:flex;justify-content:center;gap:4px;margin-bottom:16px">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#FBBC05"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#FBBC05"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#FBBC05"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#FBBC05"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#FBBC05"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <a id="googleBtn" href="https://g.page/r/Cc3rBFwOkOFuEAE/review" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;padding:16px 32px;background:#4285F4;color:#fff;border:none;border-radius:12px;font-family:var(--z-font);font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;transition:all 0.3s;box-shadow:0 4px 14px rgba(66,133,244,0.35)">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#fff"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#fff" opacity="0.7"/><path d="M5.84 14.09a6.96 6.96 0 010-4.17V7.07H2.18a11.96 11.96 0 000 9.86l3.66-2.84z" fill="#fff" opacity="0.5"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#fff" opacity="0.8"/></svg>
+        Avaliar no Google
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER / ASSINATURA KAIRÓS -->
+<footer class="footer">
+  <div class="footer-line">
+    <span>Produzido por</span>
+    <!-- Monograma K (O Compositor) -->
+    <svg class="footer-monogram" viewBox="50 20 160 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fmG" x1="80" y1="28" x2="180" y2="228" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#5E6CFF"/><stop offset="0.48" stop-color="#5E6CFF"/>
+          <stop offset="0.52" stop-color="#6AF2A3"/><stop offset="1" stop-color="#6AF2A3"/>
+        </linearGradient>
+      </defs>
+      <line x1="80" y1="32" x2="80" y2="224" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round"/>
+      <line x1="80" y1="128" x2="188" y2="40" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round"/>
+      <path d="M80 128 C128 152 160 188 188 220" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <circle cx="80" cy="128" r="5" fill="#081018"/><circle cx="80" cy="128" r="5" fill="none" stroke="url(#fmG)" stroke-width="2"/><circle cx="80" cy="128" r="2" fill="#F5F7F2"/>
+    </svg>
+    <!-- Wordmark Kairós -->
+    <svg class="footer-kairos-logo" viewBox="0 0 480 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="kwm" x1="0" y1="14" x2="480" y2="106" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset="0.35" stop-color="#6AF2A3"/><stop offset="1" stop-color="#F5F7F2"/></linearGradient></defs>
+      <text x="0" y="88" fill="url(#kwm)" font-family="Manrope,Segoe UI,Arial,sans-serif" font-size="80" font-weight="600" letter-spacing="-2">Kair&#243;s</text>
+    </svg>
+    <span class="footer-sep">|</span>
+    <span class="footer-by">by Adriana Duarte<span class="tripontos">.&#x27;.</span></span>
+  </div>
+  <span class="footer-slogan">Inteligência Criativa para o seu Tempo</span>
+</footer>
+
+<script>
+/* ============ CONFIG SERVIÇOS ============ */
+const SERVICOS = {
+  'banho':            {nome:'Banho Dermoprotetor Zêluz',       curto:'o Banho Dermoprotetor da Zêluz'},
+  'spa':              {nome:'SPA Dermoprotetor Zêluz',         curto:'o SPA Dermoprotetor da Zêluz'},
+  'tosa':             {nome:'Tosa — SPA Dermoprotetor',        curto:'a Tosa do SPA Dermoprotetor da Zêluz'},
+  'tosa-mary':        {nome:'Tosa — SPA Dermoprotetor',        curto:'a Tosa do SPA Dermoprotetor da Zêluz'},
+  'tosa-paloma':      {nome:'Tosa — SPA Dermoprotetor',        curto:'a Tosa do SPA Dermoprotetor da Zêluz'},
+  'trimming':         {nome:'Trimming — SPA Dermoprotetor',    curto:'o Trimming do SPA Dermoprotetor da Zêluz'},
+  'trimming-spitz':   {nome:'Trimming Spitz — SPA Dermoprotetor', curto:'o Trimming Spitz do SPA Dermoprotetor da Zêluz'},
+  'trimming-terrier': {nome:'Trimming Terrier — SPA Dermoprotetor', curto:'o Trimming Terrier do SPA Dermoprotetor da Zêluz'},
+  'trimming-golden':  {nome:'Trimming Golden — SPA Dermoprotetor', curto:'o Trimming Golden do SPA Dermoprotetor da Zêluz'},
+  'grooming':         {nome:'Grooming — SPA Dermoprotetor',    curto:'o Grooming do SPA Dermoprotetor da Zêluz'},
+  'veterinario':      {nome:'Atendimento Veterinário',         curto:'o Veterinário da Zêluz'},
+  'hospedagem':       {nome:'Auaulândia — Hospedagem',         curto:'a Auaulândia da Zêluz'},
+  'daycare':          {nome:'DayCare Zêluz',                   curto:'o DayCare da Zêluz'},
+  'emporio':          {nome:'Empório Zêluz',                   curto:'o Empório da Zêluz'}
+};
+
+const params = new URLSearchParams(window.location.search);
+const servicoKey = params.get('servico') || 'banho';
+// Aceita servicos dinamicos: se nao esta no dicionario, cria entry automaticamente
+var servico;
+if (SERVICOS[servicoKey]) {
+  servico = SERVICOS[servicoKey];
+} else {
+  // Servico criado pelo dashboard — formata o nome a partir do parametro
+  var nomeFormatado = decodeURIComponent(servicoKey).replace(/-/g, ' ').replace(/\b\w/g, function(c){return c.toUpperCase()});
+  servico = {nome: nomeFormatado, curto: nomeFormatado + ' da Zeluz'};
+}
+
+document.getElementById('headerServico').textContent = servico.nome;
+document.getElementById('npsServico').textContent = servico.curto;
+document.getElementById('welcomeTitle').textContent = servico.nome;
+
+/* ============ SPLASH ============ */
+setTimeout(() => document.getElementById('splash').classList.add('hide'), 1800);
+
+/* ============ BOAS-VINDAS → PESQUISA ============ */
+document.getElementById('btnWelcome').addEventListener('click', function() {
+  document.getElementById('welcomeCard').style.display = 'none';
+  document.getElementById('mainCard').style.display = 'block';
+  document.getElementById('progBar').style.width = '10%';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* ============ STATE ============ */
+let npsScore = null;
+let starRating = 0;
+
+/* ============ MÁSCARA WHATSAPP (DDD + 9 + 8) ============ */
+document.getElementById('whatsapp').addEventListener('input', function() {
+  let v = this.value.replace(/\D/g, '');
+  if (v.length > 11) v = v.slice(0, 11);
+  if (v.length > 7) v = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+  else if (v.length > 2) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+  this.value = v;
+});
+
+/* ============ NPS ESCALA ============ */
+const btnEnviar = document.getElementById('btnEnviar');
+
+document.querySelectorAll('.nps-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.nps-btn').forEach(b => b.classList.remove('selected'));
+    this.classList.add('selected');
+    npsScore = parseInt(this.dataset.score);
+
+    // Esconder todos os follow-ups
+    document.querySelectorAll('.followup').forEach(f => f.classList.remove('show'));
+
+    // Mostrar o follow-up correto
+    if (npsScore >= 9) document.getElementById('followPromotor').classList.add('show');
+    else if (npsScore >= 7) document.getElementById('followNeutro').classList.add('show');
+    else document.getElementById('followDetrator').classList.add('show');
+
+    // Mostrar botão enviar
+    btnEnviar.style.display = 'block';
+
+    // Scroll suave para o follow-up
+    setTimeout(() => {
+      const active = document.querySelector('.followup.show');
+      if (active) active.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 100);
+
+    // Atualizar progresso
+    document.getElementById('progBar').style.width = '50%';
+  });
+});
+
+/* ============ VALIDAÇÃO ============ */
+function validateFields() {
+  let valid = true;
+  const nome = document.getElementById('nome');
+  const whats = document.getElementById('whatsapp');
+  const errNome = document.getElementById('errNome');
+  const errWhats = document.getElementById('errWhatsapp');
+
+  // Reset
+  nome.classList.remove('error'); errNome.classList.remove('show');
+  whats.classList.remove('error'); errWhats.classList.remove('show');
+
+  if (nome.value.trim().length < 2) {
+    nome.classList.add('error'); errNome.classList.add('show');
+    nome.focus(); valid = false;
+  }
+
+  // WhatsApp: precisa ter 11 dígitos (DDD + 9 + 8)
+  const digits = whats.value.replace(/\D/g, '');
+  if (digits.length < 11) {
+    whats.classList.add('error'); errWhats.classList.add('show');
+    if (valid) whats.focus(); valid = false;
+  }
+
+  return valid;
+}
+
+// Limpar erro ao digitar
+document.getElementById('nome').addEventListener('input', function() {
+  this.classList.remove('error');
+  document.getElementById('errNome').classList.remove('show');
+});
+document.getElementById('whatsapp').addEventListener('input', function() {
+  this.classList.remove('error');
+  document.getElementById('errWhatsapp').classList.remove('show');
+});
+
+/* ============ ENVIAR NPS ============ */
+let nudgeShown = false;
+
+function getFollowText() {
+  return npsScore >= 9
+    ? document.getElementById('txtPromotor').value
+    : npsScore >= 7
+      ? document.getElementById('txtNeutro').value
+      : document.getElementById('txtDetrator').value;
+}
+
+async function enviarNPS() {
+  btnEnviar.disabled = true;
+  document.getElementById('sending').classList.add('show');
+  document.getElementById('nudge').style.display = 'none';
+
+  const followText = getFollowText();
+
+  const categoria = npsScore >= 9 ? 'Promotor' : npsScore >= 7 ? 'Neutro' : 'Detrator';
+
+  const payload = {
+    nome: document.getElementById('nome').value.trim(),
+    whatsapp: document.getElementById('whatsapp').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    servico: servico.nome,
+    nota: npsScore,
+    categoria: categoria,
+    comentario: followText.trim(),
+    data: new Date().toLocaleString('pt-BR'),
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbygzCFqfrjAbk3xaUQEXEdZip4msGqRiLeLr_XLed_cHU0JHCErEjL3Gpb8H_R42Cqw/exec', {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) { console.warn('Erro ao enviar:', e); }
+
+  document.getElementById('sending').classList.remove('show');
+  document.getElementById('progBar').style.width = '75%';
+
+  // Esconder card principal, mostrar Zeloso
+  document.getElementById('mainCard').style.display = 'none';
+  document.getElementById('zelosoCard').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+btnEnviar.addEventListener('click', function() {
+  if (!validateFields()) return;
+
+  // Se follow-up vazio e nudge ainda não foi mostrado → mostrar nudge
+  const followText = getFollowText().trim();
+  if (!followText && !nudgeShown) {
+    nudgeShown = true;
+    document.getElementById('nudge').style.display = 'block';
+    document.getElementById('nudge').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  enviarNPS();
+});
+
+// Botão "Enviar só a nota" (após nudge)
+document.getElementById('btnEnviarSemTexto').addEventListener('click', function() {
+  enviarNPS();
+});
+
+/* ============ ZELOSO (ESTRELAS) ============ */
+const btnZeloso = document.getElementById('btnZeloso');
+const zelosoInput = document.getElementById('zelosoNome');
+
+document.querySelectorAll('.star').forEach(star => {
+  star.addEventListener('click', function() {
+    starRating = parseInt(this.dataset.star);
+    document.querySelectorAll('.star').forEach((s, i) => {
+      s.classList.toggle('lit', i < starRating);
+    });
+    if (zelosoInput.value.trim().length >= 2) btnZeloso.disabled = false;
+  });
+});
+
+zelosoInput.addEventListener('input', function() {
+  btnZeloso.disabled = !(this.value.trim().length >= 2 && starRating > 0);
+});
+
+btnZeloso.addEventListener('click', async function() {
+  const payload = {
+    nome_tutor: document.getElementById('nome').value.trim(),
+    zeloso: zelosoInput.value.trim(),
+    estrelas: starRating,
+    comentario_zeloso: document.getElementById('zelosoComentario').value.trim(),
+    servico: servico.nome,
+    data: new Date().toLocaleString('pt-BR'),
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbygzCFqfrjAbk3xaUQEXEdZip4msGqRiLeLr_XLed_cHU0JHCErEjL3Gpb8H_R42Cqw/exec', {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {}
+
+  showFeedback();
+});
+
+document.getElementById('skipZeloso').addEventListener('click', showFeedback);
+
+function showFeedback() {
+  document.getElementById('zelosoCard').style.display = 'none';
+  document.getElementById('feedbackCard').style.display = 'block';
+  document.getElementById('progBar').style.width = '85%';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============ FEEDBACK CONSTRUTIVO ============ */
+document.getElementById('btnFeedback').addEventListener('click', async function() {
+  const texto = document.getElementById('feedbackTexto').value.trim();
+  if (texto) {
+    const payload = {
+      nome_tutor: document.getElementById('nome').value.trim(),
+      feedback_construtivo: texto,
+      servico: servico.nome,
+      data: new Date().toLocaleString('pt-BR'),
+      timestamp: new Date().toISOString()
+    };
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbygzCFqfrjAbk3xaUQEXEdZip4msGqRiLeLr_XLed_cHU0JHCErEjL3Gpb8H_R42Cqw/exec', {
+        method: 'POST',
+        headers: {'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify(payload)
+      });
+    } catch(e) {}
+  }
+  showThankyou();
+});
+
+document.getElementById('skipFeedback').addEventListener('click', showThankyou);
+
+function showThankyou() {
+  document.getElementById('feedbackCard').style.display = 'none';
+  document.getElementById('zelosoCard').style.display = 'none';
+  document.getElementById('thankyou').classList.add('show');
+  document.getElementById('progBar').style.width = '100%';
+
+  if (npsScore >= 9) {
+    document.getElementById('googleSection').style.display = 'block';
+  }
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
