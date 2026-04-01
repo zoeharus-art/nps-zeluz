@@ -542,20 +542,14 @@ body{
 <script>
 /* ============ CONFIG SERVIÇOS ============ */
 const SERVICOS = {
-  'banho':            {nome:'Banho Dermoprotetor Zêluz',       curto:'o Banho Dermoprotetor da Zêluz'},
-  'spa':              {nome:'SPA Dermoprotetor Zêluz',         curto:'o SPA Dermoprotetor da Zêluz'},
-  'tosa':             {nome:'Tosa — SPA Dermoprotetor',        curto:'a Tosa do SPA Dermoprotetor da Zêluz'},
-  'tosa-mary':        {nome:'Tosa — SPA Dermoprotetor',        curto:'a Tosa do SPA Dermoprotetor da Zêluz'},
-  'tosa-paloma':      {nome:'Tosa — SPA Dermoprotetor',        curto:'a Tosa do SPA Dermoprotetor da Zêluz'},
-  'trimming':         {nome:'Trimming — SPA Dermoprotetor',    curto:'o Trimming do SPA Dermoprotetor da Zêluz'},
-  'trimming-spitz':   {nome:'Trimming Spitz — SPA Dermoprotetor', curto:'o Trimming Spitz do SPA Dermoprotetor da Zêluz'},
-  'trimming-terrier': {nome:'Trimming Terrier — SPA Dermoprotetor', curto:'o Trimming Terrier do SPA Dermoprotetor da Zêluz'},
-  'trimming-golden':  {nome:'Trimming Golden — SPA Dermoprotetor', curto:'o Trimming Golden do SPA Dermoprotetor da Zêluz'},
-  'grooming':         {nome:'Grooming — SPA Dermoprotetor',    curto:'o Grooming do SPA Dermoprotetor da Zêluz'},
-  'veterinario':      {nome:'Atendimento Veterinário',         curto:'o Veterinário da Zêluz'},
-  'hospedagem':       {nome:'Auaulândia — Hospedagem',         curto:'a Auaulândia da Zêluz'},
-  'daycare':          {nome:'DayCare Zêluz',                   curto:'o DayCare da Zêluz'},
-  'emporio':          {nome:'Empório Zêluz',                   curto:'o Empório da Zêluz'}
+  'banho':            {nome:'Banho Dermoprotetor Zêluz',       curto:'o Banho Dermoprotetor Zêluz'},
+  'tosa-mary':        {nome:'Trimming (Tosa) Zêluz',          curto:'o Trimming (Tosa) Zêluz'},
+  'tosa-paloma':      {nome:'Tosa Dermoprotetora Zêluz',       curto:'a Tosa Dermoprotetora Zêluz'},
+  'trimming-terrier': {nome:'Trimming/Handstripping Zêluz',    curto:'o Trimming/Handstripping Zêluz'},
+  'trimming-golden':  {nome:'Trimming Golden Zêluz',           curto:'o Trimming Golden Zêluz'},
+  'veterinario':      {nome:'Atendimento Veterinário Zêluz',   curto:'o Atendimento Veterinário Zêluz'},
+  'hospedagem':       {nome:'Auaulândia Zêluz',                curto:'a experiência Auaulândia Zêluz'},
+  'daycare':          {nome:'DayCare Zêluz',                   curto:'o DayCare Zêluz'}
 };
 
 const params = new URLSearchParams(window.location.search);
@@ -691,6 +685,7 @@ async function enviarNPS() {
     whatsapp: document.getElementById('whatsapp').value.trim(),
     email: document.getElementById('email').value.trim(),
     servico: servico.nome,
+    codigo: servicoKey,
     nota: npsScore,
     categoria: categoria,
     comentario: followText.trim(),
