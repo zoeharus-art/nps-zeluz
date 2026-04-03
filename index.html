@@ -283,26 +283,22 @@ body{
 
 /* ========== FOOTER / ASSINATURA ========== */
 .footer{
-  text-align:center;padding:8px 20px 12px;
+  text-align:center;padding:16px 20px 20px;
   border-top:1px solid var(--z-gold-10);
   margin-top:0;
 }
-.footer-line{
-  display:inline-flex;align-items:center;gap:8px;
-  flex-wrap:wrap;justify-content:center;
-}
-.footer-line>span:first-child{font-weight:300;font-size:10px;color:var(--z-blue-50);opacity:0.5}
-.footer-monogram{height:36px;width:auto;opacity:1}
-.footer-kairos-logo{height:28px;width:auto;opacity:1}
-.footer-sep{color:var(--z-blue-50);font-weight:300;font-size:14px;opacity:1}
-.footer-by{font-family:var(--z-font);font-size:14px;font-style:normal;font-weight:600;color:var(--z-blue);opacity:1}
+.footer-produzido{font-size:10px;font-weight:300;color:var(--z-blue-50);margin-bottom:8px}
+.footer-brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
+.footer-monogram{height:44px;width:auto}
+.footer-kairos-logo{height:36px;width:auto}
+.footer-by{font-family:var(--z-font);font-size:13px;font-weight:500;color:var(--z-blue-70)}
 .footer-by .tripontos{
   color:var(--z-gold);font-style:normal;font-weight:700;margin-left:1px;
 }
 .footer-slogan{
-  display:block;margin-top:4px;
-  font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--z-blue-70);opacity:1;
+  display:block;margin-top:6px;
+  font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--z-blue-50);
   font-family:var(--z-font);font-weight:400;
 }
 
@@ -512,8 +508,8 @@ body{
 
 <!-- FOOTER / ASSINATURA KAIRÓS -->
 <footer class="footer">
-  <div class="footer-line">
-    <span>Produzido por</span>
+  <div class="footer-produzido">Produzido por</div>
+  <div class="footer-brand">
     <!-- Monograma K (O Compositor) -->
     <svg class="footer-monogram" viewBox="50 20 160 230" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -532,10 +528,9 @@ body{
       <defs><linearGradient id="kwm" x1="0" y1="14" x2="480" y2="106" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset="0.5" stop-color="#6AF2A3"/><stop offset="1" stop-color="#234D67"/></linearGradient></defs>
       <text x="0" y="88" fill="url(#kwm)" font-family="Manrope,Segoe UI,Arial,sans-serif" font-size="80" font-weight="600" letter-spacing="-2">Kair&#243;s</text>
     </svg>
-    <span class="footer-sep">|</span>
-    <span class="footer-by">by Adriana Duarte<span class="tripontos">.&#x27;.</span></span>
   </div>
-  <span class="footer-slogan">Inteligência Criativa para o seu Tempo</span>
+  <div class="footer-by">by Adriana Duarte<span class="tripontos">.&#x27;.</span></div>
+  <span class="footer-slogan">Intelig&#234;ncia Criativa para o seu Tempo</span>
 </footer>
 
 <script>
