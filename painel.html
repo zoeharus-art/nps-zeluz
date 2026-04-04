@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel NPS Zêluz — Links e Mensagens</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--z-gold:#DEB428;--z-gold-hover:#C9A220;--z-gold-10:rgba(222,180,40,0.10);--z-gold-20:rgba(222,180,40,0.20);--z-blue:#234D67;--z-blue-85:rgba(35,77,103,0.85);--z-blue-70:rgba(35,77,103,0.70);--z-blue-50:rgba(35,77,103,0.50);--z-blue-10:rgba(35,77,103,0.10);--z-blue-06:rgba(35,77,103,0.06);--z-cream:#FFFDF6;--z-white:#FFFFFF;--z-font:'Poppins',system-ui,sans-serif;--z-accent:'Cormorant Garamond',Georgia,serif;--z-radius:16px;--z-radius-sm:10px;--z-shadow-sm:0 2px 8px rgba(35,77,103,0.06);--z-shadow-md:0 4px 20px rgba(35,77,103,0.08);--z-ease:cubic-bezier(0.4,0,0.2,1);--z-green:#3BAF6E}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--z-font);background:var(--z-cream);color:var(--z-blue-85);line-height:1.6}
+
+.header{text-align:center;padding:28px 20px 20px;border-bottom:1px solid var(--z-gold-20)}
+.header h1{font-family:var(--z-accent);font-size:28px;font-weight:700;color:var(--z-blue)}
+.header p{font-size:13px;color:var(--z-blue-50);margin-top:4px}
+
+.container{max-width:700px;margin:0 auto;padding:0 20px 40px}
+
+/* Tabs */
+.tabs{display:flex;gap:0;margin:24px 0 0;border-bottom:2px solid var(--z-blue-06)}
+.tab{flex:1;padding:12px 8px;text-align:center;font-size:14px;font-weight:600;color:var(--z-blue-50);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s var(--z-ease)}
+.tab:hover{color:var(--z-blue)}
+.tab.active{color:var(--z-gold);border-bottom-color:var(--z-gold)}
+
+.tab-content{display:none;animation:fadeIn 0.3s var(--z-ease)}
+.tab-content.active{display:block}
+@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+
+/* Cards */
+.card{background:var(--z-white);border-radius:var(--z-radius);padding:20px;margin-top:16px;box-shadow:var(--z-shadow-sm);border:1px solid var(--z-blue-06)}
+.card-title{font-size:15px;font-weight:700;color:var(--z-blue);margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--z-blue-50);margin-bottom:12px}
+
+/* Link row */
+.link-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--z-cream);border-radius:var(--z-radius-sm);margin-bottom:8px;border:1px solid var(--z-blue-06)}
+.link-label{font-size:13px;font-weight:600;color:var(--z-blue);min-width:100px;flex-shrink:0}
+.link-url{font-size:12px;color:var(--z-blue-70);word-break:break-all;flex:1}
+.btn-copy{
+  padding:6px 14px;border:none;border-radius:8px;
+  background:var(--z-gold);color:var(--z-white);
+  font-family:var(--z-font);font-size:12px;font-weight:600;
+  cursor:pointer;transition:all 0.2s var(--z-ease);flex-shrink:0;
+  white-space:nowrap;
+}
+.btn-copy:hover{background:var(--z-gold-hover);transform:translateY(-1px)}
+.btn-copy.copied{background:var(--z-green)}
+
+/* Mensagem WhatsApp */
+.msg-box{position:relative}
+.msg-text{
+  font-size:13px;color:var(--z-blue-85);line-height:1.7;
+  padding:14px;background:var(--z-cream);border-radius:var(--z-radius-sm);
+  border:1px solid var(--z-blue-06);white-space:pre-line;
+}
+.msg-copy{
+  display:block;width:100%;margin-top:8px;padding:10px;
+  border:none;border-radius:var(--z-radius-sm);
+  background:var(--z-gold);color:var(--z-white);
+  font-family:var(--z-font);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all 0.2s var(--z-ease);
+}
+.msg-copy:hover{background:var(--z-gold-hover)}
+.msg-copy.copied{background:var(--z-green)}
+
+/* Timing */
+.timing{display:flex;justify-content:space-between;padding:8px 12px;font-size:12px;border-bottom:1px solid var(--z-blue-06)}
+.timing:last-child{border-bottom:none}
+.timing-service{font-weight:600;color:var(--z-blue)}
+.timing-when{color:var(--z-blue-70)}
+
+/* Regras */
+.rule{display:flex;gap:8px;padding:8px 0;font-size:13px;color:var(--z-blue-70);border-bottom:1px solid var(--z-blue-06)}
+.rule:last-child{border-bottom:none}
+.rule-icon{font-size:14px;flex-shrink:0}
+
+/* Footer */
+.footer{text-align:center;padding:24px 20px;border-top:1px solid var(--z-gold-10);margin-top:32px;font-size:12px;color:var(--z-blue-50)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Painel NPS Zeluz</h1>
+  <p>Links, mensagens e regras de uso</p>
+</div>
+
+<div class="container">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" data-tab="links">Links</div>
+    <div class="tab" data-tab="mensagens">Mensagens WhatsApp</div>
+    <div class="tab" data-tab="regras">Regras e Timing</div>
+  </div>
+
+  <!-- ====== TAB 1: LINKS ====== -->
+  <div class="tab-content active" id="tab-links">
+
+    <div class="card">
+      <div class="card-title">Links por serviço</div>
+      <div class="card-sub">Clique em "Copiar" para copiar o link do serviço desejado.</div>
+
+      <div class="link-row">
+        <span class="link-label">Banho Dermoprotetor</span>
+        <span class="link-url">&#x1F449; https://tinyurl.com/23cj8lpr
+(S&#243; clicar no link - r&#225;pido e seguro)</span>
+        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/23cj8lpr
+(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
+      </div>
+      <div class="link-row">
+        <span class="link-label">Tosa M</span>
+        <span class="link-url">&#x1F449; https://tinyurl.com/28ygy2qt
+(S&#243; clicar no link - r&#225;pido e seguro)</span>
+        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/28ygy2qt
+(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
+      </div>
+      <div class="link-row">
+        <span class="link-label">Tosa P</span>
+        <span class="link-url">&#x1F449; https://tinyurl.com/299l4pye
+(S&#243; clicar no link - r&#225;pido e seguro)</span>
+        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/299l4pye
+(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
+      </div>
+      <div class="link-row">
+        <span class="link-label">Trimming/Handstripping</span>
+        <span class="link-url">&#x1F449; https://tinyurl.com/2435beug
+(S&#243; clicar no link - r&#225;pido e seguro)</span>
+        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2435beug
+(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
+      </div>
+      <div class="link-row">
+        <span class="link-label">Trimming Golden</span>
+        <span class="link-url">&#x1F449; https://tinyurl.com/2y64dtyt
+(S&#243; clicar no link - r&#225;pido e seguro)</span>
+        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2y64dtyt
+(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
+      </div>
+      <div class="link-row">
+        <span class="link-label">Veterinário</span>
+        <span class="link-url">&#x1F449; https://tinyurl.com/2bwqnnn9
+(S&#243; clicar no link - r&#225;pido e seguro)</span>
+        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2bwqnnn9
+(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
+      </div>
+      <div class="link-row">
+        <span class="link-label">Auaulândia</span>
+        <span class="link-url">&#x1F449; https://tinyurl.com/2ygdv9sh
+(S&#243; clicar no link - r&#225;pido e seguro)</span>
+        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2ygdv9sh
+(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
+      </div>
+      <div class="link-row">
+        <span class="link-label">DayCare</span>
+        <span class="link-url">&#x1F449; https://tinyurl.com/22ojyw32
+(S&#243; clicar no link - r&#225;pido e seguro)</span>
+        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/22ojyw32
+(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Dados e relatórios</div>
+      <div style="font-size:13px;color:var(--z-blue-70);padding:8px 0">O acesso à planilha e ao dashboard está disponível apenas na área de gestão (com senha).</div>
+    </div>
+  </div>
+
+  <!-- ====== TAB 2: MENSAGENS WHATSAPP ====== -->
+  <div class="tab-content" id="tab-mensagens">
+
+    <div class="card msg-box">
+      <div class="card-title">Banho Dermoprotetor</div>
+      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte, junto com o peso.</div>
+      <div class="msg-text">Ol&#225;, [nome do tutor], como est&#225;? &#x1F60A;
+E o(a) [nome do FILHOt], como passou depois de ontem? &#x1F43E;
+
+Queremos expressar nossa gratid&#227;o por escolher o Banho Dermoprotetor Z&#234;luz para o seu FILHOt. O(a) [nome do FILHOt] saiu com [X]kg.
+
+Temos uma pesquisa interna de satisfa&#231;&#227;o que dura menos de 30 segundos. A sua opini&#227;o &#233; essencial para iluminar o caminho da Z&#234;luz e garantir sempre o melhor cuidado para o(a) [nome do FILHOt].
+
+&#x1F449; https://tinyurl.com/23cj8lpr
+(S&#243; clicar no link - r&#225;pido e seguro)
+
+Ao nos dar seu feedback, al&#233;m de nos ajudar a crescer, tamb&#233;m garante os melhores cuidados para o seu FILHOt. &#x1F31F;
+
+Gratid&#227;o! &#x1F49B;
+Time Z&#234;luz &#x1F43E;</div>
+      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
+    </div>
+
+    <div class="card msg-box">
+      <div class="card-title">Tosa M</div>
+      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. Cliente v&#234;: "Trimming (Tosa) Z&#234;luz". Sheets recebe: tosa-mary.</div>
+      <div class="msg-text">Ol&#225;, [nome do tutor], como est&#225;? &#x1F60A;
+E o(a) [nome do FILHOt], como ficou depois da tosa de ontem? &#x1F43E;
+
+Queremos expressar nossa gratid&#227;o por confiar a tosa do(a) [nome do FILHOt] &#224; Z&#234;luz. Cada FILHOt &#233; &#250;nico e merece um cuidado &#250;nico.
+
+Temos uma pesquisa interna de satisfa&#231;&#227;o que dura menos de 30 segundos. A sua opini&#227;o nos guia para manter sempre o melhor padr&#227;o.
+
+&#x1F449; https://tinyurl.com/28ygy2qt
+(S&#243; clicar no link - r&#225;pido e seguro)
+
+Ao nos dar seu feedback, al&#233;m de nos ajudar a crescer, tamb&#233;m garante os melhores cuidados para o(a) [nome do FILHOt]. &#x1F31F;
+
+Gratid&#227;o! &#x1F49B;
+Time Z&#234;luz &#x1F43E;</div>
+      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
+    </div>
+
+    <div class="card msg-box">
+      <div class="card-title">Tosa P</div>
+      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. Cliente v&#234;: "Tosa Dermoprotetora Z&#234;luz". Sheets recebe: tosa-paloma.</div>
+      <div class="msg-text">Ol&#225;, [nome do tutor], como est&#225;? &#x1F60A;
+E o(a) [nome do FILHOt], como ficou depois da tosa de ontem? &#x1F43E;
+
+Queremos expressar nossa gratid&#227;o por confiar a tosa do(a) [nome do FILHOt] &#224; Z&#234;luz. Cada FILHOt &#233; &#250;nico e merece um cuidado &#250;nico.
+
+Temos uma pesquisa interna de satisfa&#231;&#227;o que dura menos de 30 segundos. A sua opini&#227;o nos guia para manter sempre o melhor padr&#227;o.
+
+&#x1F449; https://tinyurl.com/299l4pye
+(S&#243; clicar no link - r&#225;pido e seguro)
+
+Ao nos dar seu feedback, al&#233;m de nos ajudar a crescer, tamb&#233;m garante os melhores cuidados para o(a) [nome do FILHOt]. &#x1F31F;
+
+Gratid&#227;o! &#x1F49B;
+Time Z&#234;luz &#x1F43E;</div>
+      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
+    </div>
+
+    <div class="card msg-box">
+      <div class="card-title">Trimming/Handstripping</div>
+      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte.</div>
+      <div class="msg-text">Ol&#225;, [nome do tutor], como est&#225;? &#x1F60A;
+E o(a) [nome do FILHOt], como ficou depois do trimming de ontem? &#x1F43E;
+
+Queremos expressar nossa gratid&#227;o por confiar o trimming do(a) [nome do FILHOt] &#224; Z&#234;luz. &#201; um servi&#231;o que exige dedica&#231;&#227;o e t&#233;cnica, e fazemos com muito carinho.
+
+Temos uma pesquisa interna de satisfa&#231;&#227;o que dura menos de 30 segundos. A sua opini&#227;o &#233; essencial para garantirmos sempre o melhor resultado.
+
+&#x1F449; https://tinyurl.com/2435beug
+(S&#243; clicar no link - r&#225;pido e seguro)
+
+Ao nos dar seu feedback, al&#233;m de nos ajudar a crescer, tamb&#233;m garante os melhores cuidados para o(a) [nome do FILHOt]. &#x1F31F;
+
+Gratid&#227;o! &#x1F49B;
+Time Z&#234;luz &#x1F43E;</div>
+      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
+    </div>
+
+    <div class="card msg-box">
+      <div class="card-title">Trimming Golden</div>
+      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte.</div>
+      <div class="msg-text">Ol&#225;, [nome do tutor], como est&#225;? &#x1F60A;
+E o(a) [nome do FILHOt], como ficou depois do trimming de ontem? &#x1F43E;
+
+Queremos expressar nossa gratid&#227;o por confiar o trimming do(a) [nome do FILHOt] &#224; Z&#234;luz. Golden pede um cuidado espec&#237;fico com a pelagem, e a gente se dedica a isso.
+
+Temos uma pesquisa interna de satisfa&#231;&#227;o que dura menos de 30 segundos. A sua opini&#227;o &#233; essencial para garantirmos sempre o melhor resultado.
+
+&#x1F449; https://tinyurl.com/2y64dtyt
+(S&#243; clicar no link - r&#225;pido e seguro)
+
+Ao nos dar seu feedback, al&#233;m de nos ajudar a crescer, tamb&#233;m garante os melhores cuidados para o(a) [nome do FILHOt]. &#x1F31F;
+
+Gratid&#227;o! &#x1F49B;
+Time Z&#234;luz &#x1F43E;</div>
+      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
+    </div>
+
+    <div class="card msg-box">
+      <div class="card-title">Veterin&#225;rio</div>
+      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. Perguntar como o FILHOt est&#225;.</div>
+      <div class="msg-text">Ol&#225;, [nome do tutor], como est&#225;? &#x1F60A;
+E o(a) [nome do FILHOt], como est&#225; depois da consulta de ontem? &#x1F43E;
+
+Queremos expressar nossa gratid&#227;o por confiar o atendimento veterin&#225;rio do(a) [nome do FILHOt] &#224; Z&#234;luz. Aqui, cada atendimento &#233; pensado para o seu FILHOt especificamente.
+
+Temos uma pesquisa interna de satisfa&#231;&#227;o que dura menos de 30 segundos. A sua opini&#227;o &#233; essencial para cuidarmos cada vez melhor.
+
+&#x1F449; https://tinyurl.com/2bwqnnn9
+(S&#243; clicar no link - r&#225;pido e seguro)
+
+Ao nos dar seu feedback, al&#233;m de nos ajudar a crescer, tamb&#233;m garante os melhores cuidados para o(a) [nome do FILHOt]. &#x1F31F;
+
+Gratid&#227;o! &#x1F49B;
+Time Z&#234;luz &#x1F43E;</div>
+      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
+    </div>
+
+    <div class="card msg-box">
+      <div class="card-title">Auaul&#226;ndia (Hospedagem)</div>
+      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte ao retorno, com o peso.</div>
+      <div class="msg-text">Ol&#225;, [nome do tutor], como est&#225;? &#x1F60A;
+E o(a) [nome do FILHOt], como est&#225; depois da estadia na Auaul&#226;ndia? &#x1F43E;
+
+Queremos expressar nossa gratid&#227;o por confiar a hospedagem do(a) [nome do FILHOt] &#224; Z&#234;luz. O(a) [nome do FILHOt] voltou com [X]kg.
+
+Temos uma pesquisa interna de satisfa&#231;&#227;o que dura menos de 30 segundos. A sua opini&#227;o &#233; essencial para garantirmos que cada estadia seja a melhor poss&#237;vel.
+
+&#x1F449; https://tinyurl.com/2ygdv9sh
+(S&#243; clicar no link - r&#225;pido e seguro)
+
+Ao nos dar seu feedback, al&#233;m de nos ajudar a crescer, tamb&#233;m garante os melhores cuidados para o(a) [nome do FILHOt]. &#x1F31F;
+
+Gratid&#227;o! &#x1F49B;
+Time Z&#234;luz &#x1F43E;</div>
+      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
+    </div>
+
+    <div class="card msg-box">
+      <div class="card-title">DayCare</div>
+      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. S&#243; para clientes com +1 m&#234;s de Z&#234;luz.</div>
+      <div class="msg-text">Ol&#225;, [nome do tutor], como est&#225;? &#x1F60A;
+E o(a) [nome do FILHOt], como estava ontem depois do DayCare? &#x1F43E;
+
+Queremos expressar nossa gratid&#227;o por confiar o dia do(a) [nome do FILHOt] &#224; Z&#234;luz. Cada dia aqui &#233; pensado para estimular, socializar e cuidar do seu FILHOt.
+
+Temos uma pesquisa interna de satisfa&#231;&#227;o que dura menos de 30 segundos. A sua opini&#227;o &#233; essencial para continuarmos melhorando.
+
+&#x1F449; https://tinyurl.com/22ojyw32
+(S&#243; clicar no link - r&#225;pido e seguro)
+
+Ao nos dar seu feedback, al&#233;m de nos ajudar a crescer, tamb&#233;m garante os melhores cuidados para o(a) [nome do FILHOt]. &#x1F31F;
+
+Gratid&#227;o! &#x1F49B;
+Time Z&#234;luz &#x1F43E;</div>
+      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
+    </div>
+
+  </div>
+
+  <!-- ====== TAB 3: REGRAS E TIMING ====== -->
+  <div class="tab-content" id="tab-regras">
+
+    <div class="card">
+      <div class="card-title">Quando enviar a pesquisa</div>
+      <div class="card-sub">Timing ideal por serviço</div>
+      <div class="timing"><span class="timing-service">Banho / Tosa / Trimming</span><span class="timing-when">Dia seguinte — junto com o peso do FILHOt</span></div>
+      <div class="timing"><span class="timing-service">Veterinário</span><span class="timing-when">1 dia depois — perguntar como o FILHOt está + pesquisa</span></div>
+      <div class="timing"><span class="timing-service">DayCare</span><span class="timing-when">Dia seguinte — só para clientes com +1 mês de Zêluz (clientes com +2 meses: enviar para todos)</span></div>
+      <div class="timing"><span class="timing-service">Auaulândia</span><span class="timing-when">Dia seguinte ao retorno — junto com o peso do FILHOt</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Regras importantes</div>
+      <div class="rule"><span class="rule-icon">1.</span> 1 pesquisa por serviço prestado (fez 4 banhos no mês = 4 pesquisas de banho).</div>
+      <div class="rule"><span class="rule-icon">2.</span> Nunca pedir nota ("dá 10 pra gente") — invalida o NPS.</div>
+      <div class="rule"><span class="rule-icon">3.</span> Personalizar SEMPRE com nome do tutor e do FILHOt.</div>
+      <div class="rule"><span class="rule-icon">4.</span> Não enviar NPS e pedido de Google Review juntos. Separar no mínimo 48 a 72 horas.</div>
+      <div class="rule"><span class="rule-icon">5.</span> Detrator (nota 0 a 6): contato em até 24 horas — ouvir, entender, resolver.</div>
+      <div class="rule"><span class="rule-icon">6.</span> Nunca enviar lembrete. Se não respondeu, não insistir.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Como funciona o NPS</div>
+      <div class="card-sub">Cálculo: NPS = % Promotores (9-10) menos % Detratores (0-6)</div>
+      <div class="timing"><span class="timing-service">9-10 Promotores</span><span class="timing-when" style="color:var(--z-green)">Leais, recomendam</span></div>
+      <div class="timing"><span class="timing-service">7-8 Neutros</span><span class="timing-when" style="color:#E8A825">Satisfeitos, sem entusiasmo</span></div>
+      <div class="timing"><span class="timing-service">0-6 Detratores</span><span class="timing-when" style="color:#D94F4F">Insatisfeitos, risco</span></div>
+      <div style="padding:12px 0;font-size:12px;color:var(--z-blue-50)">
+        Neutros NAO entram no calculo. Meta: acima de 50 = Excelente. Acima de 75 = Classe mundial.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">
+  Produzido por Kairos | by Adriana Duarte.'.
+</div>
+
+<script>
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+  });
+});
+
+// Copiar link
+function copiar(btn, texto) {
+  navigator.clipboard.writeText(texto);
+  btn.textContent = 'Copiado!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+}
+
+// Copiar mensagem
+function copiarMsg(btn) {
+  var texto = btn.previousElementSibling.textContent;
+  navigator.clipboard.writeText(texto);
+  btn.textContent = 'Copiado!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copiar mensagem'; btn.classList.remove('copied'); }, 2000);
+}
+</script>
+</body>
+</html>

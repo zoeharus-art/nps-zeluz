@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NPS Zeluz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+/* ══════════════════════════════════════════════
+   NPS Dashboard — Zeluz Design System v6.1
+   Vibe Design Edition — Apple-grade polish
+   ══════════════════════════════════════════════ */
+
+:root{
+  --z-gold:#DEB428;--z-gold-hover:#C9A220;--z-gold-light:#E5C353;
+  --z-gold-10:rgba(222,180,40,.10);--z-gold-15:rgba(222,180,40,.15);
+  --z-gold-20:rgba(222,180,40,.20);--z-gold-40:rgba(222,180,40,.40);
+  --z-blue:#234D67;--z-blue-hover:#1A3A4F;
+  --z-blue-85:rgba(35,77,103,.85);--z-blue-75:rgba(35,77,103,.75);
+  --z-blue-70:rgba(35,77,103,.70);--z-blue-50:rgba(35,77,103,.50);
+  --z-blue-40:rgba(35,77,103,.40);--z-blue-25:rgba(35,77,103,.25);
+  --z-blue-15:rgba(35,77,103,.15);--z-blue-10:rgba(35,77,103,.10);
+  --z-blue-08:rgba(35,77,103,.08);--z-blue-06:rgba(35,77,103,.06);
+  --z-cream:#FFFDF6;--z-cream-92:rgba(255,253,246,.92);
+  --z-white:#FFFFFF;--z-black:#1D1E1C;
+  --z-nps-green:#3BAF6E;--z-nps-yellow:#E8A825;--z-nps-red:#D94F4F;
+  --z-daycare:#D4875A;--z-auaulandia:#5AABB5;--z-spa:#B8A9C9;--z-emporio:#5E9B6B;--z-vetcare:#2E7D8A;
+  --z-font:'Poppins',system-ui,sans-serif;
+  --z-accent:'Cormorant Garamond',Georgia,serif;
+  --z-shadow-xs:0 1px 3px rgba(35,77,103,.04);
+  --z-shadow-sm:0 2px 8px rgba(35,77,103,.06);
+  --z-shadow-md:0 4px 20px rgba(35,77,103,.08);
+  --z-shadow-lg:0 8px 32px rgba(35,77,103,.10);
+  --z-radius-sm:8px;--z-radius-md:12px;--z-radius-lg:16px;--z-radius-xl:24px;--z-radius-pill:100px;
+  --z-ease:cubic-bezier(.4,0,.2,1);
+  --z-fast:150ms;--z-normal:250ms;--z-slow:400ms;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--z-font);background:var(--z-cream);color:var(--z-blue-85);
+  line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ══ NAV ══ */
+.nav{
+  background:var(--z-blue);position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 24px}
+.nav-top{display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px}
+.nav-logo{height:28px;width:auto;opacity:.95}
+.nav-update{font-size:10px;color:rgba(255,253,246,.3);letter-spacing:.03em}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{
+  padding:10px 18px;font-size:12px;font-weight:600;letter-spacing:.04em;
+  color:rgba(255,253,246,.45);cursor:pointer;
+  border-bottom:2px solid transparent;transition:all var(--z-fast) var(--z-ease);
+  text-transform:uppercase;
+}
+.nav-tab:hover{color:rgba(255,253,246,.75)}
+.nav-tab.active{color:var(--z-gold);border-bottom-color:var(--z-gold)}
+
+/* ══ LAYOUT ══ */
+.page{max-width:1080px;margin:0 auto;padding:32px 24px 48px}
+.pane{display:none}
+.pane.active{display:block;animation:paneIn var(--z-slow) var(--z-ease)}
+@keyframes paneIn{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
+
+/* ══ SECTION ══ */
+.section-title{
+  font-family:var(--z-accent);font-size:22px;font-weight:600;
+  color:var(--z-blue);letter-spacing:-.01em;margin-bottom:4px;
+}
+.section-sub{font-size:12px;color:var(--z-blue-50);margin-bottom:20px}
+.section-divider{width:32px;height:2px;background:var(--z-gold-20);border-radius:1px;margin:24px 0}
+
+/* ══ GRID ══ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:768px){.g2,.g3{grid-template-columns:1fr}}
+.g-full{grid-column:1/-1}
+
+/* ══ CARD ══ */
+.card{
+  background:var(--z-white);border-radius:var(--z-radius-lg);
+  padding:24px;border:1px solid var(--z-blue-06);
+  box-shadow:var(--z-shadow-xs);
+  transition:box-shadow var(--z-fast) var(--z-ease),transform var(--z-fast) var(--z-ease);
+}
+.card:hover{box-shadow:var(--z-shadow-sm)}
+.card-header{margin-bottom:20px}
+.card-label{
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--z-blue-40);margin-bottom:2px;
+}
+.card-value{font-family:var(--z-accent);font-size:16px;font-weight:600;color:var(--z-blue)}
+
+/* ══ FILTER CHIPS ══ */
+.chips{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.chip{
+  padding:7px 16px;border-radius:var(--z-radius-pill);
+  border:1.5px solid var(--z-blue-10);background:var(--z-white);
+  font-family:var(--z-font);font-size:11px;font-weight:600;letter-spacing:.02em;
+  color:var(--z-blue-50);cursor:pointer;
+  transition:all var(--z-fast) var(--z-ease);
+}
+.chip:hover{border-color:var(--z-gold-40);color:var(--z-blue-75)}
+.chip.on{background:var(--z-gold);color:var(--z-white);border-color:var(--z-gold)}
+
+/* ══ NPS HERO ══ */
+.hero{
+  text-align:center;padding:40px 24px 36px;
+  position:relative;overflow:hidden;margin-bottom:16px;
+}
+.hero::before{
+  content:'';position:absolute;width:200px;height:200px;border-radius:50%;
+  background:var(--z-gold-10);bottom:-80px;left:-40px;
+}
+.hero::after{
+  content:'';position:absolute;width:140px;height:140px;border-radius:50%;
+  background:var(--z-blue-06);top:-50px;right:-30px;
+}
+.hero-gauge{position:relative;width:200px;height:110px;margin:0 auto 8px;z-index:1}
+.hero-gauge canvas{width:100%!important;height:100%!important}
+.hero-score{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  font-size:56px;font-weight:900;line-height:1;letter-spacing:-.02em;
+}
+.hero-label{
+  font-family:var(--z-accent);font-size:15px;font-weight:400;font-style:italic;
+  color:var(--z-blue-50);letter-spacing:.02em;position:relative;z-index:1;
+}
+.hero-line{width:32px;height:1.5px;background:var(--z-gold-20);margin:16px auto;border-radius:1px}
+.hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;position:relative;z-index:1}
+.hs{text-align:center}
+.hs-num{font-size:20px;font-weight:800;letter-spacing:-.01em}
+.hs-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--z-blue-40);margin-top:2px}
+
+/* ══ CHART CONTAINERS ══ */
+.ch{position:relative;height:200px}
+.ch-sm{position:relative;height:160px}
+
+/* ══ SURVEY CARDS (aba Pesquisas) ══ */
+.survey{text-align:center;padding:24px 16px;cursor:default}
+.survey-name{font-size:13px;font-weight:700;color:var(--z-blue);margin-bottom:12px;letter-spacing:.01em}
+.survey-score{font-size:36px;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
+.survey-responses{font-size:11px;color:var(--z-blue-50);margin-bottom:10px}
+.survey-zone{
+  display:inline-block;padding:3px 12px;border-radius:var(--z-radius-pill);
+  font-size:10px;font-weight:700;letter-spacing:.04em;
+}
+.sz-enc{background:rgba(59,175,110,.10);color:var(--z-nps-green)}
+.sz-exc{background:rgba(222,180,40,.12);color:var(--z-gold-hover)}
+.sz-aper{background:rgba(232,168,37,.10);color:var(--z-nps-yellow)}
+.sz-crit{background:rgba(217,79,79,.10);color:var(--z-nps-red)}
+.survey-pnd{display:flex;justify-content:center;gap:14px;margin-top:12px;font-size:11px;font-weight:600}
+
+/* ══ RANKING ZELOSOS ══ */
+.zel{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--z-blue-06)}
+.zel:last-child{border-bottom:none}
+.zel-pos{
+  width:24px;height:24px;border-radius:50%;background:var(--z-gold-10);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:var(--z-gold);flex-shrink:0;
+}
+.zel:nth-child(1) .zel-pos{background:var(--z-gold);color:var(--z-white)}
+.zel:nth-child(2) .zel-pos{background:var(--z-gold-20);color:var(--z-gold-hover)}
+.zel:nth-child(3) .zel-pos{background:var(--z-gold-15);color:var(--z-gold-hover)}
+.zel-name{font-size:13px;font-weight:600;color:var(--z-blue);flex:1}
+.zel-score{font-size:12px;font-weight:700;color:var(--z-gold)}
+
+/* ══ RESPONSE LIST ══ */
+.resp{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--z-blue-06);align-items:flex-start}
+.resp:last-child{border-bottom:none}
+.resp-badge{
+  width:32px;height:32px;border-radius:var(--z-radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:var(--z-white);flex-shrink:0;
+}
+.resp-body{flex:1;min-width:0}
+.resp-name{font-size:13px;font-weight:600;color:var(--z-blue)}
+.resp-text{font-size:12px;color:var(--z-blue-70);margin-top:2px;font-style:italic;line-height:1.5}
+.resp-meta{font-size:10px;color:var(--z-blue-40);margin-top:4px;letter-spacing:.02em}
+
+/* ══ CONTACTS TABLE ══ */
+.ct{display:flex;gap:8px;padding:10px 0;border-bottom:1px solid var(--z-blue-06);font-size:12px;align-items:center}
+.ct:first-child{font-weight:700;color:var(--z-blue-50);font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+.ct-n{flex:2;font-weight:600;color:var(--z-blue)}
+.ct-t{flex:2;color:var(--z-blue-50)}
+.ct-s{flex:2;color:var(--z-blue-40);font-size:11px}
+.ct-v{width:36px;text-align:center;flex-shrink:0}
+.ct-d{flex:1;color:var(--z-blue-40);font-size:10px}
+.ct-pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;color:var(--z-white)}
+
+/* ══ SEARCH ══ */
+.search{
+  width:100%;padding:12px 16px;border:1.5px solid var(--z-blue-08);
+  border-radius:var(--z-radius-md);font-family:var(--z-font);font-size:13px;
+  color:var(--z-blue);background:var(--z-white);margin-bottom:20px;
+  transition:border-color var(--z-fast) var(--z-ease);
+}
+.search:focus{outline:none;border-color:var(--z-gold);box-shadow:0 0 0 3px var(--z-gold-10)}
+.search::placeholder{color:var(--z-blue-25)}
+
+/* ══ STRATEGIES ══ */
+.strat{
+  padding:20px 24px;margin-bottom:12px;border-radius:var(--z-radius-md);
+  background:var(--z-white);border:1px solid var(--z-blue-06);
+  border-left:4px solid var(--z-blue-10);
+}
+.strat-g{border-left-color:var(--z-nps-green)}
+.strat-y{border-left-color:var(--z-nps-yellow)}
+.strat-r{border-left-color:var(--z-nps-red)}
+.strat h3{font-size:14px;font-weight:700;margin-bottom:12px}
+.strat p{font-size:12px;color:var(--z-blue-70);padding:5px 0;line-height:1.6}
+.strat p strong{color:var(--z-blue)}
+
+/* ══ EMPTY STATE ══ */
+.empty{font-size:12px;color:var(--z-blue-25);text-align:center;padding:24px 0}
+
+/* ══ LOADING ══ */
+.loading{text-align:center;padding:80px 20px}
+.loading.hide{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{
+  width:32px;height:32px;margin:0 auto 16px;
+  border:2.5px solid var(--z-blue-08);border-top-color:var(--z-gold);
+  border-radius:50%;animation:spin .8s linear infinite;
+}
+.loading p{font-size:13px;color:var(--z-blue-40)}
+
+/* ══ FOOTER ══ */
+.foot{
+  text-align:center;padding:32px 24px;margin-top:48px;
+  border-top:1px solid var(--z-gold-10);
+}
+.foot-row{display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--z-blue-40)}
+.foot-k{height:16px;width:auto}
+.foot-by{font-family:var(--z-accent);font-size:11px;font-style:italic;color:var(--z-blue-40)}
+.foot-by .tp{color:var(--z-gold);font-style:normal;font-weight:700}
+.foot-sl{display:block;margin-top:6px;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--z-blue-25);font-weight:300}
+</style>
+</head>
+<body>
+
+<!-- TELA DE SENHA -->
+<div id="loginScreen" style="position:fixed;inset:0;z-index:9999;background:var(--z-cream);display:flex;align-items:center;justify-content:center;flex-direction:column">
+  <svg style="width:120px;height:auto;margin-bottom:24px;opacity:0.9" viewBox="200 385 680 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <text x="290" y="580" fill="#DEB428" font-family="Poppins,sans-serif" font-size="160" font-weight="700">Z&#234;luz</text>
+  </svg>
+  <p style="font-size:14px;color:var(--z-blue);font-weight:600;margin-bottom:16px">Dashboard NPS — Acesso restrito</p>
+  <input type="password" id="inputSenha" placeholder="Senha" style="padding:14px 20px;border:1.5px solid var(--z-blue-10);border-radius:10px;font-family:var(--z-font);font-size:16px;color:var(--z-blue);background:var(--z-white);text-align:center;width:260px;transition:border-color 0.3s" onkeydown="if(event.key==='Enter')verificarSenha()">
+  <button onclick="verificarSenha()" style="margin-top:12px;padding:12px 32px;border:none;border-radius:10px;background:var(--z-gold);color:var(--z-white);font-family:var(--z-font);font-size:15px;font-weight:700;cursor:pointer">Entrar</button>
+  <p id="erroSenha" style="display:none;margin-top:10px;font-size:13px;color:var(--z-nps-red)">Senha incorreta.</p>
+</div>
+<script>
+function verificarSenha(){
+  if(document.getElementById('inputSenha').value==='280279adc'){
+    document.getElementById('loginScreen').style.display='none';
+  } else {
+    document.getElementById('erroSenha').style.display='block';
+    document.getElementById('inputSenha').style.borderColor='var(--z-nps-red)';
+  }
+}
+</script>
+
+<!-- NAV -->
+<nav class="nav">
+<div class="nav-inner">
+  <div class="nav-top">
+    <svg class="nav-logo" viewBox="200 385 680 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#DEB428" d="M349.98,579.79c1.55.6,2.66,1.61,3.34,3.08.69,1.46.73,2.98.14,4.53-2.33,6.45-7.84,11.99-16.59,16.69-7.2,3.9-16.21,7.01-27.1,9.39-5.97,1.16-12.2,2.1-18.59,2.75-6.42.69-12.74,1.03-18.94,1.03-4.47,0-8.72-.19-12.81-.61-4.08-.37-8.04-.86-11.93-1.42-8.73-1.38-15.93-3.83-21.54-7.34-4.47-2.71-7.4-5.56-8.76-8.49-1.32-2.91-2.01-5.54-2.01-7.88,0-5.89,1.6-12.73,4.8-20.64,3.19-7.91,7.36-16.35,12.52-25.32,5.14-8.98,10.92-18.29,17.3-27.94,6.44-9.66,12.72-19.18,18.91-28.53,3.89-5.84,7.7-11.47,11.39-16.84,3.7-5.36,6.9-10.29,9.63-14.78,3.07-5.08,5.13-8.79,6.1-11.1.98-2.36,1.54-3.9,1.75-4.69-.39-.41-2.01-1-4.8-1.76-2.81-.79-8.02-.79-15.59,0-2.89.39-5.67.75-8.28,1.16-2.62.4-5.01.78-7.16,1.18-2.32.56-4.65,1.06-6.97,1.46-1.54.38-3.03.19-4.37-.61-1.37-.76-2.23-1.93-2.62-3.48-.38-1.57-.18-3.02.59-4.42.77-1.35,1.94-2.24,3.48-2.62.39-.19,2.95-.79,7.71-1.76,4.77-.97,10.25-1.76,16.45-2.35,7.19-.77,13.3-.77,18.35,0,7.57,1.19,12.41,4.3,14.57,9.39.75,1.94.75,4.28,0,7.01-.77,2.74-2.39,6.29-4.84,10.68-2.41,4.38-5.7,9.81-9.88,16.24-4.16,6.45-9.47,14.32-15.88,23.71-5.43,8-11.15,16.57-17.16,25.75-6.03,9.18-11.61,18.15-16.73,26.91-5.16,8.8-9.39,17-12.68,24.6-3.32,7.61-4.96,13.85-4.96,18.75,0,2.72,2.06,5.1,6.15,7.15,4.06,2.06,9.61,3.75,16.57,5.14,9.33,1.54,19.12,2.09,29.43,1.6,10.27-.5,19.87-1.72,28.79-3.68,8.94-1.93,16.61-4.52,23.01-7.75,6.37-3.2,10.28-6.78,11.65-10.68.57-1.57,1.62-2.69,3.06-3.35,1.43-.68,2.96-.74,4.51-.17"/>
+      <path fill="#DEB428" d="M459.45,600.87c1.37-.99,2.79-1.32,4.36-1.02,1.54.29,2.81,1.11,3.79,2.48.97,1.36,1.32,2.77,1.05,4.23-.32,1.49-1.14,2.7-2.5,3.68-5.07,3.49-12.21,5.75-21.57,6.73-1.15.19-2.3.36-3.49.45-1.16.08-2.31.13-3.48.13-3.49,0-6.88-.22-10.18-.72-3.32-.51-6.6-1.25-9.91-2.19-7.36-2.17-13.68-5.33-18.93-9.51-5.23-4.19-9.13-9.41-11.63-15.64-3.17-7.2-5.86-16.4-8.04-27.6-2.19-11.2-3.79-23.53-4.76-36.99-.21-.17-.3-.66-.3-1.44v-3.52c-.97-14.4-1.13-28.23-.46-41.48.7-13.26,2.14-24.85,4.34-34.77.8-3.89,3.46-7.23,8.05-9.94,7.18-4.5,20.08-6.9,38.74-7.31h9.32c3.09,0,5.92.1,8.44.29,2.48.19,4.71.33,6.53.41,1.83.13,3.05.25,3.66.44,1.54.4,2.69,1.28,3.49,2.73.76,1.4.95,2.89.59,4.42-.39,1.52-1.27,2.66-2.61,3.42-1.37.79-2.85.98-4.39.6-.57,0-1.9-.11-3.94-.3-2.04-.19-4.53-.39-7.57-.57-2.98-.2-6.34-.22-10.04-.14-3.68.1-7.38.23-11.04.42-10.48.6-17.66,1.77-21.57,3.53-3.85,1.74-5.93,3.21-6.1,4.38-1.92,9.36-3.25,20.29-3.95,32.77-.69,12.48-.67,25.57.14,39.24h24.76c7.18-.21,13.01-.5,17.47-.9,4.48-.37,7.97-.8,10.5-1.32,2.53-.48,4.66-1.1,6.37-1.88,1.38-.99,2.85-1.38,4.39-1.2,1.55.21,2.81,1.02,3.78,2.36.98,1.38,1.36,2.85,1.19,4.4-.21,1.57-.97,2.82-2.37,3.81-.96.58-2.21,1.23-3.78,1.9-1.55.7-3.87,1.31-6.98,1.89-3.1.58-7.08,1.12-11.94,1.61-4.84.48-10.97.85-18.35,1.03h-24.15c.98,11.72,2.42,22.26,4.38,31.63,1.92,9.35,4.17,17.14,6.69,23.38,2.51,5.66,6.07,9.9,10.61,12.72,4.56,2.86,8.79,4.85,12.68,6.02,3.67,1,7.45,1.6,11.34,1.92,3.89.28,7.56.28,11.07,0,3.49-.31,6.66-.84,9.46-1.64,2.81-.74,5.1-1.74,6.85-2.9"/>
+      <polygon fill="#DEB428" points="418.47 393.67 414.21 393.67 406.06 404.54 409.9 404.54 416.31 399.04 422.76 404.54 426.59 404.54 418.47 393.67"/>
+      <path fill="#DEB428" d="M591.05,592.38c1.36,1,2.24,2.25,2.63,3.79.38,1.57.08,3.05-.89,4.4-1.74,2.73-4.31,5.08-7.71,7.03-3.37,1.93-7.25,3.66-11.51,5.11-4.24,1.47-8.81,2.57-13.67,3.23-4.86.68-9.58,1.03-14.27,1.03h-2.62c-.77,0-1.66-.11-2.61-.32-20-1.16-33.01-7.77-39.04-19.89-3.54-7.01-6.52-17.59-8.87-31.75-2.41-14.12-3.99-30.38-4.79-48.71-.98-18.36-.84-35.14.47-50.36,1.25-15.22,3.29-27.4,6.08-36.58.39-1.56,1.34-2.7,2.87-3.36,1.45-.67,3.01-.83,4.56-.46,1.54.61,2.65,1.59,3.33,2.94.7,1.38.85,2.84.43,4.4-2.7,8.39-4.59,19.94-5.68,34.68-1.08,14.74-1.22,30.77-.4,48.15.38,8.59.97,16.76,1.71,24.57.78,7.8,1.72,14.98,2.77,21.52,1.11,6.55,2.26,12.34,3.65,17.4,1.36,5.08,2.8,9.15,4.38,12.31,4.06,7.99,13.75,12.49,29.08,13.44,9.55.58,18.57-.26,27.11-2.62,4.45-1.37,7.86-2.78,10.2-4.25,2.3-1.46,3.84-2.76,4.64-3.95.99-1.37,2.22-2.24,3.79-2.62,1.52-.4,2.99-.11,4.35.86"/>
+      <path fill="#DEB428" d="M692.97,436.69c-.42,12.87,0,27.44,1.14,43.75,1.18,16.29,2.54,32.92,4.09,49.88.78,9.57,1.55,18.69,2.35,27.39.73,8.68,1.38,16.75,1.87,24.29.49,7.52.67,14.28.59,20.33-.1,6.06-.47,11.15-1.04,15.22-.6,3.34-2.5,4.97-5.81,4.97h-.88c-1.55-.38-2.81-1.24-3.8-2.47-.95-1.26-1.34-2.68-1.13-4.26.55-3.7.85-8.54.85-14.49s-.21-12.63-.59-20.05c-.37-7.41-.92-15.34-1.58-23.85-.69-8.48-1.43-17.21-2.18-26.19l-.88-10.24c-.17,0-.28.11-.28.28-3.49,26.74-8.07,47.84-13.69,63.22-3.12,9.39-6.8,16.81-11.07,22.27-5.22,6.4-11.17,9.64-17.75,9.64-2.55,0-5.27-.53-8.13-1.62-2.92-1.05-5.89-2.92-8.89-5.55-3.04-2.65-5.97-6.35-8.9-11.13-2.92-4.79-5.52-10.88-7.85-18.3-3.12-9.35-5.43-19.93-6.96-31.76-1.57-11.79-2.25-23.94-2.07-36.42,0-9.36.54-18.25,1.6-26.63,1.08-8.38,2.48-15.72,4.21-21.96,1.18-3.69,2.38-6.92,3.66-9.65,1.25-2.72,2.67-5.07,4.21-7.01,2.34-3.33,4.76-5.46,7.28-6.44,2.54-.98,4.67-1.47,6.41-1.47,1.54,0,2.93.57,4.09,1.74,1.16,1.17,1.72,2.55,1.72,4.11s-.55,2.93-1.72,4.07c-1.16,1.19-2.55,1.76-4.09,1.76-1.37,0-2.95,1.18-4.82,3.5-1.82,2.36-3.62,6.55-5.37,12.61-1.75,5.67-3.1,12.44-4.09,20.34-.95,7.89-1.44,16.25-1.44,25.02-.2,11.91.49,23.46,2.04,34.67,1.56,11.24,3.7,21.24,6.42,30.02.77,2.71,1.82,5.71,3.21,8.93,1.33,3.21,2.97,6.24,4.79,9.07,1.86,2.83,4.03,5.27,6.58,7.31,2.49,2.04,5.2,3.09,8.13,3.09h.31c6.18,0,12.12-8.02,17.73-24.03,2.53-7.4,4.91-16.19,7.17-26.31,2.21-10.15,4.19-21.66,5.95-34.54,1.14-8.8,2.13-17.42,2.89-25.9.78-8.5,1.45-16.44,2.06-23.86.56-7.43,1.03-14.05,1.3-19.91.32-5.84.53-10.52.73-14.04,0-.98.02-2.01.15-3.08.12-1.05.14-2.1.14-3.07.37-3.7,2.31-5.55,5.83-5.55h.26c1.58,0,2.89.58,3.95,1.75,1.07,1.16,1.6,2.54,1.6,4.1v1.75c0,.6-.06,1.26-.14,2.04-.07.8-.14,1.66-.14,2.64"/>
+      <path fill="#DEB428" d="M857.19,579.79c1.53.6,2.65,1.61,3.34,3.08.7,1.46.7,2.98.14,4.53-2.33,6.45-7.86,11.99-16.59,16.69-7.18,3.9-16.19,7.01-27.06,9.39-6.03,1.16-12.25,2.1-18.64,2.75-6.41.69-12.72,1.03-18.93,1.03-4.46,0-8.7-.19-12.83-.61-4.06-.36-8.03-.86-11.94-1.42-8.7-1.38-15.91-3.83-21.53-7.34-4.49-2.71-7.38-5.56-8.74-8.49-1.35-2.91-2.04-5.54-2.04-7.88,0-5.89,1.6-12.73,4.81-20.64,3.24-7.91,7.39-16.35,12.52-25.32,5.14-8.98,10.93-18.29,17.34-27.94,6.38-9.66,12.69-19.18,18.94-28.53,3.87-5.84,7.67-11.47,11.33-16.84,3.66-5.36,6.88-10.29,9.63-14.78,3.07-5.08,5.12-8.79,6.1-11.1.97-2.36,1.54-3.9,1.73-4.69-.38-.41-1.99-1-4.8-1.76-2.81-.79-7.99-.79-15.56,0-2.91.39-5.7.75-8.3,1.16-2.61.4-5.02.78-7.15,1.18-2.33.56-4.67,1.06-6.99,1.46-1.51.38-3,.19-4.37-.61-1.33-.76-2.21-1.93-2.59-3.48-.43-1.57-.21-3.02.57-4.42.78-1.35,1.93-2.25,3.51-2.62.38-.19,2.94-.79,7.71-1.76,4.77-.97,10.24-1.76,16.44-2.35,7.18-.77,13.3-.77,18.35,0,7.6,1.19,12.46,4.3,14.55,9.39.8,1.94.8,4.27,0,7.01-.75,2.74-2.36,6.29-4.79,10.68-2.44,4.38-5.72,9.81-9.91,16.24-4.15,6.45-9.44,14.32-15.87,23.71-5.45,8-11.15,16.57-17.16,25.75-6.04,9.18-11.62,18.15-16.74,26.91-5.14,8.8-9.38,17-12.66,24.6-3.32,7.61-4.96,13.85-4.96,18.75,0,2.72,2.04,5.1,6.1,7.15,4.08,2.06,9.65,3.75,16.62,5.14,9.32,1.54,19.14,2.09,29.41,1.6,10.28-.5,19.9-1.72,28.85-3.68,8.89-1.94,16.57-4.52,23-7.75,6.39-3.2,10.29-6.78,11.64-10.68.58-1.57,1.58-2.69,3.08-3.35,1.43-.68,2.93-.74,4.5-.17"/>
+    </svg>
+    <div class="nav-update" id="upd"></div>
+  </div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" data-t="dash">Dashboard</div>
+    <div class="nav-tab" data-t="pesq">Pesquisas</div>
+    <div class="nav-tab" data-t="cont">Contatos</div>
+    <div class="nav-tab" data-t="estr">Estrategias</div>
+  </div>
+</div>
+</nav>
+
+<div class="loading" id="ld"><div class="spinner"></div><p>Carregando dados...</p></div>
+
+<div id="app" style="display:none">
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="pane active" id="p-dash">
+<div class="page">
+  <div class="chips" id="chips"><button class="chip on" data-f="todos">Todos</button></div>
+
+  <div class="card hero">
+    <div class="hero-gauge"><canvas id="cGauge"></canvas><div class="hero-score" id="npsS">-</div></div>
+    <div class="hero-label">Net Promoter Score</div>
+    <div class="hero-line"></div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-num" style="color:var(--z-nps-green)" id="vP">0</div><div class="hs-label">Promotores</div></div>
+      <div class="hs"><div class="hs-num" style="color:var(--z-nps-yellow)" id="vN">0</div><div class="hs-label">Neutros</div></div>
+      <div class="hs"><div class="hs-num" style="color:var(--z-nps-red)" id="vD">0</div><div class="hs-label">Detratores</div></div>
+      <div class="hs"><div class="hs-num" style="color:var(--z-blue)" id="vT">0</div><div class="hs-label">Respostas</div></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card"><div class="card-header"><div class="card-label">Distribuicao</div></div><div class="ch"><canvas id="cDonut"></canvas></div></div>
+    <div class="card"><div class="card-header"><div class="card-label">Evolucao</div></div><div class="ch"><canvas id="cLine"></canvas></div></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-header"><div class="card-label">Top Zelosos</div><div class="card-value" style="font-size:12px;color:var(--z-blue-50);font-family:var(--z-font)">Ranking global</div></div>
+      <div id="zelBox"></div>
+    </div>
+    <div class="card"><div class="card-header"><div class="card-label">Respostas por Mes</div></div><div class="ch-sm"><canvas id="cBar"></canvas></div></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="card"><div class="card-header"><div class="card-label">Respostas Recentes</div></div><div id="respBox"></div></div>
+  <div style="height:16px"></div>
+  <div class="card" id="fbCard" style="display:none"><div class="card-header"><div class="card-label">Feedback Construtivo</div></div><div id="fbBox"></div></div>
+</div>
+</div>
+
+<!-- ═══ PESQUISAS ═══ -->
+<div class="pane" id="p-pesq">
+<div class="page">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px">
+    <div>
+      <div class="section-title">Pesquisas</div>
+      <div class="section-sub" style="margin-bottom:0">Gerencie suas pesquisas NPS</div>
+    </div>
+    <button id="btnNovaPesq" style="padding:10px 20px;border:none;border-radius:var(--z-radius-pill);background:var(--z-gold);color:var(--z-white);font-family:var(--z-font);font-size:12px;font-weight:700;cursor:pointer;transition:all var(--z-fast) var(--z-ease);letter-spacing:.02em">+ Nova Pesquisa</button>
+  </div>
+
+  <!-- FORMULARIO NOVA PESQUISA (oculto) -->
+  <div class="card" id="formPesq" style="display:none;margin-bottom:20px">
+    <div class="card-label">Criar nova pesquisa</div>
+    <div style="margin-top:16px">
+      <label style="font-size:12px;font-weight:600;color:var(--z-blue);display:block;margin-bottom:4px">Nome do servico / produto</label>
+      <input id="inpNomePesq" class="search" type="text" placeholder="Ex: Consulta Comportamental, Adestramento, Creche Noturna..." style="margin-bottom:16px">
+
+      <label style="font-size:12px;font-weight:600;color:var(--z-blue);display:block;margin-bottom:4px">Texto de introducao</label>
+      <div style="font-size:11px;color:var(--z-blue-40);margin-bottom:6px">O que o tutor le antes de responder a pesquisa. Personalize para cada servico.</div>
+      <textarea id="inpIntro" style="width:100%;min-height:100px;padding:12px 16px;border:1.5px solid var(--z-blue-08);border-radius:var(--z-radius-md);font-family:var(--z-font);font-size:13px;color:var(--z-blue);background:var(--z-white);resize:vertical;line-height:1.6;margin-bottom:16px" placeholder="Sua opiniao e a nossa bussola. Cada palavra nos guia para cuidar ainda melhor do seu FILHOt e da sua Familia Multiespecie."></textarea>
+
+      <div style="display:flex;gap:8px">
+        <button id="btnSalvarPesq" style="flex:1;padding:14px;border:none;border-radius:var(--z-radius-sm);background:var(--z-gold);color:var(--z-white);font-family:var(--z-font);font-size:13px;font-weight:700;cursor:pointer;transition:all var(--z-fast) var(--z-ease)">Criar pesquisa</button>
+        <button id="btnCancelarPesq" style="padding:14px 20px;border:1.5px solid var(--z-blue-10);border-radius:var(--z-radius-sm);background:var(--z-white);color:var(--z-blue-50);font-family:var(--z-font);font-size:13px;font-weight:600;cursor:pointer">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Link gerado -->
+    <div id="linkGerado" style="display:none;margin-top:20px;padding:16px;background:var(--z-gold-10);border-radius:var(--z-radius-md)">
+      <div style="font-size:11px;font-weight:700;color:var(--z-blue);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">Pesquisa criada — Link pronto</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input id="linkUrl" type="text" readonly style="flex:1;padding:10px 12px;border:1px solid var(--z-blue-10);border-radius:6px;font-family:var(--z-font);font-size:12px;color:var(--z-blue);background:var(--z-white)">
+        <button id="btnCopiarLink" style="padding:10px 18px;border:none;border-radius:6px;background:var(--z-blue);color:var(--z-white);font-family:var(--z-font);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all var(--z-fast) var(--z-ease)">Copiar</button>
+      </div>
+      <div style="font-size:11px;color:var(--z-blue-40);margin-top:8px">Envie este link por WhatsApp para os tutores apos o servico.</div>
+    </div>
+  </div>
+
+  <div class="g3" id="surveyBox"></div>
+</div>
+</div>
+
+<!-- ═══ CONTATOS ═══ -->
+<div class="pane" id="p-cont">
+<div class="page">
+  <div class="section-title">Contatos</div>
+  <div class="section-sub">Tutores que responderam</div>
+  <input class="search" type="text" id="srcCt" placeholder="Buscar por nome ou telefone...">
+  <div class="card"><div id="ctBox"></div></div>
+</div>
+</div>
+
+<!-- ═══ ESTRATEGIAS ═══ -->
+<div class="pane" id="p-estr">
+<div class="page">
+  <div class="section-title">Estrategias NPS</div>
+  <div class="section-sub">Protocolos de acao por tipo de resposta</div>
+
+  <div class="strat strat-g">
+    <h3 style="color:var(--z-nps-green)">Promotor (9-10)</h3>
+    <p><strong>1. Pergunte:</strong> O que foi determinante para dar essa nota?</p>
+    <p><strong>2. Agradeca:</strong> Essa informacao e muito importante para saber que estamos no caminho certo.</p>
+    <p><strong>3. Conecte:</strong> Crie uma conexao emocional. Descubra algo especial que acontecera na vida dele.</p>
+    <p><strong>4. Informe:</strong> Que ele agora faz parte dos clientes estrelas. Apresente algum beneficio.</p>
+    <p><strong>5. Lembre:</strong> Que e possivel indicar um amigo ou familiar para vivenciar uma experiencia incrivel.</p>
+    <p><strong>6. Surpreenda:</strong> Envie uma carta ou mensagem relembrando a historia desse atendimento e entregue um simbolo que represente o cliente estrela.</p>
+  </div>
+  <div class="strat strat-y">
+    <h3 style="color:var(--z-nps-yellow)">Neutro (7-8)</h3>
+    <p><strong>1. Pergunte:</strong> O que faltou para receber um 10?</p>
+    <p><strong>2. Escute:</strong> Entenda a sugestao, diga que levara esse caso para ser debatido no comite do cliente.</p>
+    <p><strong>3. Agradeca:</strong> A oportunidade da sugestao, e informe que sua meta e receber um 10 na proxima avaliacao.</p>
+    <p><strong>4. Aplique:</strong> Entre em contato informando sobre a melhoria da experiencia inspirada na sugestao dele.</p>
+    <p><strong>5. Surpreenda:</strong> Envie uma carta ou mensagem relembrando a historia desse atendimento e entregue um simbolo que represente a evolucao.</p>
+  </div>
+  <div class="strat strat-r">
+    <h3 style="color:var(--z-nps-red)">Detrator (0-6)</h3>
+    <p><strong>1. Pergunte:</strong> O que motivou a nota?</p>
+    <p><strong>2. Reconheca:</strong> Entre em contato com o cliente e peca perdao pela experiencia proporcionada.</p>
+    <p><strong>3. Escute:</strong> Entenda a origem do problema.</p>
+    <p><strong>4. Agradeca:</strong> A oportunidade de aprender e fazer sua empresa evoluir. A insatisfacao nao foi em vao.</p>
+    <p><strong>5. Solucione:</strong> A insatisfacao.</p>
+    <p><strong>6. Monitore:</strong> Apos alguns dias entre em contato para saber como o cliente esta.</p>
+    <p><strong>7. Surpreenda:</strong> Envie uma carta ou mensagem relembrando a historia e entregue um simbolo que represente a evolucao.</p>
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  <div class="foot-row">
+    <span>Produzido por</span>
+    <svg class="foot-k" viewBox="0 0 480 120" fill="none"><defs><linearGradient id="kwm" x1="0" y1="14" x2="480" y2="106" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset=".35" stop-color="#6AF2A3"/><stop offset="1" stop-color="#F5F7F2"/></linearGradient></defs><text x="0" y="88" fill="url(#kwm)" font-family="Manrope,Segoe UI,Arial,sans-serif" font-size="80" font-weight="600" letter-spacing="-2">Kair&#243;s</text></svg>
+    <span>|</span>
+    <span class="foot-by">by Adriana Duarte<span class="tp">.&#x27;.</span></span>
+  </div>
+  <span class="foot-sl">Inteligencia Criativa para o seu Tempo</span>
+</div>
+
+<script>
+var API="https://script.google.com/macros/s/AKfycbygzCFqfrjAbk3xaUQEXEdZip4msGqRiLeLr_XLed_cHU0JHCErEjL3Gpb8H_R42Cqw/exec";
+var D,cf="todos",cDonut,cLine,cBar,cGauge;
+
+// TABS
+document.querySelectorAll(".nav-tab").forEach(function(t){t.addEventListener("click",function(){
+  document.querySelectorAll(".nav-tab").forEach(function(x){x.classList.remove("active")});
+  document.querySelectorAll(".pane").forEach(function(x){x.classList.remove("active")});
+  this.classList.add("active");
+  document.getElementById("p-"+this.dataset.t).classList.add("active");
+})});
+
+async function init(){
+  try{var r=await fetch(API);D=await r.json();
+  document.getElementById("ld").classList.add("hide");
+  document.getElementById("app").style.display="block";
+  document.getElementById("upd").textContent=D.gerado;
+  buildChips();render();renderSurveys();renderContacts();
+  }catch(e){document.getElementById("ld").innerHTML='<p style="color:var(--z-nps-red)">Erro ao carregar</p>';}
+}
+
+function buildChips(){
+  var b=document.getElementById("chips");
+  b.innerHTML='<button class="chip on" data-f="todos">Todos</button>';
+  PESQUISAS_FIXAS.forEach(function(p){
+    b.innerHTML+='<button class="chip" data-f="'+p.nome+'">'+p.nome.replace(/ Z.luz$/,"")+'</button>'});
+  b.querySelectorAll(".chip").forEach(function(c){c.addEventListener("click",function(){
+  b.querySelectorAll(".chip").forEach(function(x){x.classList.remove("on")});
+  this.classList.add("on");cf=this.dataset.f;render()})});
+}
+
+function flt(){return cf==="todos"?D.nps:D.nps.filter(function(r){return r.servico===cf})}
+
+function render(){
+  var d=flt(),p=d.filter(function(r){return r.nota>=9}),n=d.filter(function(r){return r.nota>=7&&r.nota<=8}),dt=d.filter(function(r){return r.nota<=6}),t=d.length;
+  var nps=t>0?Math.round((p.length/t-dt.length/t)*100):0;
+  var el=document.getElementById("npsS");el.textContent=t>0?nps:"-";
+  el.style.color=nps>=50?"var(--z-nps-green)":nps>=0?"var(--z-nps-yellow)":"var(--z-nps-red)";
+  document.getElementById("vP").textContent=p.length;
+  document.getElementById("vN").textContent=n.length;
+  document.getElementById("vD").textContent=dt.length;
+  document.getElementById("vT").textContent=t;
+  rGauge(nps);rDonut(p.length,n.length,dt.length);rLine(d);rBar(d);rZel();rResp(d);rFb();
+}
+
+function rGauge(nps){
+  var ctx=document.getElementById("cGauge").getContext("2d");if(cGauge)cGauge.destroy();
+  var val=Math.max(0,Math.min(100,(nps+100)/2));
+  var col=nps>=50?"#3BAF6E":nps>=0?"#E8A825":"#D94F4F";
+  cGauge=new Chart(ctx,{type:"doughnut",data:{datasets:[{data:[val,100-val],backgroundColor:[col,"rgba(35,77,103,0.06)"],borderWidth:0}]},
+  options:{responsive:true,maintainAspectRatio:false,circumference:180,rotation:270,cutout:"78%",
+  plugins:{legend:{display:false},tooltip:{enabled:false}}}});
+}
+
+function rDonut(p,n,d){
+  var ctx=document.getElementById("cDonut").getContext("2d");if(cDonut)cDonut.destroy();
+  cDonut=new Chart(ctx,{type:"doughnut",data:{labels:["Promotores","Neutros","Detratores"],
+  datasets:[{data:[p,n,d],backgroundColor:["#3BAF6E","#E8A825","#D94F4F"],borderWidth:3,borderColor:"#FFFDF6",borderRadius:4,hoverOffset:8}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:"78%",
+  plugins:{legend:{position:"bottom",labels:{padding:16,usePointStyle:true,pointStyle:"circle",font:{family:"Poppins",size:11,weight:"600"}}}}}});
+}
+
+function rLine(data){
+  var ctx=document.getElementById("cLine").getContext("2d");if(cLine)cLine.destroy();
+  var notas=data.map(function(r){return r.nota}),labels=data.map(function(r,i){return i+1});
+  cLine=new Chart(ctx,{type:"line",data:{labels:labels,datasets:[{data:notas,borderColor:"#DEB428",backgroundColor:"rgba(222,180,40,.06)",borderWidth:2.5,
+  pointBackgroundColor:function(c){var v=c.raw;return v>=9?"#3BAF6E":v>=7?"#E8A825":"#D94F4F"},
+  pointBorderColor:"#FFFDF6",pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,fill:true,tension:.4}]},
+  options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:10,ticks:{stepSize:2,font:{size:10}},grid:{color:"rgba(35,77,103,.04)"}},x:{display:false}},
+  plugins:{legend:{display:false}}}});
+}
+
+function rBar(data){
+  var ctx=document.getElementById("cBar").getContext("2d");if(cBar)cBar.destroy();
+  var m={};data.forEach(function(r){var k=(r.data||"").substring(3,10)||"?";if(!m[k])m[k]=0;m[k]++});
+  cBar=new Chart(ctx,{type:"bar",data:{labels:Object.keys(m),datasets:[{data:Object.values(m),backgroundColor:"rgba(222,180,40,.5)",hoverBackgroundColor:"#DEB428",borderRadius:6}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:10}},grid:{color:"rgba(35,77,103,.04)"}},x:{ticks:{font:{size:10}}}}}});
+}
+
+function rZel(){
+  var rk={};D.zelosos.forEach(function(z){if(!z.zeloso)return;if(!rk[z.zeloso])rk[z.zeloso]={e:0,c:0};rk[z.zeloso].e+=z.estrelas;rk[z.zeloso].c++});
+  var sorted=Object.keys(rk).sort(function(a,b){return rk[b].e-rk[a].e}),h="";
+  sorted.slice(0,8).forEach(function(nm,i){var r=rk[nm];
+  h+='<div class="zel"><span class="zel-pos">'+(i+1)+'</span><span class="zel-name">'+nm+'</span><span class="zel-score">'+r.e+' &#9733; ('+r.c+'x)</span></div>'});
+  document.getElementById("zelBox").innerHTML=h||'<div class="empty">Nenhum elogio registrado</div>';
+}
+
+function rResp(data){
+  var s=data.slice().reverse(),h="";
+  s.slice(0,20).forEach(function(r){var c=r.nota>=9?"var(--z-nps-green)":r.nota>=7?"var(--z-nps-yellow)":"var(--z-nps-red)";
+  h+='<div class="resp"><div class="resp-badge" style="background:'+c+'">'+r.nota+'</div><div class="resp-body"><div class="resp-name">'+(r.nome||"Anonimo")+'</div>'+(r.comentario?'<div class="resp-text">"'+r.comentario+'"</div>':'')+'<div class="resp-meta">'+(r.servico?r.servico.split(" \u2014 ")[0].split(" - ")[0]:"")+' &middot; '+(r.data||"")+'</div></div></div>'});
+  document.getElementById("respBox").innerHTML=h||'<div class="empty">Nenhuma resposta</div>';
+}
+
+function rFb(){
+  var fb=D.feedback||[];if(!fb.length){document.getElementById("fbCard").style.display="none";return}
+  document.getElementById("fbCard").style.display="block";var h="";
+  fb.slice().reverse().forEach(function(f){
+  h+='<div class="resp"><div class="resp-badge" style="background:var(--z-blue)">!</div><div class="resp-body"><div class="resp-name">'+(f.tutor||"Anonimo")+'</div><div class="resp-text">"'+(f.feedback||"")+'"</div><div class="resp-meta">'+(f.servico?f.servico.split(" \u2014 ")[0].split(" - ")[0]:"")+' &middot; '+(f.data||"")+'</div></div></div>'});
+  document.getElementById("fbBox").innerHTML=h;
+}
+
+function renderSurveys(){
+  // Dados de respostas por servico
+  var s={};D.nps.forEach(function(r){if(!r.servico)return;if(!s[r.servico])s[r.servico]={p:0,n:0,d:0,t:0};s[r.servico].t++;if(r.nota>=9)s[r.servico].p++;else if(r.nota>=7)s[r.servico].n++;else s[r.servico].d++});
+
+  // Apenas as 8 pesquisas fixas — sem duplicar com Sheets
+  var all={};
+  PESQUISAS_FIXAS.forEach(function(p){all[p.nome]={param:p.parametro,ativa:true,cadastrada:true}});
+
+  var h="";Object.keys(all).forEach(function(nome){
+    var info=all[nome];
+    var v=s[nome]||{p:0,n:0,d:0,t:0};
+    var nps=v.t>0?Math.round((v.p/v.t-v.d/v.t)*100):0;
+    var zona=nps>=75?"Encantamento":nps>=50?"Excelente":v.t>0?(nps>=0?"Aperfeicoamento":"Critica"):"Sem dados";
+    var zc=nps>=75?"sz-enc":nps>=50?"sz-exc":v.t>0?(nps>=0?"sz-aper":"sz-crit"):"sz-exc";
+    var col=v.t>0?(nps>=50?"var(--z-nps-green)":nps>=0?"var(--z-nps-yellow)":"var(--z-nps-red)"):"var(--z-blue-25)";
+    var sh=nome.split(" - ")[0].split(" \u2014 ")[0];
+    var statusTxt=info.ativa?'<span style="color:var(--z-nps-green);font-size:10px;font-weight:700">Ativa</span>':'<span style="color:var(--z-nps-red);font-size:10px;font-weight:700">Desativada</span>';
+    var link=BASE_URL+"?servico="+info.param;
+
+    h+='<div class="card survey" style="opacity:'+(info.ativa?"1":"0.5")+'">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'+statusTxt
+      +'<button onclick="togglePesq(\''+info.param+'\')" style="font-size:10px;padding:4px 10px;border:1px solid var(--z-blue-10);border-radius:20px;background:var(--z-white);color:var(--z-blue-50);cursor:pointer;font-family:var(--z-font)">'+(info.ativa?"Desativar":"Ativar")+'</button></div>'
+      +'<div class="survey-name">'+sh+'</div>'
+      +'<div class="survey-score" style="color:'+col+'">'+(v.t>0?nps:"-")+'</div>'
+      +'<div class="survey-responses">'+v.t+' respostas</div>'
+      +'<div class="survey-zone '+zc+'">'+zona+'</div>'
+      +'<div class="survey-pnd"><span style="color:var(--z-nps-green)">'+v.p+' P</span><span style="color:var(--z-nps-yellow)">'+v.n+' N</span><span style="color:var(--z-nps-red)">'+v.d+' D</span></div>'
+      +'<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--z-blue-06)">'
+      +'<div style="display:flex;gap:6px;align-items:center">'
+      +'<input type="text" readonly value="'+link+'" style="flex:1;padding:6px 8px;border:1px solid var(--z-blue-06);border-radius:4px;font-size:10px;color:var(--z-blue-50);font-family:var(--z-font);background:var(--z-cream)">'
+      +'<button onclick="navigator.clipboard.writeText(\''+link+'\');this.textContent=\'OK!\';var b=this;setTimeout(function(){b.textContent=\'Copiar\'},1500)" style="padding:6px 10px;border:none;border-radius:4px;background:var(--z-gold);color:var(--z-white);font-size:10px;font-weight:700;cursor:pointer;font-family:var(--z-font)">Copiar</button>'
+      +'</div></div></div>';
+  });
+  document.getElementById("surveyBox").innerHTML=h||'<div class="empty">Nenhuma pesquisa criada. Clique em "+ Nova Pesquisa".</div>';
+}
+
+async function togglePesq(param){
+  try{await fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({tipo:"toggle_pesquisa",parametro:param})});}catch(e){}
+  setTimeout(function(){init()},1000);
+}
+
+function renderContacts(q){
+  var h='<div class="ct"><div class="ct-n">Nome</div><div class="ct-t">WhatsApp</div><div class="ct-s">Servico</div><div class="ct-v">Nota</div><div class="ct-d">Data</div></div>';
+  var list=D.nps.slice().reverse();
+  if(q){var f=q.toLowerCase();list=list.filter(function(r){return(r.nome||"").toLowerCase().includes(f)||(r.whatsapp||"").includes(f)})}
+  list.forEach(function(r){var c=r.nota>=9?"var(--z-nps-green)":r.nota>=7?"var(--z-nps-yellow)":"var(--z-nps-red)";
+  h+='<div class="ct"><div class="ct-n">'+(r.nome||"-")+'</div><div class="ct-t">'+(r.whatsapp||"-")+'</div><div class="ct-s">'+(r.servico?r.servico.split(" \u2014 ")[0].split(" - ")[0]:"-")+'</div><div class="ct-v"><span class="ct-pill" style="background:'+c+'">'+r.nota+'</span></div><div class="ct-d">'+(r.data||"-")+'</div></div>'});
+  document.getElementById("ctBox").innerHTML=h;
+}
+document.getElementById("srcCt").addEventListener("input",function(){renderContacts(this.value)});
+
+// ══ EDITOR DE PESQUISAS ══
+var BASE_URL="https://zoeharus-art.github.io/nps-zeluz";
+
+// Pesquisas fixas (fallback se Sheets nao tem aba Pesquisas)
+var PESQUISAS_FIXAS=[
+  {nome:"Banho Dermoprotetor Z"+String.fromCharCode(234)+"luz",parametro:"banho",ativa:"Sim"},
+  {nome:"Trimming (Tosa) Z"+String.fromCharCode(234)+"luz",parametro:"tosa-mary",ativa:"Sim"},
+  {nome:"Tosa Dermoprotetora Z"+String.fromCharCode(234)+"luz",parametro:"tosa-paloma",ativa:"Sim"},
+  {nome:"Trimming/Handstripping Z"+String.fromCharCode(234)+"luz",parametro:"trimming-terrier",ativa:"Sim"},
+  {nome:"Trimming Golden Z"+String.fromCharCode(234)+"luz",parametro:"trimming-golden",ativa:"Sim"},
+  {nome:"Atendimento Veterin"+String.fromCharCode(225)+"rio Z"+String.fromCharCode(234)+"luz",parametro:"veterinario",ativa:"Sim"},
+  {nome:"Auaul"+String.fromCharCode(226)+"ndia Z"+String.fromCharCode(234)+"luz",parametro:"hospedagem",ativa:"Sim"},
+  {nome:"DayCare Z"+String.fromCharCode(234)+"luz",parametro:"daycare",ativa:"Sim"}
+];
+
+document.getElementById("btnNovaPesq").addEventListener("click",function(){
+  document.getElementById("formPesq").style.display="block";
+  document.getElementById("linkGerado").style.display="none";
+  document.getElementById("inpNomePesq").value="";
+  document.getElementById("inpIntro").value="Queremos ouvir você. Sua avaliação nos ajuda a melhorar continuamente.";
+  document.getElementById("inpNomePesq").focus();
+});
+document.getElementById("btnCancelarPesq").addEventListener("click",function(){
+  document.getElementById("formPesq").style.display="none";
+});
+
+document.getElementById("btnSalvarPesq").addEventListener("click",async function(){
+  var nome=document.getElementById("inpNomePesq").value.trim();
+  var intro=document.getElementById("inpIntro").value.trim();
+  if(!nome){document.getElementById("inpNomePesq").style.borderColor="var(--z-nps-red)";return}
+  var param=nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+
+  this.textContent="Criando...";this.disabled=true;
+  try{
+    await fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify({tipo:"nova_pesquisa",nome_pesquisa:nome,parametro:param,texto_intro:intro})});
+  }catch(e){}
+
+  var link=BASE_URL+"?servico="+param;
+  document.getElementById("linkUrl").value=link;
+  document.getElementById("linkGerado").style.display="block";
+  this.textContent="Criar pesquisa";this.disabled=false;
+
+  // Atualizar lista
+  setTimeout(function(){init()},1500);
+});
+
+document.getElementById("btnCopiarLink").addEventListener("click",function(){
+  var inp=document.getElementById("linkUrl");
+  navigator.clipboard.writeText(inp.value);
+  this.textContent="Copiado!";
+  var btn=this;setTimeout(function(){btn.textContent="Copiar"},2000);
+});
+
+init();
+</script>
+</body>
+</html>
