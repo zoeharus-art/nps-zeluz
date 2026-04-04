@@ -3,334 +3,266 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Painel NPS Zêluz — Links e Mensagens</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Painel NPS — Pesquisa de Satisfação</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--z-gold:#DEB428;--z-gold-hover:#C9A220;--z-gold-10:rgba(222,180,40,0.10);--z-gold-20:rgba(222,180,40,0.20);--z-blue:#234D67;--z-blue-85:rgba(35,77,103,0.85);--z-blue-70:rgba(35,77,103,0.70);--z-blue-50:rgba(35,77,103,0.50);--z-blue-10:rgba(35,77,103,0.10);--z-blue-06:rgba(35,77,103,0.06);--z-cream:#FFFDF6;--z-white:#FFFFFF;--z-font:'Poppins',system-ui,sans-serif;--z-accent:'Cormorant Garamond',Georgia,serif;--z-radius:16px;--z-radius-sm:10px;--z-shadow-sm:0 2px 8px rgba(35,77,103,0.06);--z-shadow-md:0 4px 20px rgba(35,77,103,0.08);--z-ease:cubic-bezier(0.4,0,0.2,1);--z-green:#3BAF6E}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--z-font);background:var(--z-cream);color:var(--z-blue-85);line-height:1.6}
+:root{
+  --z-gold:#DEB428;--z-gold-hover:#C9A220;--z-gold-light:#E5C353;
+  --z-gold-wash-05:rgba(222,180,40,.05);--z-gold-wash-08:rgba(222,180,40,.08);
+  --z-gold-wash-12:rgba(222,180,40,.12);--z-gold-wash-20:rgba(222,180,40,.20);
+  --z-blue:#234D67;--z-blue-muted:rgba(35,77,103,.60);
+  --z-blue-85:rgba(35,77,103,.85);--z-blue-70:rgba(35,77,103,.70);
+  --z-blue-50:rgba(35,77,103,.50);--z-blue-06:rgba(35,77,103,.06);
+  --z-cream:#FFFDF6;--z-white:#FFFFFF;--z-black:#1D1E1C;
+  --z-gray-100:#F7F7F5;--z-gray-200:#EEEDE9;--z-gray-300:#DDDCD8;
+  --z-gray-400:#B5B4B0;--z-gray-500:#8A8985;
+  --z-green:#3BAF6E;
+  --shadow-sm:0 1px 3px rgba(35,77,103,.06),0 1px 2px rgba(35,77,103,.04);
+  --shadow-md:0 4px 12px rgba(35,77,103,.08),0 2px 4px rgba(35,77,103,.04);
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-full:999px;
+  --font:'Poppins',-apple-system,sans-serif;
+  --font-accent:'Cormorant Garamond',Georgia,serif;
+}
+html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--z-cream);color:var(--z-blue-85);line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:linear-gradient(180deg,rgba(222,180,40,.08) 0%,rgba(222,180,40,.02) 30%,transparent 50%,rgba(222,180,40,.04) 100%);pointer-events:none;z-index:0}
+.watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;opacity:.02;pointer-events:none;z-index:0}
 
-.header{text-align:center;padding:28px 20px 20px;border-bottom:1px solid var(--z-gold-20)}
-.header h1{font-family:var(--z-accent);font-size:28px;font-weight:700;color:var(--z-blue)}
-.header p{font-size:13px;color:var(--z-blue-50);margin-top:4px}
+/* ── HEADER ── */
+.header{text-align:center;padding:36px 20px 28px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,var(--z-gold-wash-05) 0%,transparent 60%);pointer-events:none}
+.header-symbol{height:64px;margin-bottom:8px;position:relative;filter:drop-shadow(0 2px 12px rgba(35,77,103,.06))}
+.header h1{font-family:var(--font);font-size:24px;font-weight:700;color:var(--z-blue);position:relative}
+.header p{font-size:13px;color:var(--z-gray-500);margin-top:4px;position:relative}
+.header-line{width:60px;height:3px;background:linear-gradient(90deg,var(--z-gold),var(--z-gold-light));margin:12px auto 0;border-radius:var(--radius-full);position:relative}
+.selo-carimbo{position:absolute;right:16px;top:50%;transform:translateY(-50%) rotate(8deg);height:200px;opacity:.06;pointer-events:none}
 
-.container{max-width:700px;margin:0 auto;padding:0 20px 40px}
+/* ── CONTAINER ── */
+.container{max-width:720px;margin:0 auto;padding:0 20px 40px;position:relative}
 
-/* Tabs */
-.tabs{display:flex;gap:0;margin:24px 0 0;border-bottom:2px solid var(--z-blue-06)}
-.tab{flex:1;padding:12px 8px;text-align:center;font-size:14px;font-weight:600;color:var(--z-blue-50);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s var(--z-ease)}
+/* ── TABS ── */
+.tabs{display:flex;gap:0;margin:24px 0 0;border-bottom:2px solid var(--z-gray-200)}
+.tab{flex:1;padding:14px 8px;text-align:center;font-size:14px;font-weight:600;color:var(--z-gray-400);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s}
 .tab:hover{color:var(--z-blue)}
 .tab.active{color:var(--z-gold);border-bottom-color:var(--z-gold)}
-
-.tab-content{display:none;animation:fadeIn 0.3s var(--z-ease)}
+.tab-content{display:none;animation:fadeIn .3s ease}
 .tab-content.active{display:block}
-@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+@keyframes fadeIn{0%{opacity:0;transform:translateY(4px)}100%{opacity:1;transform:translateY(0)}}
 
-/* Cards */
-.card{background:var(--z-white);border-radius:var(--z-radius);padding:20px;margin-top:16px;box-shadow:var(--z-shadow-sm);border:1px solid var(--z-blue-06)}
-.card-title{font-size:15px;font-weight:700;color:var(--z-blue);margin-bottom:4px}
-.card-sub{font-size:12px;color:var(--z-blue-50);margin-bottom:12px}
+/* ── CARDS (DS v7) ── */
+.card{background:var(--z-white);border-radius:var(--radius-lg);padding:22px;margin-top:16px;box-shadow:var(--shadow-sm);border-top:2px solid rgba(222,180,40,.15);transition:all .25s}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-title{font-size:16px;font-weight:700;color:var(--z-blue);margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--z-gray-500);margin-bottom:12px}
 
-/* Link row */
-.link-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--z-cream);border-radius:var(--z-radius-sm);margin-bottom:8px;border:1px solid var(--z-blue-06)}
-.link-label{font-size:13px;font-weight:600;color:var(--z-blue);min-width:100px;flex-shrink:0}
-.link-url{font-size:12px;color:var(--z-blue-70);word-break:break-all;flex:1}
-.btn-copy{
-  padding:6px 14px;border:none;border-radius:8px;
-  background:var(--z-gold);color:var(--z-white);
-  font-family:var(--z-font);font-size:12px;font-weight:600;
-  cursor:pointer;transition:all 0.2s var(--z-ease);flex-shrink:0;
-  white-space:nowrap;
-}
-.btn-copy:hover{background:var(--z-gold-hover);transform:translateY(-1px)}
-.btn-copy.copied{background:var(--z-green)}
+/* ── LINK ROW ── */
+.link-row{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--z-gray-100);border-radius:var(--radius-md);margin-bottom:8px;border:1px solid var(--z-gray-200);transition:all .2s}
+.link-row:hover{border-color:var(--z-gold-wash-20);box-shadow:var(--shadow-sm)}
+.link-label{font-size:13px;font-weight:600;color:var(--z-blue);min-width:110px;flex-shrink:0}
+.link-url{font-size:11px;color:var(--z-blue-70);word-break:break-all;flex:1}
+.btn-copy{padding:8px 16px;border:none;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--z-gold),var(--z-gold-light));color:var(--z-white);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;flex-shrink:0;white-space:nowrap;box-shadow:0 2px 6px rgba(222,180,40,.2)}
+.btn-copy:hover{box-shadow:0 4px 12px rgba(222,180,40,.3);transform:translateY(-1px)}
+.btn-copy.copied{background:var(--z-green);box-shadow:0 2px 6px rgba(59,175,110,.2)}
 
-/* Mensagem WhatsApp */
-.msg-box{position:relative}
-.msg-text{
-  font-size:13px;color:var(--z-blue-85);line-height:1.7;
-  padding:14px;background:var(--z-cream);border-radius:var(--z-radius-sm);
-  border:1px solid var(--z-blue-06);white-space:pre-line;
-}
-.msg-copy{
-  display:block;width:100%;margin-top:8px;padding:10px;
-  border:none;border-radius:var(--z-radius-sm);
-  background:var(--z-gold);color:var(--z-white);
-  font-family:var(--z-font);font-size:13px;font-weight:600;
-  cursor:pointer;transition:all 0.2s var(--z-ease);
-}
-.msg-copy:hover{background:var(--z-gold-hover)}
+/* ── MSG BOX ── */
+.msg-text{font-size:13px;color:var(--z-blue-85);line-height:1.7;padding:16px;background:var(--z-gray-100);border-radius:var(--radius-md);border:1px solid var(--z-gray-200);white-space:pre-line}
+.msg-copy{display:block;width:100%;margin-top:10px;padding:12px;border:none;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--z-gold),var(--z-gold-light));color:var(--z-white);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(222,180,40,.25)}
+.msg-copy:hover{box-shadow:0 4px 16px rgba(222,180,40,.35);transform:translateY(-1px)}
 .msg-copy.copied{background:var(--z-green)}
 
-/* Timing */
-.timing{display:flex;justify-content:space-between;padding:8px 12px;font-size:12px;border-bottom:1px solid var(--z-blue-06)}
+/* ── TIMING / REGRAS ── */
+.timing{display:flex;justify-content:space-between;padding:10px 14px;font-size:13px;border-bottom:1px solid var(--z-gray-200);transition:background .15s}
+.timing:hover{background:var(--z-gold-wash-05)}
 .timing:last-child{border-bottom:none}
 .timing-service{font-weight:600;color:var(--z-blue)}
-.timing-when{color:var(--z-blue-70)}
-
-/* Regras */
-.rule{display:flex;gap:8px;padding:8px 0;font-size:13px;color:var(--z-blue-70);border-bottom:1px solid var(--z-blue-06)}
+.timing-when{color:var(--z-blue-70);text-align:right}
+.rule{display:flex;gap:10px;padding:10px 0;font-size:13px;color:var(--z-blue-70);border-bottom:1px solid var(--z-gray-200)}
 .rule:last-child{border-bottom:none}
-.rule-icon{font-size:14px;flex-shrink:0}
+.rule-icon{font-size:14px;flex-shrink:0;font-weight:700;color:var(--z-gold)}
 
-/* Footer */
-.footer{text-align:center;padding:24px 20px;border-top:1px solid var(--z-gold-10);margin-top:32px;font-size:12px;color:var(--z-blue-50)}
+/* ── FOOTER ── */
+.foot{text-align:center;padding:40px 24px;margin-top:32px;border-top:1px solid var(--z-gold-wash-08)}
+.foot-link{display:block;text-decoration:none;transition:opacity .2s}
+.foot-link:hover{opacity:.8}
+.foot-k{height:64px;width:auto;margin-bottom:8px}
+.foot-row{display:flex;align-items:center;justify-content:center;gap:12px;font-size:16px;color:rgba(35,77,103,.50);margin-bottom:4px}
+.foot-by{font-family:var(--font-accent);font-size:18px;font-style:italic;color:rgba(35,77,103,.50)}
+.foot-by .tp{color:var(--z-gold);font-style:normal;font-weight:700}
+.foot-sl{display:block;margin-top:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(35,77,103,.45);font-weight:400;text-decoration:none}
+
+@media(max-width:600px){.link-row{flex-direction:column;align-items:stretch;gap:6px}.link-label{min-width:auto}.timing{flex-direction:column;gap:2px}.selo-carimbo{height:120px;right:8px}.header-symbol{height:48px}}
 </style>
 </head>
 <body>
 
+<img class="watermark" src="https://raw.githubusercontent.com/zoeharus-art/zeluz-central/master/simbolo.svg" alt="">
+
 <div class="header">
-  <h1>Painel NPS Zeluz</h1>
+  <img class="selo-carimbo" src="https://raw.githubusercontent.com/zoeharus-art/zeluz-central/master/selo-carimbo.png" alt="">
+  <img class="header-symbol" src="https://raw.githubusercontent.com/zoeharus-art/zeluz-central/master/simbolo.svg" alt="">
+  <h1>Painel NPS — Pesquisa de Satisfação</h1>
   <p>Links, mensagens e regras de uso</p>
+  <div class="header-line"></div>
 </div>
 
 <div class="container">
 
-  <!-- TABS -->
   <div class="tabs">
     <div class="tab active" data-tab="links">Links</div>
     <div class="tab" data-tab="mensagens">Mensagens WhatsApp</div>
     <div class="tab" data-tab="regras">Regras e Timing</div>
   </div>
 
-  <!-- ====== TAB 1: LINKS ====== -->
+  <!-- TAB 1: LINKS -->
   <div class="tab-content active" id="tab-links">
-
     <div class="card">
       <div class="card-title">Links por serviço</div>
       <div class="card-sub">Clique em "Copiar" para copiar o link do serviço desejado.</div>
 
-      <div class="link-row">
-        <span class="link-label">Banho Dermoprotetor</span>
-        <span class="link-url">&#x1F449; https://tinyurl.com/23cj8lpr
-(S&#243; clicar no link - r&#225;pido e seguro)</span>
-        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/23cj8lpr
-(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
-      </div>
-      <div class="link-row">
-        <span class="link-label">Tosa M</span>
-        <span class="link-url">&#x1F449; https://tinyurl.com/28ygy2qt
-(S&#243; clicar no link - r&#225;pido e seguro)</span>
-        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/28ygy2qt
-(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
-      </div>
-      <div class="link-row">
-        <span class="link-label">Tosa P</span>
-        <span class="link-url">&#x1F449; https://tinyurl.com/299l4pye
-(S&#243; clicar no link - r&#225;pido e seguro)</span>
-        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/299l4pye
-(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
-      </div>
-      <div class="link-row">
-        <span class="link-label">Trimming/Handstripping</span>
-        <span class="link-url">&#x1F449; https://tinyurl.com/2435beug
-(S&#243; clicar no link - r&#225;pido e seguro)</span>
-        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2435beug
-(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
-      </div>
-      <div class="link-row">
-        <span class="link-label">Trimming Golden</span>
-        <span class="link-url">&#x1F449; https://tinyurl.com/2y64dtyt
-(S&#243; clicar no link - r&#225;pido e seguro)</span>
-        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2y64dtyt
-(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
-      </div>
-      <div class="link-row">
-        <span class="link-label">Veterinário</span>
-        <span class="link-url">&#x1F449; https://tinyurl.com/2bwqnnn9
-(S&#243; clicar no link - r&#225;pido e seguro)</span>
-        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2bwqnnn9
-(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
-      </div>
-      <div class="link-row">
-        <span class="link-label">Auaulândia</span>
-        <span class="link-url">&#x1F449; https://tinyurl.com/2ygdv9sh
-(S&#243; clicar no link - r&#225;pido e seguro)</span>
-        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2ygdv9sh
-(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
-      </div>
-      <div class="link-row">
-        <span class="link-label">DayCare</span>
-        <span class="link-url">&#x1F449; https://tinyurl.com/22ojyw32
-(S&#243; clicar no link - r&#225;pido e seguro)</span>
-        <button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/22ojyw32
-(S&#243; clicar no link - r&#225;pido e seguro)')">Copiar</button>
-      </div>
+      <div class="link-row"><span class="link-label">Banho Dermoprotetor</span><span class="link-url">&#x1F449; https://tinyurl.com/23cj8lpr
+(Só clicar no link - rápido e seguro)</span><button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/23cj8lpr\n(Só clicar no link - rápido e seguro)')">Copiar</button></div>
+      <div class="link-row"><span class="link-label">Tosa M</span><span class="link-url">&#x1F449; https://tinyurl.com/28ygy2qt
+(Só clicar no link - rápido e seguro)</span><button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/28ygy2qt\n(Só clicar no link - rápido e seguro)')">Copiar</button></div>
+      <div class="link-row"><span class="link-label">Tosa P</span><span class="link-url">&#x1F449; https://tinyurl.com/299l4pye
+(Só clicar no link - rápido e seguro)</span><button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/299l4pye\n(Só clicar no link - rápido e seguro)')">Copiar</button></div>
+      <div class="link-row"><span class="link-label">Trimming/Handstripping</span><span class="link-url">&#x1F449; https://tinyurl.com/2435beug
+(Só clicar no link - rápido e seguro)</span><button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2435beug\n(Só clicar no link - rápido e seguro)')">Copiar</button></div>
+      <div class="link-row"><span class="link-label">Trimming Golden</span><span class="link-url">&#x1F449; https://tinyurl.com/2y64dtyt
+(Só clicar no link - rápido e seguro)</span><button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2y64dtyt\n(Só clicar no link - rápido e seguro)')">Copiar</button></div>
+      <div class="link-row"><span class="link-label">Veterinário</span><span class="link-url">&#x1F449; https://tinyurl.com/2bwqnnn9
+(Só clicar no link - rápido e seguro)</span><button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2bwqnnn9\n(Só clicar no link - rápido e seguro)')">Copiar</button></div>
+      <div class="link-row"><span class="link-label">AuAulândia</span><span class="link-url">&#x1F449; https://tinyurl.com/2ygdv9sh
+(Só clicar no link - rápido e seguro)</span><button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/2ygdv9sh\n(Só clicar no link - rápido e seguro)')">Copiar</button></div>
+      <div class="link-row"><span class="link-label">DayCare</span><span class="link-url">&#x1F449; https://tinyurl.com/22ojyw32
+(Só clicar no link - rápido e seguro)</span><button class="btn-copy" onclick="copiar(this,'&#x1F449; https://tinyurl.com/22ojyw32\n(Só clicar no link - rápido e seguro)')">Copiar</button></div>
     </div>
 
-    <div class="card">
-      <div class="card-title">Dados e relatórios</div>
-      <div style="font-size:13px;color:var(--z-blue-70);padding:8px 0">O acesso à planilha e ao dashboard está disponível apenas na área de gestão (com senha).</div>
-    </div>
   </div>
 
-  <!-- ====== TAB 2: MENSAGENS WHATSAPP ====== -->
+  <!-- TAB 2: MENSAGENS -->
   <div class="tab-content" id="tab-mensagens">
+    <div class="card msg-box"><div class="card-title">Banho Dermoprotetor</div><div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte, junto com o peso.</div><div class="msg-text">Olá, [NOME DO TUTOR]! Como você está? &#x1F60A;
 
-    <div class="card msg-box">
-      <div class="card-title">Banho Dermoprotetor</div>
-      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte, junto com o peso.</div>
-      <div class="msg-text">Ol&#225;, [NOME DO TUTOR]! Como voc&#234; est&#225;? &#x1F60A;
+E o(a) [NOME DO FILHOt], ainda relaxado(a) depois do SPA Dermoprotetor Zêluz? &#x1F43E;&#x2728;
 
-E o(a) [NOME DO FILHOt], ainda relaxado(a) depois do SPA Dermoprotetor Z&#234;luz? &#x1F43E;&#x2728;
+A opinião de vocês é o que guia cada detalhe do nosso Cuidado ÚNICO — e por isso, gostaríamos muito de saber como foi a experiência.
 
-A opini&#227;o de voc&#234;s &#233; o que guia cada detalhe do nosso Cuidado &#218;NICO &#8212; e por isso, gostar&#237;amos muito de saber como foi a experi&#234;ncia.
+São menos de 30 segundos. Promessa. &#x1F64F;
+&#x1F449; https://tinyurl.com/23cj8lpr (Só clicar no link - rápido e seguro)
 
-S&#227;o menos de 30 segundos. Promessa. &#x1F64F;
-&#x1F449; https://tinyurl.com/23cj8lpr (S&#243; clicar no link - r&#225;pido e seguro)
-
-Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de n&#243;s. &#x1F49B;
+Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de nós. &#x1F49B;
 
 Com carinho,
-Time Z&#234;luz &#x1F43E;</div>
-      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
-    </div>
+Time Zêluz &#x1F43E;</div><button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button></div>
 
-    <div class="card msg-box">
-      <div class="card-title">Tosa M</div>
-      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. Cliente v&#234;: "Trimming (Tosa) Z&#234;luz". Sheets recebe: tosa-mary.</div>
-      <div class="msg-text">Ol&#225;, [NOME DO TUTOR]! Como voc&#234; est&#225;? &#x1F60A;
+    <div class="card msg-box"><div class="card-title">Tosa M</div><div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte.</div><div class="msg-text">Olá, [NOME DO TUTOR]! Como você está? &#x1F60A;
 
-E o(a) [NOME DO FILHOt], ainda lindo(a) depois da Tosa Dermoprotetora Z&#234;luz? &#x1F43E;&#x2728;
+E o(a) [NOME DO FILHOt], ainda lindo(a) depois da Tosa Dermoprotetora Zêluz? &#x1F43E;&#x2728;
 
-A opini&#227;o de voc&#234;s &#233; o que guia cada detalhe do nosso Cuidado &#218;NICO &#8212; e por isso, gostar&#237;amos muito de saber como foi a experi&#234;ncia.
+A opinião de vocês é o que guia cada detalhe do nosso Cuidado ÚNICO — e por isso, gostaríamos muito de saber como foi a experiência.
 
-S&#227;o menos de 30 segundos. Promessa. &#x1F64F;
-&#x1F449; https://tinyurl.com/28ygy2qt (S&#243; clicar no link - r&#225;pido e seguro)
+São menos de 30 segundos. Promessa. &#x1F64F;
+&#x1F449; https://tinyurl.com/28ygy2qt (Só clicar no link - rápido e seguro)
 
-Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de n&#243;s. &#x1F49B;
+Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de nós. &#x1F49B;
 
 Com carinho,
-Time Z&#234;luz &#x1F43E;</div>
-      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
-    </div>
+Time Zêluz &#x1F43E;</div><button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button></div>
 
-    <div class="card msg-box">
-      <div class="card-title">Tosa P</div>
-      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. Cliente v&#234;: "Tosa Dermoprotetora Z&#234;luz". Sheets recebe: tosa-paloma.</div>
-      <div class="msg-text">Ol&#225;, [NOME DO TUTOR]! Como voc&#234; est&#225;? &#x1F60A;
+    <div class="card msg-box"><div class="card-title">Tosa P</div><div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte.</div><div class="msg-text">Olá, [NOME DO TUTOR]! Como você está? &#x1F60A;
 
-E o(a) [NOME DO FILHOt], ainda lindo(a) depois da Tosa Dermoprotetora Z&#234;luz? &#x1F43E;&#x2728;
+E o(a) [NOME DO FILHOt], ainda lindo(a) depois da Tosa Dermoprotetora Zêluz? &#x1F43E;&#x2728;
 
-A opini&#227;o de voc&#234;s &#233; o que guia cada detalhe do nosso Cuidado &#218;NICO &#8212; e por isso, gostar&#237;amos muito de saber como foi a experi&#234;ncia.
+A opinião de vocês é o que guia cada detalhe do nosso Cuidado ÚNICO — e por isso, gostaríamos muito de saber como foi a experiência.
 
-S&#227;o menos de 30 segundos. Promessa. &#x1F64F;
-&#x1F449; https://tinyurl.com/299l4pye (S&#243; clicar no link - r&#225;pido e seguro)
+São menos de 30 segundos. Promessa. &#x1F64F;
+&#x1F449; https://tinyurl.com/299l4pye (Só clicar no link - rápido e seguro)
 
-Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de n&#243;s. &#x1F49B;
+Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de nós. &#x1F49B;
 
 Com carinho,
-Time Z&#234;luz &#x1F43E;</div>
-      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
-    </div>
+Time Zêluz &#x1F43E;</div><button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button></div>
 
-    <div class="card msg-box">
-      <div class="card-title">Trimming/Handstripping</div>
-      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte.</div>
-      <div class="msg-text">Ol&#225;, [NOME DO TUTOR]! Como voc&#234; est&#225;? &#x1F60A;
+    <div class="card msg-box"><div class="card-title">Trimming/Handstripping</div><div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte.</div><div class="msg-text">Olá, [NOME DO TUTOR]! Como você está? &#x1F60A;
 
-E o(a) [NOME DO FILHOt], ainda impec&#225;vel depois do Trimming Z&#234;luz? &#x1F43E;&#x2728;
+E o(a) [NOME DO FILHOt], ainda impecável depois do Trimming Zêluz? &#x1F43E;&#x2728;
 
-A opini&#227;o de voc&#234;s &#233; o que guia cada detalhe do nosso Cuidado &#218;NICO &#8212; e por isso, gostar&#237;amos muito de saber como foi a experi&#234;ncia.
+A opinião de vocês é o que guia cada detalhe do nosso Cuidado ÚNICO — e por isso, gostaríamos muito de saber como foi a experiência.
 
-S&#227;o menos de 30 segundos. Promessa. &#x1F64F;
-&#x1F449; https://tinyurl.com/2435beug (S&#243; clicar no link - r&#225;pido e seguro)
+São menos de 30 segundos. Promessa. &#x1F64F;
+&#x1F449; https://tinyurl.com/2435beug (Só clicar no link - rápido e seguro)
 
-Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de n&#243;s. &#x1F49B;
+Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de nós. &#x1F49B;
 
 Com carinho,
-Time Z&#234;luz &#x1F43E;</div>
-      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
-    </div>
+Time Zêluz &#x1F43E;</div><button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button></div>
 
-    <div class="card msg-box">
-      <div class="card-title">Trimming Golden</div>
-      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte.</div>
-      <div class="msg-text">Ol&#225;, [NOME DO TUTOR]! Como voc&#234; est&#225;? &#x1F60A;
+    <div class="card msg-box"><div class="card-title">Trimming Golden</div><div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte.</div><div class="msg-text">Olá, [NOME DO TUTOR]! Como você está? &#x1F60A;
 
-E o(a) [NOME DO FILHOt], ainda impec&#225;vel depois do Trimming Golden Z&#234;luz? &#x1F43E;&#x2728;
+E o(a) [NOME DO FILHOt], ainda impecável depois do Trimming Golden Zêluz? &#x1F43E;&#x2728;
 
-A opini&#227;o de voc&#234;s &#233; o que guia cada detalhe do nosso Cuidado &#218;NICO &#8212; e por isso, gostar&#237;amos muito de saber como foi a experi&#234;ncia.
+A opinião de vocês é o que guia cada detalhe do nosso Cuidado ÚNICO — e por isso, gostaríamos muito de saber como foi a experiência.
 
-S&#227;o menos de 30 segundos. Promessa. &#x1F64F;
-&#x1F449; https://tinyurl.com/2y64dtyt (S&#243; clicar no link - r&#225;pido e seguro)
+São menos de 30 segundos. Promessa. &#x1F64F;
+&#x1F449; https://tinyurl.com/2y64dtyt (Só clicar no link - rápido e seguro)
 
-Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de n&#243;s. &#x1F49B;
+Seu feedback garante que o(a) [NOME DO FILHOt] continue recebendo sempre o melhor de nós. &#x1F49B;
 
 Com carinho,
-Time Z&#234;luz &#x1F43E;</div>
-      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
-    </div>
+Time Zêluz &#x1F43E;</div><button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button></div>
 
-    <div class="card msg-box">
-      <div class="card-title">Veterin&#225;rio</div>
-      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. Perguntar como o FILHOt est&#225;.</div>
-      <div class="msg-text">Ol&#225;, [NOME DO TUTOR]! Tudo bem? &#x1F60A;
+    <div class="card msg-box"><div class="card-title">Veterinário</div><div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. Perguntar como o FILHOt está.</div><div class="msg-text">Olá, [NOME DO TUTOR]! Tudo bem? &#x1F60A;
 E o(a) [NOME DO FILHOt]? &#x1F43E;&#x1F49A;
 
-Cuidar da sa&#250;de do seu FILHOt &#233; uma das coisas mais importantes que fazemos aqui &#8212; e saber como foi a experi&#234;ncia de voc&#234;s nos guia pra fazermos cada vez melhor.
+Cuidar da saúde do seu FILHOt é uma das coisas mais importantes que fazemos aqui — e saber como foi a experiência de vocês nos guia pra fazermos cada vez melhor.
 
-S&#227;o menos de 30 segundos. S&#243; um clique. R&#225;pido e Seguro! &#x1F64F;
+São menos de 30 segundos. Só um clique. Rápido e Seguro! &#x1F64F;
 
 &#x1F449; https://tinyurl.com/2bwqnnn9
 
-Seu feedback garante que o(a) [NOME DO FILHOt] continue tendo sempre o melhor cuidado na Z&#234;luz. &#x1F49B;
+Seu feedback garante que o(a) [NOME DO FILHOt] continue tendo sempre o melhor cuidado na Zêluz. &#x1F49B;
 
 Com carinho,
-Time Z&#234;luz &#x1F43E;</div>
-      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
-    </div>
+Time Zêluz &#x1F43E;</div><button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button></div>
 
-    <div class="card msg-box">
-      <div class="card-title">Auaul&#226;ndia (Hospedagem)</div>
-      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte ao retorno, com o peso.</div>
-      <div class="msg-text">Ol&#225;, [NOME DO TUTOR]! Tudo bem? &#x1F60A;
-E o(a) [NOME DO FILHOt]? Estamos com saudades! &#x1F43E;&#x1F49B; J&#225; te contou tudo sobre as aventuras na Au&#193;ul&#226;ndia? &#x1F415;&#x1F415;
+    <div class="card msg-box"><div class="card-title">AuAulândia (Hospedagem)</div><div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte ao retorno, com o peso.</div><div class="msg-text">Olá, [NOME DO TUTOR]! Tudo bem? &#x1F60A;
+E o(a) [NOME DO FILHOt]? Estamos com saudades! &#x1F43E;&#x1F49B; Já te contou tudo sobre as aventuras na AuAulândia? &#x1F415;&#x1F415;
 
-Foi uma alegria cuidar e divertir com ele na sua aus&#234;ncia &#8212; e saber como foi essa experi&#234;ncia pra voc&#234;s &#233; muito importante pra gente.
+Foi uma alegria cuidar e divertir com ele na sua ausência — e saber como foi essa experiência pra vocês é muito importante pra gente.
 
-S&#227;o menos de 30 segundos. S&#243; um clique. R&#225;pido e Seguro! &#x1F64F;
+São menos de 30 segundos. Só um clique. Rápido e Seguro! &#x1F64F;
 
 &#x1F449; https://tinyurl.com/2ygdv9sh
 
 Seu feedback garante que cada estadia seja ainda mais aconchegante para o seu FILHOt. &#x1F49B;
 
 Com carinho,
-Time Z&#234;luz &#x1F43E;</div>
-      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
-    </div>
+Time Zêluz &#x1F43E;</div><button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button></div>
 
-    <div class="card msg-box">
-      <div class="card-title">DayCare</div>
-      <div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. S&#243; para clientes com +1 m&#234;s de Z&#234;luz.</div>
-      <div class="msg-text">Ol&#225;, [NOME DO TUTOR]! Tudo bem? &#x1F60A;
+    <div class="card msg-box"><div class="card-title">DayCare</div><div class="card-sub" style="margin-bottom:8px;font-size:11px">Enviar no dia seguinte. Só para clientes com +1 mês.</div><div class="msg-text">Olá, [NOME DO TUTOR]! Tudo bem? &#x1F60A;
 
-O DayCare existe pra ser um segundo lar pro seu FILHOt &#8212; e saber o que voc&#234;s t&#234;m achado da experi&#234;ncia de voc&#234;s aqui &#233; o que nos guia pra fazer isso cada vez melhor.
+O DayCare existe pra ser um segundo lar pro seu FILHOt — e saber o que vocês têm achado da experiência aqui é o que nos guia pra fazer isso cada vez melhor.
 
-S&#227;o menos de 30 segundos. S&#243; um clique. R&#225;pido e Seguro! &#x1F64F;
+São menos de 30 segundos. Só um clique. Rápido e Seguro! &#x1F64F;
 &#x1F449; https://tinyurl.com/22ojyw32
 
-Seu feedback garante que o(a) [NOME DO FILHOt] continue tendo os melhores dias na Z&#234;luz. &#x1F49B;
+Seu feedback garante que o(a) [NOME DO FILHOt] continue tendo os melhores dias na Zêluz. &#x1F49B;
 
 Com carinho,
-Time Z&#234;luz &#x1F43E;</div>
-      <button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button>
-    </div>
-
+Time Zêluz &#x1F43E;</div><button class="msg-copy" onclick="copiarMsg(this)">Copiar mensagem</button></div>
   </div>
 
-  <!-- ====== TAB 3: REGRAS E TIMING ====== -->
+  <!-- TAB 3: REGRAS -->
   <div class="tab-content" id="tab-regras">
-
     <div class="card">
       <div class="card-title">Quando enviar a pesquisa</div>
       <div class="card-sub">Timing ideal por serviço</div>
       <div class="timing"><span class="timing-service">Banho / Tosa / Trimming</span><span class="timing-when">Dia seguinte — junto com o peso do FILHOt</span></div>
       <div class="timing"><span class="timing-service">Veterinário</span><span class="timing-when">1 dia depois — perguntar como o FILHOt está + pesquisa</span></div>
-      <div class="timing"><span class="timing-service">DayCare</span><span class="timing-when">Dia seguinte — só para clientes com +1 mês de Zêluz (clientes com +2 meses: enviar para todos)</span></div>
-      <div class="timing"><span class="timing-service">Auaulândia</span><span class="timing-when">Dia seguinte ao retorno — junto com o peso do FILHOt</span></div>
+      <div class="timing"><span class="timing-service">DayCare</span><span class="timing-when">Dia seguinte — só para clientes com +1 mês</span></div>
+      <div class="timing"><span class="timing-service">AuAulândia</span><span class="timing-when">Dia seguinte ao retorno — junto com o peso</span></div>
     </div>
-
     <div class="card">
       <div class="card-title">Regras importantes</div>
       <div class="rule"><span class="rule-icon">1.</span> 1 pesquisa por serviço prestado (fez 4 banhos no mês = 4 pesquisas de banho).</div>
@@ -340,68 +272,42 @@ Time Z&#234;luz &#x1F43E;</div>
       <div class="rule"><span class="rule-icon">5.</span> Detrator (nota 0 a 6): contato em até 24 horas — ouvir, entender, resolver.</div>
       <div class="rule"><span class="rule-icon">6.</span> Nunca enviar lembrete. Se não respondeu, não insistir.</div>
     </div>
-
     <div class="card">
       <div class="card-title">Como funciona o NPS</div>
       <div class="card-sub">Cálculo: NPS = % Promotores (9-10) menos % Detratores (0-6)</div>
       <div class="timing"><span class="timing-service">9-10 Promotores</span><span class="timing-when" style="color:var(--z-green)">Leais, recomendam</span></div>
       <div class="timing"><span class="timing-service">7-8 Neutros</span><span class="timing-when" style="color:#E8A825">Satisfeitos, sem entusiasmo</span></div>
       <div class="timing"><span class="timing-service">0-6 Detratores</span><span class="timing-when" style="color:#D94F4F">Insatisfeitos, risco</span></div>
-      <div style="padding:12px 0;font-size:12px;color:var(--z-blue-50)">
-        Neutros NAO entram no calculo. Meta: acima de 50 = Excelente. Acima de 75 = Classe mundial.
-      </div>
+      <div style="padding:12px 0;font-size:12px;color:var(--z-gray-500)">Neutros não entram no cálculo. Meta: acima de 50 = Excelente. Acima de 75 = Classe mundial.</div>
     </div>
-
   </div>
 
 </div>
 
-<div class="footer" style="text-align:center;padding:16px 20px 20px;border-top:1px solid rgba(222,180,40,0.1)">
-  <div style="font-size:10px;font-weight:300;color:rgba(35,77,103,0.5);margin-bottom:8px">Produzido por</div>
-  <a href="https://kairospresenca.com.br/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none">
-    <svg style="height:52px;width:auto" viewBox="50 20 160 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="fmG" x1="80" y1="28" x2="180" y2="228" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset="0.48" stop-color="#5E6CFF"/><stop offset="0.52" stop-color="#6AF2A3"/><stop offset="1" stop-color="#6AF2A3"/></linearGradient></defs>
-      <line x1="80" y1="32" x2="80" y2="224" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round"/>
-      <line x1="80" y1="128" x2="188" y2="40" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round"/>
-      <path d="M80 128 C128 152 160 188 188 220" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round" fill="none"/>
-      <circle cx="80" cy="128" r="5" fill="#081018"/><circle cx="80" cy="128" r="5" fill="none" stroke="url(#fmG)" stroke-width="2"/><circle cx="80" cy="128" r="2" fill="#F5F7F2"/>
-    </svg>
-    <svg style="height:42px;width:auto" viewBox="0 0 480 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="kwm" x1="0" y1="14" x2="480" y2="106" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset="0.5" stop-color="#6AF2A3"/><stop offset="1" stop-color="#234D67"/></linearGradient></defs>
-      <text x="0" y="88" fill="url(#kwm)" font-family="Manrope,Segoe UI,Arial,sans-serif" font-size="80" font-weight="600" letter-spacing="-2">Kair&#243;s</text>
-    </svg>
+<!-- FOOTER -->
+<div class="foot">
+  <a href="https://kairospresenca.com.br" target="_blank" class="foot-link">
+    <svg class="foot-k" viewBox="0 0 620 180" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cM" x1="30" y1="10" x2="150" y2="170" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset=".48" stop-color="#5E6CFF"/><stop offset=".52" stop-color="#6AF2A3"/><stop offset="1" stop-color="#6AF2A3"/></linearGradient><linearGradient id="cW" x1="190" y1="24" x2="500" y2="140" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset=".3" stop-color="#6AF2A3"/><stop offset="1" stop-color="#F5F7F2"/></linearGradient></defs><line x1="55" y1="18" x2="55" y2="162" stroke="url(#cM)" stroke-width="9" stroke-linecap="round"/><line x1="55" y1="90" x2="140" y2="18" stroke="url(#cM)" stroke-width="9" stroke-linecap="round"/><path d="M55 90 C93 108 120 138 140 162" stroke="url(#cM)" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="55" cy="90" r="5" fill="#FFFDF6" stroke="url(#cM)" stroke-width="2"/><circle cx="55" cy="90" r="2" fill="#5E6CFF"/><text x="190" y="118" fill="url(#cW)" font-family="Poppins,sans-serif" font-size="88" font-weight="600" letter-spacing="-3">Kair&#243;s</text></svg>
+    <div class="foot-row">
+      <span>Produzido por</span>
+      <span>|</span>
+      <span class="foot-by">by Adriana Duarte<span class="tp">.&#x27;.</span></span>
+    </div>
+    <span class="foot-sl">Inteligência Criativa para o seu Tempo</span>
   </a>
-  <div style="font-family:Poppins,sans-serif;font-size:13px;font-weight:500;color:#234D67;margin-top:6px">by Adriana Duarte<span style="color:#DEB428;font-weight:700;margin-left:1px">.'.</span></div>
-  <div style="display:block;margin-top:4px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(35,77,103,0.5);font-family:Poppins,sans-serif;font-weight:400">Intelig&#234;ncia Criativa para o seu Tempo</div>
 </div>
 
 <script>
-// Tabs
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', function() {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+    document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active')});
     this.classList.add('active');
-    document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+    document.getElementById('tab-'+this.dataset.tab).classList.add('active');
   });
 });
-
-// Copiar link
-function copiar(btn, texto) {
-  navigator.clipboard.writeText(texto);
-  btn.textContent = 'Copiado!';
-  btn.classList.add('copied');
-  setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
-}
-
-// Copiar mensagem
-function copiarMsg(btn) {
-  var texto = btn.previousElementSibling.textContent;
-  navigator.clipboard.writeText(texto);
-  btn.textContent = 'Copiado!';
-  btn.classList.add('copied');
-  setTimeout(() => { btn.textContent = 'Copiar mensagem'; btn.classList.remove('copied'); }, 2000);
-}
+function copiar(btn,texto){navigator.clipboard.writeText(texto);btn.textContent='Copiado!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copiar';btn.classList.remove('copied')},2000)}
+function copiarMsg(btn){var t=btn.previousElementSibling.textContent;navigator.clipboard.writeText(t);btn.textContent='Copiado!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copiar mensagem';btn.classList.remove('copied')},2000)}
 </script>
 </body>
 </html>
