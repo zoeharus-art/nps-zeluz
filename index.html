@@ -463,7 +463,8 @@ body{
         <div class="star" data-star="5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
       </div>
       <textarea id="zelosoComentario" placeholder="Conte o que te marcou. Um carinho especial, um cuidado que fez diferença, algo que você gostaria que ele(a) soubesse..." style="width:100%;min-height:70px;border:1.5px solid var(--z-blue-10);border-radius:10px;padding:12px;font-family:var(--z-font);font-size:14px;color:var(--z-blue);background:var(--z-cream);resize:vertical;margin-top:12px;transition:border-color 0.3s"></textarea>
-      <button class="btn-primary" id="btnZeloso" disabled>Enviar</button>
+      <div id="errZeloso" style="display:none;font-size:12px;color:var(--z-red);margin-top:6px;text-align:center">Selecione pelo menos uma estrela para enviar.</div>
+      <button class="btn-primary" id="btnZeloso">Enviar</button>
       <button class="btn-secondary" id="skipZeloso">Pular esta etapa</button>
     </div>
   </div>
@@ -727,15 +728,13 @@ document.querySelectorAll('.star').forEach(star => {
     document.querySelectorAll('.star').forEach((s, i) => {
       s.classList.toggle('lit', i < starRating);
     });
-    if (zelosoInput.value.trim().length >= 2) btnZeloso.disabled = false;
+    document.getElementById('errZeloso').style.display = 'none';
   });
 });
 
-zelosoInput.addEventListener('input', function() {
-  btnZeloso.disabled = !(this.value.trim().length >= 2 && starRating > 0);
-});
-
 btnZeloso.addEventListener('click', async function() {
+  if (zelosoInput.value.trim().length < 2) { zelosoInput.focus(); return; }
+  if (starRating === 0) { document.getElementById('errZeloso').style.display = 'block'; return; }
   const payload = {
     nome_tutor: document.getElementById('nome').value.trim(),
     zeloso: zelosoInput.value.trim(),
