@@ -467,14 +467,6 @@ body{
     </div>
   </div>
 
-  <!-- ====== FEEDBACK CONSTRUTIVO (OPCIONAL) ====== -->
-  <div class="card" id="feedbackCard" style="display:none;text-align:center;padding:28px 20px 24px">
-    <h3 style="font-family:var(--z-font);font-size:18px;font-weight:600;color:var(--z-blue);margin-bottom:6px">Tem algo que possamos melhorar?</h3>
-    <p style="font-size:13px;color:var(--z-blue-70);line-height:1.7;margin-bottom:16px">Se o atendimento não foi como esperava, nos conte. Queremos melhorar.</p>
-    <textarea id="feedbackTexto" placeholder="O que aconteceu?" style="width:100%;min-height:80px;border:1.5px solid var(--z-blue-10);border-radius:10px;padding:12px;font-family:var(--z-font);font-size:14px;color:var(--z-blue);background:var(--z-cream);resize:vertical;transition:border-color 0.3s"></textarea>
-    <button class="btn-primary" id="btnFeedback" style="margin-top:16px">Enviar</button>
-    <button class="btn-secondary" id="skipFeedback">Pular esta etapa</button>
-  </div>
 
   <!-- ====== AGRADECIMENTO ====== -->
   <div class="thankyou" id="thankyou">
@@ -764,41 +756,9 @@ btnZeloso.addEventListener('click', async function() {
   showFeedback();
 });
 
-document.getElementById('skipZeloso').addEventListener('click', showFeedback);
-
-function showFeedback() {
-  document.getElementById('zelosoCard').style.display = 'none';
-  document.getElementById('feedbackCard').style.display = 'block';
-  document.getElementById('progBar').style.width = '85%';
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-/* ============ FEEDBACK CONSTRUTIVO ============ */
-document.getElementById('btnFeedback').addEventListener('click', async function() {
-  const texto = document.getElementById('feedbackTexto').value.trim();
-  if (texto) {
-    const payload = {
-      nome_tutor: document.getElementById('nome').value.trim(),
-      feedback_construtivo: texto,
-      servico: servico.nome,
-      data: new Date().toLocaleString('pt-BR'),
-      timestamp: new Date().toISOString()
-    };
-    try {
-      await fetch('https://script.google.com/macros/s/AKfycbygzCFqfrjAbk3xaUQEXEdZip4msGqRiLeLr_XLed_cHU0JHCErEjL3Gpb8H_R42Cqw/exec', {
-        method: 'POST',
-        headers: {'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify(payload)
-      });
-    } catch(e) {}
-  }
-  showThankyou();
-});
-
-document.getElementById('skipFeedback').addEventListener('click', showThankyou);
+document.getElementById('skipZeloso').addEventListener('click', showThankyou);
 
 function showThankyou() {
-  document.getElementById('feedbackCard').style.display = 'none';
   document.getElementById('zelosoCard').style.display = 'none';
   document.getElementById('thankyou').classList.add('show');
   document.getElementById('progBar').style.width = '100%';
