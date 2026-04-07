@@ -291,24 +291,25 @@ body{
 
 /* ========== FOOTER / ASSINATURA ========== */
 .footer{
-  text-align:center;padding:16px 20px 20px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:20px 20px 24px;
   border-top:1px solid var(--z-gold-10);
   margin-top:0;
 }
-.footer-produzido{font-size:10px;font-weight:300;color:var(--z-blue-50);margin-bottom:8px}
-.footer-brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
-.footer-monogram{height:52px;width:auto}
-.footer-kairos-logo{height:42px;width:auto}
-.footer-brand a{display:flex;align-items:center;gap:10px;text-decoration:none}
-.footer-by{font-family:var(--z-font);font-size:13px;font-weight:500;color:var(--z-blue-70)}
+.footer-dev{font-size:10px;font-weight:400;color:var(--z-blue-50);margin-bottom:10px;letter-spacing:0.08em;font-family:'Manrope','Segoe UI',sans-serif}
+.footer-lockup{display:flex;align-items:center;justify-content:center;margin-bottom:8px;width:100%}
+.footer-lockup a{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.footer-monogram{height:30px;width:auto;flex-shrink:0}
+.footer-wordmark{font-family:'Manrope','Segoe UI',sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.5px;background:linear-gradient(135deg,#5E6CFF,#6AF2A3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-by{font-family:'Manrope','Segoe UI',sans-serif;font-size:12px;font-weight:500;color:var(--z-blue-70)}
 .footer-by .tripontos{
   color:var(--z-gold);font-style:normal;font-weight:700;margin-left:1px;
 }
 .footer-slogan{
-  display:block;margin-top:6px;
-  font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+  display:block;margin-top:4px;
+  font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
   color:var(--z-blue-50);
-  font-family:var(--z-font);font-weight:400;
+  font-family:'Manrope','Segoe UI',sans-serif;font-weight:400;
 }
 
 /* ========== RESPONSIVE ========== */
@@ -385,6 +386,10 @@ body{
     <label for="nome">Seu nome</label>
     <input type="text" id="nome" placeholder="Como podemos te chamar?" autocomplete="name">
     <div class="field-error" id="errNome">Por favor, preencha seu nome.</div>
+    <div class="id-gap"></div>
+    <label for="peludinho">Nome do peludinho</label>
+    <input type="text" id="peludinho" placeholder="Como se chama o seu FILHOt?" autocomplete="off">
+    <div class="field-error" id="errPeludinho">Por favor, preencha o nome do peludinho.</div>
     <div class="id-gap"></div>
     <label for="whatsapp">WhatsApp</label>
     <input type="tel" id="whatsapp" placeholder="(31) 99999-9999" autocomplete="tel" inputmode="numeric">
@@ -509,29 +514,19 @@ body{
 
 </div>
 
-<!-- FOOTER / ASSINATURA KAIRÓS -->
+<!-- FOOTER / ASSINATURA KAIRÓS — Opção 1 (Vertical Clean) -->
 <footer class="footer">
-  <div class="footer-produzido">Produzido por</div>
-  <div class="footer-brand">
+  <div class="footer-dev">Desenvolvido por</div>
+  <div class="footer-lockup">
     <a href="https://kairospresenca.com.br/" target="_blank" rel="noopener">
-    <!-- Monograma K (O Compositor) -->
-    <svg class="footer-monogram" viewBox="50 20 160 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="fmG" x1="80" y1="28" x2="180" y2="228" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#5E6CFF"/><stop offset="0.48" stop-color="#5E6CFF"/>
-          <stop offset="0.52" stop-color="#6AF2A3"/><stop offset="1" stop-color="#6AF2A3"/>
-        </linearGradient>
-      </defs>
-      <line x1="80" y1="32" x2="80" y2="224" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round"/>
-      <line x1="80" y1="128" x2="188" y2="40" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round"/>
-      <path d="M80 128 C128 152 160 188 188 220" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round" fill="none"/>
-      <circle cx="80" cy="128" r="5" fill="#081018"/><circle cx="80" cy="128" r="5" fill="none" stroke="url(#fmG)" stroke-width="2"/><circle cx="80" cy="128" r="2" fill="#F5F7F2"/>
-    </svg>
-    <!-- Wordmark Kairós -->
-    <svg class="footer-kairos-logo" viewBox="0 0 480 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="kwm" x1="0" y1="14" x2="480" y2="106" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset="0.5" stop-color="#6AF2A3"/><stop offset="1" stop-color="#234D67"/></linearGradient></defs>
-      <text x="0" y="88" fill="url(#kwm)" font-family="Manrope,Segoe UI,Arial,sans-serif" font-size="80" font-weight="600" letter-spacing="-2">Kair&#243;s</text>
-    </svg>
+      <svg class="footer-monogram" viewBox="30 10 180 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="fmG" x1="80" y1="28" x2="180" y2="228" gradientUnits="userSpaceOnUse"><stop stop-color="#5E6CFF"/><stop offset="0.48" stop-color="#5E6CFF"/><stop offset="0.52" stop-color="#6AF2A3"/><stop offset="1" stop-color="#6AF2A3"/></linearGradient></defs>
+        <line x1="80" y1="32" x2="80" y2="224" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round"/>
+        <line x1="80" y1="128" x2="188" y2="40" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round"/>
+        <path d="M80 128 C128 152 160 188 188 220" stroke="url(#fmG)" stroke-width="10" stroke-linecap="round" fill="none"/>
+        <circle cx="80" cy="128" r="5" fill="#FFFDF6"/><circle cx="80" cy="128" r="5" fill="none" stroke="url(#fmG)" stroke-width="2"/><circle cx="80" cy="128" r="2" fill="#234D67"/>
+      </svg>
+      <span class="footer-wordmark">Kair&#243;s</span>
     </a>
   </div>
   <div class="footer-by">by Adriana Duarte<span class="tripontos">.&#x27;.</span></div>
@@ -626,17 +621,25 @@ document.querySelectorAll('.nps-btn').forEach(btn => {
 function validateFields() {
   let valid = true;
   const nome = document.getElementById('nome');
+  const pelud = document.getElementById('peludinho');
   const whats = document.getElementById('whatsapp');
   const errNome = document.getElementById('errNome');
+  const errPelud = document.getElementById('errPeludinho');
   const errWhats = document.getElementById('errWhatsapp');
 
   // Reset
   nome.classList.remove('error'); errNome.classList.remove('show');
+  pelud.classList.remove('error'); errPelud.classList.remove('show');
   whats.classList.remove('error'); errWhats.classList.remove('show');
 
   if (nome.value.trim().length < 2) {
     nome.classList.add('error'); errNome.classList.add('show');
     nome.focus(); valid = false;
+  }
+
+  if (pelud.value.trim().length < 1) {
+    pelud.classList.add('error'); errPelud.classList.add('show');
+    if (valid) pelud.focus(); valid = false;
   }
 
   // WhatsApp: precisa ter 11 dígitos (DDD + 9 + 8)
@@ -653,6 +656,10 @@ function validateFields() {
 document.getElementById('nome').addEventListener('input', function() {
   this.classList.remove('error');
   document.getElementById('errNome').classList.remove('show');
+});
+document.getElementById('peludinho').addEventListener('input', function() {
+  this.classList.remove('error');
+  document.getElementById('errPeludinho').classList.remove('show');
 });
 document.getElementById('whatsapp').addEventListener('input', function() {
   this.classList.remove('error');
@@ -681,6 +688,7 @@ async function enviarNPS() {
 
   const payload = {
     nome: document.getElementById('nome').value.trim(),
+    peludinho: document.getElementById('peludinho').value.trim(),
     whatsapp: document.getElementById('whatsapp').value.trim(),
     email: document.getElementById('email').value.trim(),
     servico: servico.nome,
