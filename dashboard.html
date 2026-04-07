@@ -533,7 +533,7 @@ function rZel(){
 function rResp(data){
   var s=data.slice().reverse(),h="";
   s.slice(0,20).forEach(function(r){var c=r.nota>=9?"var(--z-nps-green)":r.nota>=7?"var(--z-nps-yellow)":"var(--z-nps-red)";
-  h+='<div class="resp"><div class="resp-badge" style="background:'+c+'">'+r.nota+'</div><div class="resp-body"><div class="resp-name">'+(r.nome||"Anonimo")+'</div>'+(r.comentario?'<div class="resp-text">"'+r.comentario+'"</div>':'')+'<div class="resp-meta">'+(r.servico?r.servico.split(" \u2014 ")[0].split(" - ")[0]:"")+' &middot; '+(r.data||"")+'</div></div></div>'});
+  h+='<div class="resp"><div class="resp-badge" style="background:'+c+'">'+r.nota+'</div><div class="resp-body"><div class="resp-name">'+(r.nome||"Anonimo")+(r.peludinho?' <span style="font-weight:400;color:var(--z-blue-70);font-size:12px">('+r.peludinho+')</span>':'')+'</div>'+(r.comentario?'<div class="resp-text">"'+r.comentario+'"</div>':'')+'<div class="resp-meta">'+(r.servico?r.servico.split(" \u2014 ")[0].split(" - ")[0]:"")+' &middot; '+(r.data||"")+'</div></div></div>'});
   document.getElementById("respBox").innerHTML=h||'<div class="empty">Nenhuma resposta</div>';
 }
 
@@ -587,11 +587,11 @@ async function togglePesq(param){
 }
 
 function renderContacts(q){
-  var h='<div class="ct"><div class="ct-n">Nome</div><div class="ct-t">WhatsApp</div><div class="ct-s">Servico</div><div class="ct-v">Nota</div><div class="ct-d">Data</div></div>';
+  var h='<div class="ct"><div class="ct-n">Nome</div><div class="ct-t">Peludinho</div><div class="ct-s">Servico</div><div class="ct-v">Nota</div><div class="ct-d">Data</div></div>';
   var list=D.nps.slice().reverse();
-  if(q){var f=q.toLowerCase();list=list.filter(function(r){return(r.nome||"").toLowerCase().includes(f)||(r.whatsapp||"").includes(f)})}
+  if(q){var f=q.toLowerCase();list=list.filter(function(r){return(r.nome||"").toLowerCase().includes(f)||(r.whatsapp||"").includes(f)||(r.peludinho||"").toLowerCase().includes(f)})}
   list.forEach(function(r){var c=r.nota>=9?"var(--z-nps-green)":r.nota>=7?"var(--z-nps-yellow)":"var(--z-nps-red)";
-  h+='<div class="ct"><div class="ct-n">'+(r.nome||"-")+'</div><div class="ct-t">'+(r.whatsapp||"-")+'</div><div class="ct-s">'+(r.servico?r.servico.split(" \u2014 ")[0].split(" - ")[0]:"-")+'</div><div class="ct-v"><span class="ct-pill" style="background:'+c+'">'+r.nota+'</span></div><div class="ct-d">'+(r.data||"-")+'</div></div>'});
+  h+='<div class="ct"><div class="ct-n">'+(r.nome||"-")+'</div><div class="ct-t">'+(r.peludinho||"-")+'</div><div class="ct-s">'+(r.servico?r.servico.split(" \u2014 ")[0].split(" - ")[0]:"-")+'</div><div class="ct-v"><span class="ct-pill" style="background:'+c+'">'+r.nota+'</span></div><div class="ct-d">'+(r.data||"-")+'</div></div>'});
   document.getElementById("ctBox").innerHTML=h;
 }
 document.getElementById("srcCt").addEventListener("input",function(){renderContacts(this.value)});
